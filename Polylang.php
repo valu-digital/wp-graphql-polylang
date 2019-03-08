@@ -92,6 +92,35 @@ class Polylang
             ]
         );
 
+        register_graphql_field(
+            $post_type_object->graphql_single_name,
+            'translationObjects',
+            [
+                'type' => [
+                    'list_of' => $name,
+                ],
+                'description' => __(
+                    'List all translated versions of this object',
+                    'wpnext'
+                ),
+                'resolve' => function (\WP_Post $post) {
+                    $posts = [];
+
+                    foreach (
+                        pll_get_post_translations($post->ID)
+                        as $lang => $post_id
+                    ) {
+                        $post = get_post($post_id);
+                        if ($post && !is_wp_error($post)) {
+                            $posts[] = $post;
+                        }
+                    }
+
+                    return $posts;
+                },
+            ]
+        );
+
         register_graphql_field($post_type_object->graphql_single_name, 'lang', [
             'type' => 'String',
             'description' => __('Polylang language', 'wpnext'),
