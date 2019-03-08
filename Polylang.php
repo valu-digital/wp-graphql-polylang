@@ -39,6 +39,7 @@ class Polylang
         ) {
             $this->add_lang_field($post_type_object);
             $this->add_translations_field($post_type_object);
+            $this->add_translation_field($post_type_object);
             $this->add_lang_where_args($post_type_object);
         });
     }
@@ -54,6 +55,41 @@ class Polylang
         ]);
     }
 
+    function add_translation_field(\WP_Post_Type $post_type_object)
+    {
+        $name = ucfirst($post_type_object->graphql_single_name);
+        register_graphql_field(
+            $post_type_object->graphql_single_name,
+            'translation',
+            [
+                'type' => $name,
+                'description' => __(
+                    'List available translations for this post',
+                    'wpnext'
+                ),
+                'args' => [
+                    'lang' => [
+                        'type' => [
+                            'non_null' => 'String',
+                        ],
+                    ],
+                ],
+                'resolve' => function (\WP_Post $post, array $args) {
+                    error_log('ARGS ' . print_r($args, true));
+
+                    $translations = pll_get_post_translations($post->ID);
+                    $post_id = $translations[$args['lang']] ?? null;
+
+                    if (!$post_id) {
+                        return null;
+                    }
+
+                    return get_post($post_id);
+                },
+            ]
+        );
+    }
+
     function add_translations_field(\WP_Post_Type $post_type_object)
     {
         register_graphql_field(
@@ -61,7 +97,10 @@ class Polylang
             'translations',
             [
                 'type' => Types::list_of(Types::string()),
-                'description' => __('List available translations for this post', 'wpnext'),
+                'description' => __(
+                    'List available translations for this post',
+                    'wpnext'
+                ),
                 'resolve' => function (\WP_Post $post) {
                     return array_keys(pll_get_post_translations($post->ID));
                 },
