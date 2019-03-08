@@ -36,9 +36,25 @@ class Polylang
         add_action('graphql_register_types', [$this, 'register_types'], 10, 0);
     }
 
+    function register_language_enum() {
+        $values = [];
+
+        foreach (pll_languages_list() as $lang) {
+            $values[strtoupper($lang)] = $lang;
+
+        }
+
+        register_graphql_enum_type( 'LanguagesEnum', [
+            'description'  => __( 'Languages enum', 'wp-graphql' ),
+            'values'       => $values,
+            // 'defaultValue' => 'FI',
+        ] );
+
+    }
+
     public function register_types()
     {
-
+        $this->register_language_enum();
         $post_types = \WPGraphQL::$allowed_post_types;
 
         if (empty($post_types) || !is_array($post_types)) {
@@ -56,7 +72,7 @@ class Polylang
 
         register_graphql_fields("RootQueryTo${type}ConnectionWhereArgs", [
             'lang' => [
-                'type' => 'String',
+                'type' => 'LanguagesEnum',
                 'description' => 'Filter by post language (polylang)',
             ],
         ]);
@@ -73,7 +89,7 @@ class Polylang
                 'args' => [
                     'lang' => [
                         'type' => [
-                            'non_null' => 'String',
+                            'non_null' => 'LanguagesEnum',
                         ],
                     ],
                 ],
@@ -135,7 +151,7 @@ class Polylang
         );
 
         register_graphql_field($post_type_object->graphql_single_name, 'lang', [
-            'type' => 'String',
+            'type' => 'LanguagesEnum',
             'description' => __('Polylang language', 'wpnext'),
             'resolve' => function (\WP_Post $post) {
                 $terms = wp_get_post_terms($post->ID, 'language');
