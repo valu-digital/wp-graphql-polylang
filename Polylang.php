@@ -8,8 +8,12 @@ use WPGraphQL\Types;
  * Integrates Polylang with WPGraphql
  *
  * - Make sure all languages appear in the queries by default
- * - Add lang field
  * - Add lang where arg
+ * - Add lang field
+ * - Add translation fields fields:
+ *   - translations: Get available translations
+ *   - translation: Get specific translated version of the post
+ *   - translationObjects: Get all translated objects
  */
 class Polylang
 {
@@ -34,7 +38,16 @@ class Polylang
 
     public function register_types()
     {
-        WPGraphQLExtensions::each_post_type([$this, 'add_fields']);
+
+        $post_types = \WPGraphQL::$allowed_post_types;
+
+        if (empty($post_types) || !is_array($post_types)) {
+            return;
+        }
+
+        foreach ($post_types as $post_type) {
+            $this->add_fields(get_post_type_object($post_type));
+        }
     }
 
     function add_fields(\WP_Post_Type $post_type_object)
