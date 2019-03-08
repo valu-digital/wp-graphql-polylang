@@ -64,7 +64,7 @@ class Polylang
             [
                 'type' => $name,
                 'description' => __(
-                    'List available translations for this post',
+                    'Get specific translation version of this object',
                     'wpnext'
                 ),
                 'args' => [
@@ -75,7 +75,6 @@ class Polylang
                     ],
                 ],
                 'resolve' => function (\WP_Post $post, array $args) {
-                    error_log('ARGS ' . print_r($args, true));
 
                     $translations = pll_get_post_translations($post->ID);
                     $post_id = $translations[$args['lang']] ?? null;
