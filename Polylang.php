@@ -101,14 +101,14 @@ class Polylang
                         return null;
                     }
 
-                    return get_post($post_id);
+                    return \WP_Post::get_instance($post_id);
                 },
             ]
         );
 
         register_graphql_field(
             $post_type_object->graphql_single_name,
-            'translations',
+            'translationCodes',
             [
                 'type' => Types::list_of(Types::string()),
                 'description' => __(
@@ -123,7 +123,7 @@ class Polylang
 
         register_graphql_field(
             $post_type_object->graphql_single_name,
-            'translationObjects',
+            'translations',
             [
                 'type' => [
                     'list_of' => $type,
