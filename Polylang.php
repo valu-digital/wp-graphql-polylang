@@ -39,9 +39,9 @@ class Polylang
 
     function add_fields(\WP_Post_Type $post_type_object)
     {
-        $name = ucfirst($post_type_object->graphql_single_name);
+        $type = ucfirst($post_type_object->graphql_single_name);
 
-        register_graphql_fields("RootQueryTo${name}ConnectionWhereArgs", [
+        register_graphql_fields("RootQueryTo${type}ConnectionWhereArgs", [
             'lang' => [
                 'type' => 'String',
                 'description' => 'Filter by post language (polylang)',
@@ -52,7 +52,7 @@ class Polylang
             $post_type_object->graphql_single_name,
             'translation',
             [
-                'type' => $name,
+                'type' => $type,
                 'description' => __(
                     'Get specific translation version of this object',
                     'wpnext'
@@ -97,7 +97,7 @@ class Polylang
             'translationObjects',
             [
                 'type' => [
-                    'list_of' => $name,
+                    'list_of' => $type,
                 ],
                 'description' => __(
                     'List all translated versions of this object',
