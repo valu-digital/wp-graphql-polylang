@@ -34,30 +34,20 @@ class Polylang
 
     public function register_types()
     {
-        WPGraphQLExtensions::each_post_type(function (
-            \WP_Post_Type $post_type_object
-        ) {
-            $this->add_lang_field($post_type_object);
-            $this->add_translations_field($post_type_object);
-            $this->add_translation_field($post_type_object);
-            $this->add_lang_where_args($post_type_object);
-        });
+        WPGraphQLExtensions::each_post_type([$this, 'add_fields']);
     }
 
-    function add_lang_where_args(\WP_Post_Type $post_type_object)
+    function add_fields(\WP_Post_Type $post_type_object)
     {
         $name = ucfirst($post_type_object->graphql_single_name);
+
         register_graphql_fields("RootQueryTo${name}ConnectionWhereArgs", [
             'lang' => [
                 'type' => 'String',
                 'description' => 'Filter by post language (polylang)',
             ],
         ]);
-    }
 
-    function add_translation_field(\WP_Post_Type $post_type_object)
-    {
-        $name = ucfirst($post_type_object->graphql_single_name);
         register_graphql_field(
             $post_type_object->graphql_single_name,
             'translation',
@@ -75,7 +65,6 @@ class Polylang
                     ],
                 ],
                 'resolve' => function (\WP_Post $post, array $args) {
-
                     $translations = pll_get_post_translations($post->ID);
                     $post_id = $translations[$args['lang']] ?? null;
 
@@ -87,10 +76,7 @@ class Polylang
                 },
             ]
         );
-    }
 
-    function add_translations_field(\WP_Post_Type $post_type_object)
-    {
         register_graphql_field(
             $post_type_object->graphql_single_name,
             'translations',
@@ -105,10 +91,7 @@ class Polylang
                 },
             ]
         );
-    }
 
-    function add_lang_field(\WP_Post_Type $post_type_object)
-    {
         register_graphql_field($post_type_object->graphql_single_name, 'lang', [
             'type' => 'String',
             'description' => __('Polylang language', 'wpnext'),
