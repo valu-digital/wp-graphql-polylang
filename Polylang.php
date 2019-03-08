@@ -2,6 +2,8 @@
 
 namespace WPNext;
 
+use WPGraphQL\Types;
+
 /**
  * Integrates Polylang with WPGraphql
  *
@@ -36,6 +38,7 @@ class Polylang
             \WP_Post_Type $post_type_object
         ) {
             $this->add_lang_field($post_type_object);
+            $this->add_translations_field($post_type_object);
             $this->add_lang_where_args($post_type_object);
         });
     }
@@ -49,6 +52,21 @@ class Polylang
                 'description' => 'Filter by post language (polylang)',
             ],
         ]);
+    }
+
+    function add_translations_field(\WP_Post_Type $post_type_object)
+    {
+        register_graphql_field(
+            $post_type_object->graphql_single_name,
+            'translations',
+            [
+                'type' => Types::list_of(Types::string()),
+                'description' => __('List available translations for this post', 'wpnext'),
+                'resolve' => function (\WP_Post $post) {
+                    return array_keys(pll_get_post_translations($post->ID));
+                },
+            ]
+        );
     }
 
     function add_lang_field(\WP_Post_Type $post_type_object)
