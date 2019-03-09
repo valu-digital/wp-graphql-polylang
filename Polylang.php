@@ -17,8 +17,29 @@ use WPGraphQL\Types;
  */
 class Polylang
 {
+    private $languageFields = null;
+
     public function __construct()
     {
+        // $this->languageFields = new ObjectType([
+        //     'name' => 'Polylang language fields',
+        //     'description' => 'WPNext Post type info extension',
+        //     'fields' => [
+        //         'name' => [
+        //             'type' => Type::string(),
+        //             'description' => 'Human readable language name',
+        //         ],
+        //         'locale' => [
+        //             'type' => Type::string(),
+        //             'description' => 'The language locale',
+        //         ],
+        //         'code' => [
+        //             'type' => 'LanguagesEnum',
+        //             'description' => 'The language code',
+        //         ],
+        //     ],
+        // ]);
+
         add_filter(
             'graphql_post_object_connection_query_args',
             [$this, 'add_show_all_languages_query'],
@@ -33,10 +54,10 @@ class Polylang
             10
         );
 
-        add_action('graphql_register_types', [$this, 'register_types'], 10, 0);
+        add_action('graphql_register_types', [$this, 'register_fields'], 10, 0);
     }
 
-    function register_language_enum()
+    function register_types()
     {
         $values = [];
 
@@ -49,11 +70,41 @@ class Polylang
             'values' => $values,
             // 'defaultValue' => 'FI',
         ]);
+
+        register_graphql_object_type('Language', [
+            'description' => __('Language fields', 'wp-graphql-polylang'),
+            'fields' => [
+                'name' => [
+                    'type' => 'String',
+                ],
+                'code' => [
+                    'type' => 'String',
+                ],
+                'locale' => [
+                    'type' => 'String',
+                ],
+            ],
+        ]);
+
+        // register_graphql_enum_type('LanguageFieldEnum', [
+        //     'description' => __(
+        //         'Language field enum for Polylang',
+        //         'wp-graphql'
+        //     ),
+        //     'values' => [
+        //         'NAME' => 'name',
+        //         'LOCALE' => 'locale',
+        //         'SLUG' => 'slug',
+        //     ],
+        //     // 'defaultValue' => 'FI',
+        // ]);
     }
 
-    public function register_types()
+    public function register_fields()
     {
-        $this->register_language_enum();
+        $this->register_types();
+        $this->add_taxonomy_fields();
+
         $post_types = \WPGraphQL::$allowed_post_types;
 
         if (empty($post_types) || !is_array($post_types)) {
@@ -61,11 +112,49 @@ class Polylang
         }
 
         foreach ($post_types as $post_type) {
-            $this->add_fields(get_post_type_object($post_type));
+            $this->add_post_type_fields(get_post_type_object($post_type));
         }
     }
 
-    function add_fields(\WP_Post_Type $post_type_object)
+    function add_taxonomy_fields()
+    {
+        register_graphql_field('Tag', 'lol', [
+            'type' => 'Language',
+            'description' => __(
+                'List available translations for this post',
+                'wpnext'
+            ),
+            'resolve' => function (\WP_Term $term, $args, $context, $info) {
+                $fields = $info->getFieldSelection();
+                $language = [];
+
+                if (isset($fields['code'])) {
+                    $language['code'] = pll_get_term_language(
+                        $term->term_id,
+                        'slug'
+                    );
+                }
+
+                if (isset($fields['name'])) {
+                    $language['name'] = pll_get_term_language(
+                        $term->term_id,
+                        'name'
+                    );
+                }
+
+                if (isset($fields['locale'])) {
+                    $language['locale'] = pll_get_term_language(
+                        $term->term_id,
+                        'locale'
+                    );
+                }
+
+                return $language;
+            },
+        ]);
+    }
+
+    function add_post_type_fields(\WP_Post_Type $post_type_object)
     {
         $type = ucfirst($post_type_object->graphql_single_name);
 
