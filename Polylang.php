@@ -34,7 +34,7 @@ class Polylang
         //             'description' => 'The language locale',
         //         ],
         //         'code' => [
-        //             'type' => 'LanguagesEnum',
+        //             'type' => 'LanguageCodeEnum',
         //             'description' => 'The language code',
         //         ],
         //     ],
@@ -65,8 +65,11 @@ class Polylang
             $values[strtoupper($lang)] = $lang;
         }
 
-        register_graphql_enum_type('LanguagesEnum', [
-            'description' => __('Languages enum', 'wp-graphql'),
+        register_graphql_enum_type('LanguageCodeEnum', [
+            'description' => __(
+                'Enum of all available language codes',
+                'wp-graphql-polylang'
+            ),
             'values' => $values,
             // 'defaultValue' => 'FI',
         ]);
@@ -78,7 +81,7 @@ class Polylang
                     'type' => 'String',
                 ],
                 'code' => [
-                    'type' => 'LanguagesEnum',
+                    'type' => 'LanguageCodeEnum',
                 ],
                 'locale' => [
                     'type' => 'String',
@@ -160,7 +163,7 @@ class Polylang
 
         register_graphql_fields("RootQueryTo${type}ConnectionWhereArgs", [
             'lang' => [
-                'type' => 'LanguagesEnum',
+                'type' => 'LanguageCodeEnum',
                 'description' => 'Filter by posts language code (Polylang)',
             ],
         ]);
@@ -177,7 +180,7 @@ class Polylang
                 'args' => [
                     'lang' => [
                         'type' => [
-                            'non_null' => 'LanguagesEnum',
+                            'non_null' => 'LanguageCodeEnum',
                         ],
                     ],
                 ],
@@ -198,7 +201,7 @@ class Polylang
             $post_type_object->graphql_single_name,
             'translationCodes',
             [
-                'type' => ['list_of' => 'LanguagesEnum'],
+                'type' => ['list_of' => 'LanguageCodeEnum'],
                 'description' => __(
                     'List available translations for this post',
                     'wpnext'
