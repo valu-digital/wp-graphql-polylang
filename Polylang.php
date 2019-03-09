@@ -106,22 +106,25 @@ class Polylang
     public function register_fields()
     {
         $this->register_types();
-        $this->add_taxonomy_fields();
 
         $post_types = \WPGraphQL::$allowed_post_types;
 
-        if (empty($post_types) || !is_array($post_types)) {
-            return;
+        if (!empty($post_types) && is_array($post_types)) {
+            foreach ($post_types as $post_type) {
+                $this->add_post_type_fields(get_post_type_object($post_type));
+            }
         }
 
-        foreach ($post_types as $post_type) {
-            $this->add_post_type_fields(get_post_type_object($post_type));
+        foreach (\WPGraphQL::get_allowed_taxonomies() as $taxonomy) {
+            $this->add_taxonomy_fields(get_taxonomy($taxonomy));
         }
     }
 
-    function add_taxonomy_fields()
+    function add_taxonomy_fields(\WP_Taxonomy $taxonomy)
     {
-        register_graphql_field('Tag', 'lol', [
+        $type = ucfirst($taxonomy->graphql_single_name);
+
+        register_graphql_field($type, 'lang', [
             'type' => 'Language',
             'description' => __(
                 'List available translations for this post',
