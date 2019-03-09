@@ -104,9 +104,21 @@ class Polylang
         }
     }
 
+    function add_lang_root_query(string $type)
+    {
+        register_graphql_fields("RootQueryTo${type}ConnectionWhereArgs", [
+            'lang' => [
+                'type' => 'LanguageCodeEnum',
+                'description' => "Filter by ${type}s by language code (Polylang)",
+            ],
+        ]);
+    }
+
     function add_taxonomy_fields(\WP_Taxonomy $taxonomy)
     {
         $type = ucfirst($taxonomy->graphql_single_name);
+
+        $this->add_lang_root_query($type);
 
         register_graphql_field($type, 'lang', [
             'type' => 'Language',
@@ -148,12 +160,7 @@ class Polylang
     {
         $type = ucfirst($post_type_object->graphql_single_name);
 
-        register_graphql_fields("RootQueryTo${type}ConnectionWhereArgs", [
-            'lang' => [
-                'type' => 'LanguageCodeEnum',
-                'description' => 'Filter by posts language code (Polylang)',
-            ],
-        ]);
+        $this->add_lang_root_query($type);
 
         register_graphql_field(
             $post_type_object->graphql_single_name,
