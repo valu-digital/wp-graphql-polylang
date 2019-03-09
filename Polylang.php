@@ -36,20 +36,19 @@ class Polylang
         add_action('graphql_register_types', [$this, 'register_types'], 10, 0);
     }
 
-    function register_language_enum() {
+    function register_language_enum()
+    {
         $values = [];
 
         foreach (pll_languages_list() as $lang) {
             $values[strtoupper($lang)] = $lang;
-
         }
 
-        register_graphql_enum_type( 'LanguagesEnum', [
-            'description'  => __( 'Languages enum', 'wp-graphql' ),
-            'values'       => $values,
+        register_graphql_enum_type('LanguagesEnum', [
+            'description' => __('Languages enum', 'wp-graphql'),
+            'values' => $values,
             // 'defaultValue' => 'FI',
-        ] );
-
+        ]);
     }
 
     public function register_types()
