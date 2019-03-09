@@ -62,7 +62,7 @@ class Polylang
     public function register_fields()
     {
         $this->register_types();
-        $this->add_default_language_root_query();
+        $this->add_language_root_queries();
 
         foreach (\WPGraphQL::get_allowed_post_types() as $post_type) {
             $this->add_post_type_fields(get_post_type_object($post_type));
@@ -83,11 +83,48 @@ class Polylang
         ]);
     }
 
-    function add_default_language_root_query()
+    function add_language_root_queries()
     {
+        register_graphql_field('RootQuery', 'languages', [
+            'type' => ['list_of' => 'Language'],
+            'description' => __(
+                'List available languages',
+                'wp-graphql-polylang'
+            ),
+            'resolve' => function ($source, $args, $context, $info) {
+                $fields = $info->getFieldSelection();
+
+                // Oh the Polylang api is so nice here. Better ideas?
+
+                $languages = array_map(function ($code) {
+                    return ['code' => $code];
+                }, pll_languages_list());
+
+                if (isset($fields['name'])) {
+                    foreach (
+                        pll_languages_list(['fields' => 'name'])
+                        as $index => $name
+                    ) {
+                        $languages[$index]['name'] = $name;
+                    }
+                }
+
+                if (isset($fields['locale'])) {
+                    foreach (
+                        pll_languages_list(['fields' => 'locale'])
+                        as $index => $locale
+                    ) {
+                        $languages[$index]['locale'] = $locale;
+                    }
+                }
+
+                return $languages;
+            },
+        ]);
+
         register_graphql_field('RootQuery', 'defaultLanguage', [
             'type' => 'Language',
-            'description' => __('Get the default language', 'wpnext'),
+            'description' => __('Get language list', 'wp-graphql-polylang'),
             'resolve' => function ($source, $args, $context, $info) {
                 $fields = $info->getFieldSelection();
                 $language = [];
