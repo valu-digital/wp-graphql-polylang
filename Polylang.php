@@ -21,25 +21,6 @@ class Polylang
 
     public function __construct()
     {
-        // $this->languageFields = new ObjectType([
-        //     'name' => 'Polylang language fields',
-        //     'description' => 'WPNext Post type info extension',
-        //     'fields' => [
-        //         'name' => [
-        //             'type' => Type::string(),
-        //             'description' => 'Human readable language name',
-        //         ],
-        //         'locale' => [
-        //             'type' => Type::string(),
-        //             'description' => 'The language locale',
-        //         ],
-        //         'code' => [
-        //             'type' => 'LanguageCodeEnum',
-        //             'description' => 'The language code',
-        //         ],
-        //     ],
-        // ]);
-
         $this->show_posts_by_all_languages();
 
         add_action('graphql_register_types', [$this, 'register_fields'], 10, 0);
