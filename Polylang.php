@@ -338,5 +338,7 @@ class Polylang
 }
 
 add_action('init', function () {
-    new Polylang();
+    if (function_exists('pll_get_post_language')) {
+        new Polylang();
+    }
 });
