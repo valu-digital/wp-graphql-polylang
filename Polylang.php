@@ -86,10 +86,25 @@ class Polylang
     function add_default_language_root_query()
     {
         register_graphql_field('RootQuery', 'defaultLanguage', [
-            'type' => 'LanguageCodeEnum',
+            'type' => 'Language',
             'description' => __('Get the default language', 'wpnext'),
-            'resolve' => function () {
-                return pll_default_language();
+            'resolve' => function ($source, $args, $context, $info) {
+                $fields = $info->getFieldSelection();
+                $language = [];
+
+                if (isset($fields['code'])) {
+                    $language['code'] = pll_default_language('slug');
+                }
+
+                if (isset($fields['name'])) {
+                    $language['name'] = pll_default_language('name');
+                }
+
+                if (isset($fields['locale'])) {
+                    $language['locale'] = pll_default_language('locale');
+                }
+
+                return $language;
             },
         ]);
     }
