@@ -154,6 +154,42 @@ class Polylang
                 return $language;
             },
         ]);
+
+        register_graphql_field($type, 'translations', [
+            'type' => [
+                'list_of' => $type,
+            ],
+            'description' => __(
+                'List all translated versions of this object',
+                'wp-graphql-polylang'
+            ),
+            'resolve' => function (\WP_Term $term) {
+                $terms = [];
+
+                foreach (
+                    pll_get_term_translations($term->term_id)
+                    as $lang => $term_id
+                ) {
+                    if ($term_id === $term->term_id) {
+                        continue;
+                    }
+
+                    $translation = get_term($term_id);
+
+                    if (!$translation) {
+                        continue;
+                    }
+
+                    if (is_wp_error($translation)) {
+                        continue;
+                    }
+
+                    $terms[] = $translation;
+                }
+
+                return $terms;
+            },
+        ]);
     }
 
     function add_post_type_fields(\WP_Post_Type $post_type_object)
@@ -227,7 +263,7 @@ class Polylang
                 ],
                 'description' => __(
                     'List all translated versions of this object',
-                    'wpnext'
+                    'wp-graphql-polylang'
                 ),
                 'resolve' => function (\WP_Post $post) {
                     $posts = [];
