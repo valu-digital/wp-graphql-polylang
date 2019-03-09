@@ -62,6 +62,7 @@ class Polylang
     public function register_fields()
     {
         $this->register_types();
+        $this->add_default_language_root_query();
 
         foreach (\WPGraphQL::get_allowed_post_types() as $post_type) {
             $this->add_post_type_fields(get_post_type_object($post_type));
@@ -79,6 +80,17 @@ class Polylang
                 'type' => 'LanguageCodeEnum',
                 'description' => "Filter by ${type}s by language code (Polylang)",
             ],
+        ]);
+    }
+
+    function add_default_language_root_query()
+    {
+        register_graphql_field('RootQuery', 'defaultLanguage', [
+            'type' => 'LanguageCodeEnum',
+            'description' => __('Get the default language', 'wpnext'),
+            'resolve' => function () {
+                return pll_default_language();
+            },
         ]);
     }
 
