@@ -107,12 +107,8 @@ class Polylang
     {
         $this->register_types();
 
-        $post_types = \WPGraphQL::$allowed_post_types;
-
-        if (!empty($post_types) && is_array($post_types)) {
-            foreach ($post_types as $post_type) {
-                $this->add_post_type_fields(get_post_type_object($post_type));
-            }
+        foreach (\WPGraphQL::get_allowed_post_types() as $post_type) {
+            $this->add_post_type_fields(get_post_type_object($post_type));
         }
 
         foreach (\WPGraphQL::get_allowed_taxonomies() as $taxonomy) {
