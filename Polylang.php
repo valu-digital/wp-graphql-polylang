@@ -206,7 +206,19 @@ class Polylang
                     'wpnext'
                 ),
                 'resolve' => function (\WP_Post $post) {
-                    return array_keys(pll_get_post_translations($post->ID));
+                    $codes = [];
+                    $current_code = pll_get_post_language($post->ID, 'slug');
+
+                    foreach (
+                        array_keys(pll_get_post_translations($post->ID))
+                        as $code
+                    ) {
+                        if ($code !== $current_code) {
+                            $codes[] = $code;
+                        }
+                    }
+
+                    return $codes;
                 },
             ]
         );
@@ -229,10 +241,21 @@ class Polylang
                         pll_get_post_translations($post->ID)
                         as $lang => $post_id
                     ) {
-                        $post = get_post($post_id);
-                        if ($post && !is_wp_error($post)) {
-                            $posts[] = $post;
+                        $translation = get_post($post_id);
+
+                        if (!$translation) {
+                            continue;
                         }
+
+                        if (is_wp_error($translation)) {
+                            continue;
+                        }
+
+                        if ($post->ID === $translation->ID) {
+                            continue;
+                        }
+
+                        $posts[] = $translation;
                     }
 
                     return $posts;
