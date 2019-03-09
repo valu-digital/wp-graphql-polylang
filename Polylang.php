@@ -312,7 +312,7 @@ class Polylang
     {
         add_filter(
             'graphql_post_object_connection_query_args',
-            function () {
+            function ($query_args) {
                 $query_args['show_all_languages_in_graphql'] = true;
                 return $query_args;
             },
