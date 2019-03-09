@@ -78,7 +78,7 @@ class Polylang
                     'type' => 'String',
                 ],
                 'code' => [
-                    'type' => 'String',
+                    'type' => 'LanguagesEnum',
                 ],
                 'locale' => [
                     'type' => 'String',
@@ -198,7 +198,7 @@ class Polylang
             $post_type_object->graphql_single_name,
             'translationCodes',
             [
-                'type' => Types::list_of(Types::string()),
+                'type' => ['list_of' => 'LanguagesEnum'],
                 'description' => __(
                     'List available translations for this post',
                     'wpnext'
