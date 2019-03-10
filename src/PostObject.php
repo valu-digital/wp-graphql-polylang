@@ -16,7 +16,14 @@ class PostObject
                 // Polylang handles 'lang' query arg so convert our 'language'
                 // query arg if it is set
                 if (isset($query_args['language'])) {
-                    $query_args['lang'] = $query_args['language'];
+                    $lang = $query_args['language'];
+
+                    if ('default' === $lang) {
+                        $lang = pll_default_language('slug');
+                    }
+
+                    $query_args['lang'] = $lang;
+
                     unset($query_args['language']);
                 }
 
@@ -88,7 +95,7 @@ class PostObject
 
         register_graphql_fields("RootQueryTo${type}ConnectionWhereArgs", [
             'language' => [
-                'type' => 'LanguageCodeEnum',
+                'type' => 'LanguageCodeFilterEnum',
                 'description' => "Filter by ${type}s by language code (Polylang)",
             ],
         ]);

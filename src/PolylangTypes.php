@@ -11,7 +11,6 @@ class PolylangTypes
 
     function register()
     {
-        error_log('registerin types');
         $language_codes = [];
 
         foreach (pll_languages_list() as $lang) {
@@ -24,7 +23,17 @@ class PolylangTypes
                 'wp-graphql-polylang'
             ),
             'values' => $language_codes,
-            // 'defaultValue' => 'FI',
+        ]);
+
+        register_graphql_enum_type('LanguageCodeFilterEnum', [
+            'description' => __(
+                'Filter item by specific language, default language or list all languages',
+                'wp-graphql-polylang'
+            ),
+            'values' => array_merge($language_codes, [
+                'DEFAULT' => 'default',
+                'ALL' => 'all',
+            ]),
         ]);
 
         register_graphql_object_type('Language', [
