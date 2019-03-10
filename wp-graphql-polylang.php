@@ -12,14 +12,6 @@
 
 namespace WPGraphQL\Extensions\Polylang;
 
-if (!function_exists('pll_get_post_language')) {
-    return;
-}
-
-if (!function_exists('register_graphql_field')) {
-    return;
-}
-
 function usesSlugBasedField(array $fields)
 {
     return isset($fields['code']) ||
@@ -34,6 +26,13 @@ require_once __DIR__ . '/src/StringsTranslations.php';
 require_once __DIR__ . '/src/TermObject.php';
 
 add_action('init', function () {
+    if (!function_exists('pll_get_post_language')) {
+        return;
+    }
+
+    if (!function_exists('register_graphql_field')) {
+        return;
+    }
     new PolylangTypes();
     new PostObject();
     new TermObject();
