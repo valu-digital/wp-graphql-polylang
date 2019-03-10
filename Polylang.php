@@ -101,6 +101,22 @@ class Polylang
             $this->add_taxonomy_fields(get_taxonomy($taxonomy));
         }
 
+        add_filter(
+            'graphql_post_object_connection_query_args',
+            function ($query_args) {
+                // Polylang handles 'lang' query arg so convert our 'language'
+                // query arg if it is set
+                if (isset($query_args['language'])) {
+                    $query_args['lang'] = $query_args['language'];
+                    unset($query_args['language']);
+                }
+
+                return $query_args;
+            },
+            10,
+            1
+        );
+
         add_action(
             'graphql_post_object_mutation_update_additional_data',
             function ($post_id, array $input, \WP_Post_Type $post_type_object) {
@@ -322,22 +338,6 @@ class Polylang
         $type = ucfirst($post_type_object->graphql_single_name);
 
         $this->add_lang_root_query($type);
-
-        add_filter(
-            'graphql_post_object_connection_query_args',
-            function ($query_args) {
-                // Polylang handles 'lang' query arg so convert our 'language'
-                // query arg if it is set
-                if (isset($query_args['language'])) {
-                    $query_args['lang'] = $query_args['language'];
-                    unset($query_args['language']);
-                }
-
-                return $query_args;
-            },
-            10,
-            1
-        );
 
         register_graphql_fields("Create${type}Input", [
             'language' => [
