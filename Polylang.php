@@ -100,6 +100,17 @@ class Polylang
         foreach (\WPGraphQL::get_allowed_taxonomies() as $taxonomy) {
             $this->add_taxonomy_fields(get_taxonomy($taxonomy));
         }
+
+        add_action(
+            'graphql_post_object_mutation_update_additional_data',
+            function ($post_id, array $input, \WP_Post_Type $post_type_object) {
+                if (isset($input['language'])) {
+                    pll_set_post_language($post_id, $input['language']);
+                }
+            },
+            10,
+            3
+        );
     }
 
     function add_lang_root_query(string $type)
@@ -327,6 +338,12 @@ class Polylang
             10,
             1
         );
+
+        register_graphql_fields("Create${type}Input", [
+            'language' => [
+                'type' => 'LanguageCodeEnum',
+            ],
+        ]);
 
         register_graphql_field(
             $post_type_object->graphql_single_name,
