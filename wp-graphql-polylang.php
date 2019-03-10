@@ -12,6 +12,14 @@
 
 namespace WPGraphQL\Extensions\Polylang;
 
+if (!function_exists('pll_get_post_language')) {
+    return;
+}
+
+if (!function_exists('register_graphql_field')) {
+    return;
+}
+
 function usesSlugBasedField(array $fields)
 {
     return isset($fields['code']) ||
