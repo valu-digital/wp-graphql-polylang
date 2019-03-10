@@ -213,7 +213,7 @@ class Polylang
                         $term->term_id,
                         'slug'
                     );
-                    $language['slug'] = $language['slug'];
+                    $language['slug'] = $language['code'];
                     $language['id'] = Relay::toGlobalId(
                         'Language',
                         $language['code']
