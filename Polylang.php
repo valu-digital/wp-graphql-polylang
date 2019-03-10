@@ -3,6 +3,7 @@
 namespace WPNext;
 
 use WPGraphQL\Types;
+use GraphQLRelay\Relay;
 
 /**
  * Integrates Polylang with WPGraphql
@@ -46,6 +47,15 @@ class Polylang
         register_graphql_object_type('Language', [
             'description' => __('Language (Polylang)', 'wp-graphql-polylang'),
             'fields' => [
+                'id' => [
+                    'type' => [
+                        'non_null' => 'ID',
+                    ],
+                    'description' => __(
+                        'Language ID (Polylang)',
+                        'wp-graphql-polylang'
+                    ),
+                ],
                 'name' => [
                     'type' => 'String',
                     'description' => __(
@@ -116,7 +126,11 @@ class Polylang
                 // Oh the Polylang api is so nice here. Better ideas?
 
                 $languages = array_map(function ($code) {
-                    return ['code' => $code, 'slug' => $code];
+                    return [
+                        'id' => Relay::toGlobalId('Language', $code),
+                        'code' => $code,
+                        'slug' => $code,
+                    ];
                 }, pll_languages_list());
 
                 if (isset($fields['name'])) {
@@ -148,8 +162,13 @@ class Polylang
                 $fields = $info->getFieldSelection();
                 $language = [];
 
-                if (isset($fields['code'])) {
+                // All these fields are build from the same data...
+                if ($this->usesSlugBasedField($fields)) {
                     $language['code'] = pll_default_language('slug');
+                    $language['id'] = Relay::toGlobalId(
+                        'Language',
+                        $language['code']
+                    );
                     $language['slug'] = $language['code'];
                 }
 
@@ -164,6 +183,13 @@ class Polylang
                 return $language;
             },
         ]);
+    }
+
+    function usesSlugBasedField(array $fields)
+    {
+        return isset($fields['code']) ||
+            isset($fields['slug']) ||
+            isset($fields['id']);
     }
 
     function add_taxonomy_fields(\WP_Taxonomy $taxonomy)
@@ -182,12 +208,16 @@ class Polylang
                 $fields = $info->getFieldSelection();
                 $language = [];
 
-                if (isset($fields['code'])) {
+                if ($this->usesSlugBasedField($fields)) {
                     $language['code'] = pll_get_term_language(
                         $term->term_id,
                         'slug'
                     );
                     $language['slug'] = $language['slug'];
+                    $language['id'] = Relay::toGlobalId(
+                        'Language',
+                        $language['code']
+                    );
                 }
 
                 if (isset($fields['name'])) {
@@ -213,7 +243,7 @@ class Polylang
                 'list_of' => $type,
             ],
             'description' => __(
-                'List all translated versions of this object',
+                'List all translated versions of this term',
                 'wp-graphql-polylang'
             ),
             'resolve' => function (\WP_Term $term) {
@@ -303,7 +333,7 @@ class Polylang
                 'type' => ['list_of' => 'LanguageCodeEnum'],
                 'description' => __(
                     'List available translations for this post',
-                    'wpnext'
+                    'wp-graphql-polylang'
                 ),
                 'resolve' => function (\WP_Post $post) {
                     $codes = [];
@@ -331,7 +361,7 @@ class Polylang
                     'list_of' => $type,
                 ],
                 'description' => __(
-                    'List all translated versions of this object',
+                    'List all translated versions of this post',
                     'wp-graphql-polylang'
                 ),
                 'resolve' => function (\WP_Post $post) {
@@ -373,12 +403,16 @@ class Polylang
                     $fields = $info->getFieldSelection();
                     $language = [];
 
-                    if (isset($fields['code'])) {
+                    if ($this->usesSlugBasedField($fields)) {
                         $language['code'] = pll_get_post_language(
                             $post->ID,
                             'slug'
                         );
                         $language['slug'] = $language['code'];
+                        $language['id'] = Relay::toGlobalId(
+                            'Language',
+                            $language['code']
+                        );
                     }
 
                     if (isset($fields['name'])) {
