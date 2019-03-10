@@ -76,7 +76,7 @@ class Polylang
     function add_lang_root_query(string $type)
     {
         register_graphql_fields("RootQueryTo${type}ConnectionWhereArgs", [
-            'lang' => [
+            'language' => [
                 'type' => 'LanguageCodeEnum',
                 'description' => "Filter by ${type}s by language code (Polylang)",
             ],
@@ -152,7 +152,7 @@ class Polylang
 
         $this->add_lang_root_query($type);
 
-        register_graphql_field($type, 'lang', [
+        register_graphql_field($type, 'language', [
             'type' => 'Language',
             'description' => __(
                 'List available translations for this post',
@@ -230,6 +230,22 @@ class Polylang
 
         $this->add_lang_root_query($type);
 
+        add_filter(
+            'graphql_post_object_connection_query_args',
+            function ($query_args) {
+                // Polylang handles 'lang' query arg so convert our 'language'
+                // query arg if it is set
+                if (isset($query_args['language'])) {
+                    $query_args['lang'] = $query_args['language'];
+                    unset($query_args['language']);
+                }
+
+                return $query_args;
+            },
+            10,
+            1
+        );
+
         register_graphql_field(
             $post_type_object->graphql_single_name,
             'translation',
@@ -240,7 +256,7 @@ class Polylang
                     'wp-graphql-polylang'
                 ),
                 'args' => [
-                    'lang' => [
+                    'language' => [
                         'type' => [
                             'non_null' => 'LanguageCodeEnum',
                         ],
@@ -248,7 +264,7 @@ class Polylang
                 ],
                 'resolve' => function (\WP_Post $post, array $args) {
                     $translations = pll_get_post_translations($post->ID);
-                    $post_id = $translations[$args['lang']] ?? null;
+                    $post_id = $translations[$args['language']] ?? null;
 
                     if (!$post_id) {
                         return null;
@@ -326,37 +342,41 @@ class Polylang
             ]
         );
 
-        register_graphql_field($post_type_object->graphql_single_name, 'lang', [
-            'type' => 'Language',
-            'description' => __('Polylang language', 'wpnext'),
-            'resolve' => function (\WP_Post $post, $args, $context, $info) {
-                $fields = $info->getFieldSelection();
-                $language = [];
+        register_graphql_field(
+            $post_type_object->graphql_single_name,
+            'language',
+            [
+                'type' => 'Language',
+                'description' => __('Polylang language', 'wpnext'),
+                'resolve' => function (\WP_Post $post, $args, $context, $info) {
+                    $fields = $info->getFieldSelection();
+                    $language = [];
 
-                if (isset($fields['code'])) {
-                    $language['code'] = pll_get_post_language(
-                        $post->ID,
-                        'slug'
-                    );
-                }
+                    if (isset($fields['code'])) {
+                        $language['code'] = pll_get_post_language(
+                            $post->ID,
+                            'slug'
+                        );
+                    }
 
-                if (isset($fields['name'])) {
-                    $language['name'] = pll_get_post_language(
-                        $post->ID,
-                        'name'
-                    );
-                }
+                    if (isset($fields['name'])) {
+                        $language['name'] = pll_get_post_language(
+                            $post->ID,
+                            'name'
+                        );
+                    }
 
-                if (isset($fields['locale'])) {
-                    $language['locale'] = pll_get_post_language(
-                        $post->ID,
-                        'locale'
-                    );
-                }
+                    if (isset($fields['locale'])) {
+                        $language['locale'] = pll_get_post_language(
+                            $post->ID,
+                            'locale'
+                        );
+                    }
 
-                return $language;
-            },
-        ]);
+                    return $language;
+                },
+            ]
+        );
     }
 
     function show_posts_by_all_languages()
