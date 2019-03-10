@@ -277,6 +277,17 @@ class Polylang
             2
         );
 
+        add_action(
+            "graphql_update_{$taxonomy->name}",
+            function ($term_id, $args) {
+                if (isset($args['language'])) {
+                    pll_set_term_language($term_id, $args['language']);
+                }
+            },
+            10,
+            2
+        );
+
         register_graphql_field($type, 'language', [
             'type' => 'Language',
             'description' => __(
