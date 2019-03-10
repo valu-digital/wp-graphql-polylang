@@ -147,35 +147,35 @@ class PostObject
             ]
         );
 
-        // register_graphql_field(
-        //     $post_type_object->graphql_single_name,
-        //     'translation',
-        //     [
-        //         'type' => $type,
-        //         'description' => __(
-        //             'Get specific translation version of this object',
-        //             'wp-graphql-polylang'
-        //         ),
-        //         'args' => [
-        //             'language' => [
-        //                 'type' => [
-        //                     'non_null' => 'LanguageCodeEnum',
-        //                 ],
-        //             ],
-        //         ],
-        //         'resolve' => function (\WP_Post $post, array $args) {
-        //             $translations = pll_get_post_translations($post->ID);
-        //             $post_id = $translations[$args['language']] ?? null;
-        //
-        //             if (!$post_id) {
-        //                 return null;
-        //             }
-        //
-        //             return \WP_Post::get_instance($post_id);
-        //         },
-        //     ]
-        // );
-        //
+        register_graphql_field(
+            $post_type_object->graphql_single_name,
+            'translation',
+            [
+                'type' => $type,
+                'description' => __(
+                    'Get specific translation version of this object',
+                    'wp-graphql-polylang'
+                ),
+                'args' => [
+                    'language' => [
+                        'type' => [
+                            'non_null' => 'LanguageCodeEnum',
+                        ],
+                    ],
+                ],
+                'resolve' => function (\WP_Post $post, array $args) {
+                    $translations = pll_get_post_translations($post->ID);
+                    $post_id = $translations[$args['language']] ?? null;
+
+                    if (!$post_id) {
+                        return null;
+                    }
+
+                    return \WP_Post::get_instance($post_id);
+                },
+            ]
+        );
+
         register_graphql_field(
             $post_type_object->graphql_single_name,
             'translations',
