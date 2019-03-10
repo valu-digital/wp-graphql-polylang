@@ -55,6 +55,9 @@ class Polylang
                 'locale' => [
                     'type' => 'String',
                 ],
+                'slug' => [
+                    'type' => 'String',
+                ],
             ],
         ]);
     }
@@ -97,7 +100,7 @@ class Polylang
                 // Oh the Polylang api is so nice here. Better ideas?
 
                 $languages = array_map(function ($code) {
-                    return ['code' => $code];
+                    return ['code' => $code, 'slug' => $code];
                 }, pll_languages_list());
 
                 if (isset($fields['name'])) {
@@ -131,6 +134,7 @@ class Polylang
 
                 if (isset($fields['code'])) {
                     $language['code'] = pll_default_language('slug');
+                    $language['slug'] = $language['code'];
                 }
 
                 if (isset($fields['name'])) {
@@ -167,6 +171,7 @@ class Polylang
                         $term->term_id,
                         'slug'
                     );
+                    $language['slug'] = $language['slug'];
                 }
 
                 if (isset($fields['name'])) {
@@ -357,6 +362,7 @@ class Polylang
                             $post->ID,
                             'slug'
                         );
+                        $language['slug'] = $language['code'];
                     }
 
                     if (isset($fields['name'])) {
