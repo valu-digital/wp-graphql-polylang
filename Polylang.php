@@ -127,6 +127,19 @@ class Polylang
             10,
             3
         );
+
+        add_filter(
+            'graphql_term_object_insert_term_args',
+            function ($insert_args, $input) {
+                if (isset($input['language'])) {
+                    $insert_args['language'] = $input['language'];
+                }
+
+                return $insert_args;
+            },
+            10,
+            2
+        );
     }
 
     function add_lang_root_query(string $type)
@@ -251,6 +264,18 @@ class Polylang
         $type = ucfirst($taxonomy->graphql_single_name);
 
         $this->add_lang_root_query($type);
+        $this->add_mutation_input_fields($type);
+
+        add_action(
+            "graphql_insert_{$taxonomy->name}",
+            function ($term_id, $args) {
+                if (isset($args['language'])) {
+                    pll_set_term_language($term_id, $args['language']);
+                }
+            },
+            10,
+            2
+        );
 
         register_graphql_field($type, 'language', [
             'type' => 'Language',
@@ -329,16 +354,8 @@ class Polylang
         ]);
     }
 
-    function add_post_type_fields(\WP_Post_Type $post_type_object)
+    function add_mutation_input_fields(string $type)
     {
-        if (!pll_is_translated_post_type($post_type_object->name)) {
-            return;
-        }
-
-        $type = ucfirst($post_type_object->graphql_single_name);
-
-        $this->add_lang_root_query($type);
-
         register_graphql_fields("Create${type}Input", [
             'language' => [
                 'type' => 'LanguageCodeEnum',
@@ -350,6 +367,18 @@ class Polylang
                 'type' => 'LanguageCodeEnum',
             ],
         ]);
+    }
+
+    function add_post_type_fields(\WP_Post_Type $post_type_object)
+    {
+        if (!pll_is_translated_post_type($post_type_object->name)) {
+            return;
+        }
+
+        $type = ucfirst($post_type_object->graphql_single_name);
+
+        $this->add_lang_root_query($type);
+        $this->add_mutation_input_fields($type);
 
         register_graphql_field(
             $post_type_object->graphql_single_name,
