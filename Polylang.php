@@ -345,6 +345,12 @@ class Polylang
             ],
         ]);
 
+        register_graphql_fields("Update${type}Input", [
+            'language' => [
+                'type' => 'LanguageCodeEnum',
+            ],
+        ]);
+
         register_graphql_field(
             $post_type_object->graphql_single_name,
             'translation',
