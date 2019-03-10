@@ -21,7 +21,7 @@ class TermObject
             'graphql_term_object_connection_query_args',
             function ($query_args) {
                 $query_args['lang'] = pll_languages_list();
-                return prepare_lang_field($query_args);
+                return Helpers::prepare_lang_field($query_args);
             },
             10,
             1
@@ -108,7 +108,7 @@ class TermObject
                 $fields = $info->getFieldSelection();
                 $language = [];
 
-                if (usesSlugBasedField($fields)) {
+                if (Helpers::uses_slug_based_field($fields)) {
                     $language['code'] = pll_get_term_language(
                         $term->term_id,
                         'slug'

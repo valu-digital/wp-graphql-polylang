@@ -13,7 +13,7 @@ class PostObject
         add_filter(
             'graphql_post_object_connection_query_args',
             function ($query_args) {
-                return prepare_lang_field($query_args);
+                return Helpers::prepare_lang_field($query_args);
             },
             10,
             1
@@ -109,7 +109,7 @@ class PostObject
                     $fields = $info->getFieldSelection();
                     $language = [];
 
-                    if (usesSlugBasedField($fields)) {
+                    if (Helpers::uses_slug_based_field($fields)) {
                         $language['code'] = pll_get_post_language(
                             $post->ID,
                             'slug'

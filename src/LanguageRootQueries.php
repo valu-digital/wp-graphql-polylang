@@ -62,7 +62,7 @@ class LanguageRootQueries
                 $language = [];
 
                 // All these fields are build from the same data...
-                if (usesSlugBasedField($fields)) {
+                if (Helpers::uses_slug_based_field($fields)) {
                     $language['code'] = pll_default_language('slug');
                     $language['id'] = Relay::toGlobalId(
                         'Language',
