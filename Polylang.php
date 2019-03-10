@@ -44,19 +44,35 @@ class Polylang
         ]);
 
         register_graphql_object_type('Language', [
-            'description' => __('Language fields', 'wp-graphql-polylang'),
+            'description' => __('Language (Polylang)', 'wp-graphql-polylang'),
             'fields' => [
                 'name' => [
                     'type' => 'String',
+                    'description' => __(
+                        'Human readable language name (Polylang)',
+                        'wp-graphql-polylang'
+                    ),
                 ],
                 'code' => [
                     'type' => 'LanguageCodeEnum',
+                    'description' => __(
+                        'Language code (Polylang)',
+                        'wp-graphql-polylang'
+                    ),
                 ],
                 'locale' => [
                     'type' => 'String',
+                    'description' => __(
+                        'Language locale (Polylang)',
+                        'wp-graphql-polylang'
+                    ),
                 ],
                 'slug' => [
                     'type' => 'String',
+                    'description' => __(
+                        'Language term slug. Prefer the "code" field if possible (Polylang)',
+                        'wp-graphql-polylang'
+                    ),
                 ],
             ],
         ]);
