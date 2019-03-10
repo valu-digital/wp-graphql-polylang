@@ -13,21 +13,7 @@ class PostObject
         add_filter(
             'graphql_post_object_connection_query_args',
             function ($query_args) {
-                // Polylang handles 'lang' query arg so convert our 'language'
-                // query arg if it is set
-                if (isset($query_args['language'])) {
-                    $lang = $query_args['language'];
-
-                    if ('default' === $lang) {
-                        $lang = pll_default_language('slug');
-                    }
-
-                    $query_args['lang'] = $lang;
-
-                    unset($query_args['language']);
-                }
-
-                return $query_args;
+                return prepare_lang_field($query_args);
             },
             10,
             1

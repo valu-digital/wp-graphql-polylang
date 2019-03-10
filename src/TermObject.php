@@ -17,6 +17,16 @@ class TermObject
             $this->add_taxonomy_fields(get_taxonomy($taxonomy));
         }
 
+        add_filter(
+            'graphql_term_object_connection_query_args',
+            function ($query_args) {
+                $query_args['lang'] = pll_languages_list();
+                return prepare_lang_field($query_args);
+            },
+            10,
+            1
+        );
+
         /**
          * Pass language input field to insert args
          */
@@ -44,7 +54,7 @@ class TermObject
 
         register_graphql_fields("RootQueryTo${type}ConnectionWhereArgs", [
             'language' => [
-                'type' => 'LanguageCodeEnum',
+                'type' => 'LanguageCodeFilterEnum',
                 'description' => "Filter by ${type}s by language code (Polylang)",
             ],
         ]);
