@@ -217,6 +217,10 @@ class Polylang
 
     function add_taxonomy_fields(\WP_Taxonomy $taxonomy)
     {
+        if (!pll_is_translated_taxonomy($taxonomy->name)) {
+            return;
+        }
+
         $type = ucfirst($taxonomy->graphql_single_name);
 
         $this->add_lang_root_query($type);
@@ -300,6 +304,10 @@ class Polylang
 
     function add_post_type_fields(\WP_Post_Type $post_type_object)
     {
+        if (!pll_is_translated_post_type($post_type_object->name)) {
+            return;
+        }
+
         $type = ucfirst($post_type_object->graphql_single_name);
 
         $this->add_lang_root_query($type);
