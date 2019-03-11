@@ -98,7 +98,6 @@ class PostObject
             ],
         ]);
 
-        error_log('REG');
         register_graphql_field(
             $post_type_object->graphql_single_name,
             'language',
