@@ -13,6 +13,9 @@ For posts and terms (custom ones too!)
 -   Show all translations in the api by default
     -   Polylang patches the WP Query to only list items with the default
         language. This plugin reverts that for the GraphQL api
+    -   This a bit hack currently because Polylang doesn't have good API to
+        customize $polylang global
+        ([yet](https://github.com/polylang/polylang/pull/340))
 
 Root queries
 
