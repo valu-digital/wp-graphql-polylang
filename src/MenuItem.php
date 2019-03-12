@@ -16,6 +16,8 @@ class MenuItem
     {
         add_action('graphql_register_types', [$this, 'register_fields'], 10, 0);
         add_action('graphql_init', [$this, 'create_nav_menu_locations'], 10, 0);
+
+        // XXX This is not supported by WPGraphQL yet
         add_filter(
             'graphql_menu_item_connection_args',
             [$this, 'map_input_language_to_location'],
