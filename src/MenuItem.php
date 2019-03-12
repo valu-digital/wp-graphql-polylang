@@ -19,7 +19,7 @@ class MenuItem
 
     function init()
     {
-        // $this->create_nav_menu_locations();
+        $this->create_nav_menu_locations();
 
         add_action('graphql_register_types', [$this, 'register_fields'], 10, 0);
 
