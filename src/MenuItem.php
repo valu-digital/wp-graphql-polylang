@@ -42,10 +42,13 @@ class MenuItem
             return $args;
         }
 
-        $args['where']['location'] = self::translate_menu_location(
-            $args['where']['location'],
-            $args['where']['language']
-        );
+        // Required only when using other than the default language
+        if (pll_default_language('slug') !== $args['where']['language']) {
+            $args['where']['location'] = self::translate_menu_location(
+                $args['where']['location'],
+                $args['where']['language']
+            );
+        }
 
         unset($args['where']['language']);
 
