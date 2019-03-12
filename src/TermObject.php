@@ -6,9 +6,32 @@ use GraphQLRelay\Relay;
 
 class TermObject
 {
-    function __construct()
+    function init()
     {
         add_action('graphql_register_types', [$this, 'register'], 10, 0);
+
+        add_filter(
+            'graphql_term_object_connection_query_args',
+            [__NAMESPACE__ . '\\Helpers', 'prepare_lang_field'],
+            10,
+            1
+        );
+
+        add_filter(
+            'graphql_term_object_insert_term_args',
+            [$this, 'map_language_input_to_args'],
+            10,
+            2
+        );
+    }
+
+    function map_language_input_to_args($insert_args, $input)
+    {
+        if (isset($input['language'])) {
+            $insert_args['language'] = $input['language'];
+        }
+
+        return $insert_args;
     }
 
     function register()
@@ -16,31 +39,6 @@ class TermObject
         foreach (\WPGraphQL::get_allowed_taxonomies() as $taxonomy) {
             $this->add_taxonomy_fields(get_taxonomy($taxonomy));
         }
-
-        add_filter(
-            'graphql_term_object_connection_query_args',
-            function ($query_args) {
-                return Helpers::prepare_lang_field($query_args);
-            },
-            10,
-            1
-        );
-
-        /**
-         * Pass language input field to insert args
-         */
-        add_filter(
-            'graphql_term_object_insert_term_args',
-            function ($insert_args, $input) {
-                if (isset($input['language'])) {
-                    $insert_args['language'] = $input['language'];
-                }
-
-                return $insert_args;
-            },
-            10,
-            2
-        );
     }
 
     function add_taxonomy_fields(\WP_Taxonomy $taxonomy)

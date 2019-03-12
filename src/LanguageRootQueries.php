@@ -6,7 +6,7 @@ use GraphQLRelay\Relay;
 
 class LanguageRootQueries
 {
-    function __construct()
+    function init()
     {
         add_action('graphql_register_types', [$this, 'register'], 10, 0);
     }

@@ -4,12 +4,12 @@ namespace WPGraphQL\Extensions\Polylang;
 
 class PolylangTypes
 {
-    function __construct()
+    function init()
     {
-        add_action('graphql_register_types', [$this, 'register'], 9, 0);
+        add_action('graphql_register_types', [$this, 'register_types'], 9, 0);
     }
 
-    function register()
+    function register_types()
     {
         $language_codes = [];
 

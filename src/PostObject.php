@@ -6,40 +6,41 @@ use GraphQLRelay\Relay;
 
 class PostObject
 {
-    function __construct()
+    function init()
     {
-        add_action('graphql_register_types', [$this, 'register'], 10, 0);
+        add_action('graphql_register_types', [$this, 'register_fields'], 10, 0);
 
         add_filter(
             'graphql_post_object_connection_query_args',
-            function ($query_args) {
-                return Helpers::prepare_lang_field($query_args);
-            },
+            [__NAMESPACE__ . '\\Helpers', 'prepare_lang_field'],
             10,
             1
         );
+
+        add_action('graphql_post_object_mutation_update_additional_data', [
+            $this,
+            'mutate_language',
+        ]);
     }
 
-    function register()
-    {
+    /**
+     * Handle 'language' in post object create&language mutations
+     */
+    function mutate_language(
+        $post_id,
+        array $input,
+        \WP_Post_Type $post_type_object
+    ) {
+        if (isset($input['language'])) {
+            pll_set_post_language($post_id, $input['language']);
+        }
+    }
 
+    function register_fields()
+    {
         foreach (\WPGraphQL::get_allowed_post_types() as $post_type) {
             $this->add_post_type_fields(get_post_type_object($post_type));
         }
-
-        /**
-         * Handle create and update input fields
-         */
-        add_action(
-            'graphql_post_object_mutation_update_additional_data',
-            function ($post_id, array $input, \WP_Post_Type $post_type_object) {
-                if (isset($input['language'])) {
-                    pll_set_post_language($post_id, $input['language']);
-                }
-            },
-            10,
-            3
-        );
     }
 
     function add_post_type_fields(\WP_Post_Type $post_type_object)

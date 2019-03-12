@@ -20,20 +20,18 @@ require_once __DIR__ . '/src/StringsTranslations.php';
 require_once __DIR__ . '/src/TermObject.php';
 require_once __DIR__ . '/src/MenuItem.php';
 
-add_action('init', function () {
+add_action('graphql_init', function () {
     if (!function_exists('pll_get_post_language')) {
         return;
     }
 
-    if (!function_exists('register_graphql_field')) {
-        return;
-    }
-    new PolylangTypes();
-    new PostObject();
-    new TermObject();
-    new LanguageRootQueries();
-    new MenuItem();
-    new StringsTranslations();
+
+    (new PolylangTypes())->init();
+    (new PostObject())->init();
+    (new TermObject())->init();
+    (new LanguageRootQueries())->init();
+    (new MenuItem())->init();
+    (new StringsTranslations())->init();
 });
 
 
