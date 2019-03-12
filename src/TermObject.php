@@ -20,7 +20,6 @@ class TermObject
         add_filter(
             'graphql_term_object_connection_query_args',
             function ($query_args) {
-                $query_args['lang'] = pll_languages_list();
                 return Helpers::prepare_lang_field($query_args);
             },
             10,

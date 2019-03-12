@@ -22,7 +22,6 @@ class PostObject
 
     function register()
     {
-        $this->show_posts_by_all_languages();
 
         foreach (\WPGraphQL::get_allowed_post_types() as $post_type) {
             $this->add_post_type_fields(get_post_type_object($post_type));
@@ -40,34 +39,6 @@ class PostObject
             },
             10,
             3
-        );
-    }
-
-    function show_posts_by_all_languages()
-    {
-        add_filter(
-            'graphql_post_object_connection_query_args',
-            function ($query_args) {
-                $query_args['show_all_languages_in_graphql'] = true;
-                return $query_args;
-            },
-            10,
-            1
-        );
-
-        /**
-         * Handle query var added by the above filter in Polylang which
-         * causes all languages to be shown in the queries.
-         * See https://github.com/polylang/polylang/blob/2ed446f92955cc2c952b944280fce3c18319bd85/include/query.php#L125-L134
-         */
-        add_filter(
-            'pll_filter_query_excluded_query_vars',
-            function () {
-                $excludes[] = 'show_all_languages_in_graphql';
-                return $excludes;
-            },
-            3,
-            10
         );
     }
 

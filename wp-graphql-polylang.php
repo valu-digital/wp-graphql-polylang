@@ -33,3 +33,25 @@ add_action('init', function () {
     new LanguageRootQueries();
     new StringsTranslations();
 });
+
+
+/**
+ * Force Polylang Admin mode for GraphQL requests. Polylang defaults to the
+ * frontend mode which is not good for us becaus it adds implicit language
+ * filterin by the current language which is a concept that does not exists in
+ * the graphql api.
+ *
+ * The REST Request mode would be probably better or even a custom mode but
+ * Polylang does not have an API for customizing it here:
+ *
+ * https://github.com/polylang/polylang/blob/7115d32e21e4441ce199b632d577ef9f074b3e34/include/class-polylang.php#L201-L209
+ *
+ * I hope we can get better solution in future:
+ *
+ * https://github.com/polylang/polylang/pull/340
+ */
+add_action( 'plugins_loaded', function () {
+    if ('/graphql' == $_SERVER['REQUEST_URI']) {
+        define( 'PLL_ADMIN', true );
+    }
+}, -1 ); // Use very high priority to set this before polylang does
