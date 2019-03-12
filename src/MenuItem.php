@@ -42,7 +42,8 @@ class MenuItem
             return $args;
         }
 
-        // Required only when using other than the default language
+        // Required only when using other than the default language because the
+        // menu location for the default language is the original location
         if (pll_default_language('slug') !== $args['where']['language']) {
             $args['where']['location'] = self::translate_menu_location(
                 $args['where']['location'],
@@ -57,7 +58,7 @@ class MenuItem
 
     /**
      * Nav menu locations are created on admin_init with PLL_Admin but GraphQL
-     * requests do not call se we must manually call it
+     * requests do not call so we must manually call it
      */
     function create_nav_menu_locations()
     {
