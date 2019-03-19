@@ -78,19 +78,21 @@ class PostObject
                 'description' => __('Polylang language', 'wpnext'),
                 'resolve' => function (\WP_Post $post, $args, $context, $info) {
                     $fields = $info->getFieldSelection();
-                    $language = [];
+                    $language = [
+                        'name' => null,
+                        'slug' => null,
+                        'code' => null,
+                    ];
 
-                    if (Helpers::uses_slug_based_field($fields)) {
-                        $language['code'] = pll_get_post_language(
-                            $post->ID,
-                            'slug'
-                        );
-                        $language['slug'] = $language['code'];
-                        $language['id'] = Relay::toGlobalId(
-                            'Language',
-                            $language['code']
-                        );
+                    $slug = pll_get_post_language($post->ID, 'slug');
+
+                    if (!$slug) {
+                        return null;
                     }
+
+                    $language['code'] = $slug;
+                    $language['slug'] = $slug;
+                    $language['id'] = Relay::toGlobalId('Language', $slug);
 
                     if (isset($fields['name'])) {
                         $language['name'] = pll_get_post_language(
