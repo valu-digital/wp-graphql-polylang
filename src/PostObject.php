@@ -10,17 +10,12 @@ class PostObject
     {
         add_action('graphql_register_types', [$this, 'register_fields'], 10, 0);
 
-        add_filter(
-            'graphql_post_object_connection_query_args',
-            [__NAMESPACE__ . '\\Helpers', 'prepare_lang_field'],
+        add_action(
+            'graphql_post_object_mutation_update_additional_data',
+            [$this, 'mutate_language'],
             10,
-            1
+            3
         );
-
-        add_action('graphql_post_object_mutation_update_additional_data', [
-            $this,
-            'mutate_language',
-        ]);
     }
 
     /**
