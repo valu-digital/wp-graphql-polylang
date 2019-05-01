@@ -34,11 +34,6 @@ fi
 if [ -z "$WP_VERSION" ]; then
 	WP_VERSION=latest
 fi
-if [ "${SKIP_DB_CREATE}" = "" ]; then
-	SKIP_DB_CREATE=false
-else
-	SKIP_DB_CREATE=true
-fi
 
 TMPDIR=${TMPDIR-/tmp}
 TMPDIR=$(echo $TMPDIR | sed -e "s/\/$//")
@@ -151,10 +146,6 @@ install_test_suite() {
 }
 
 install_db() {
-
-	if [ "$SKIP_DB_CREATE" = "true" ]; then
-		return 0
-	fi
 
 	# parse DB_HOST for port or socket references
 	local PARTS=(${DB_HOST//\:/ })
