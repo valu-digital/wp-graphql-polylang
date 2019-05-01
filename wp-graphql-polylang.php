@@ -12,6 +12,8 @@
 
 namespace WPGraphQL\Extensions\Polylang;
 
+define('WPGRAPHQL_POLYLANG', true);
+
 require_once __DIR__ . '/src/Helpers.php';
 require_once __DIR__ . '/src/PolylangTypes.php';
 require_once __DIR__ . '/src/LanguageRootQueries.php';
@@ -19,6 +21,38 @@ require_once __DIR__ . '/src/PostObject.php';
 require_once __DIR__ . '/src/StringsTranslations.php';
 require_once __DIR__ . '/src/TermObject.php';
 require_once __DIR__ . '/src/MenuItem.php';
+
+add_filter(
+    'pll_context',
+    function ($class) {
+        if (\class_exists('\Codeception\TestCase\WPTestCase')) {
+            return 'PLL_Admin';
+        }
+
+        /**
+         * Force Polylang Admin mode for GraphQL requests. Polylang defaults to the
+         * frontend mode which is not good for us becaus it adds implicit language
+         * filterin by the current language which is a concept that does not exists in
+         * the graphql api.
+         *
+         * The REST Request mode would be probably better or even a custom mode but
+         * Polylang does not have an API for customizing it here:
+         *
+         * https://github.com/polylang/polylang/blob/7115d32e21e4441ce199b632d577ef9f074b3e34/include/class-polylang.php#L201-L209
+         *
+         * I hope we can get better solution in future:
+         *
+         * https://github.com/polylang/polylang/pull/340
+         */
+        if ('/graphql' == $_SERVER['REQUEST_URI']) {
+            return 'PLL_Admin';
+        }
+
+        return $class;
+    },
+    10,
+    1
+);
 
 add_action('graphql_init', function () {
     if (!function_exists('pll_get_post_language')) {
@@ -32,28 +66,3 @@ add_action('graphql_init', function () {
     (new MenuItem())->init();
     (new StringsTranslations())->init();
 });
-
-/**
- * Force Polylang Admin mode for GraphQL requests. Polylang defaults to the
- * frontend mode which is not good for us becaus it adds implicit language
- * filterin by the current language which is a concept that does not exists in
- * the graphql api.
- *
- * The REST Request mode would be probably better or even a custom mode but
- * Polylang does not have an API for customizing it here:
- *
- * https://github.com/polylang/polylang/blob/7115d32e21e4441ce199b632d577ef9f074b3e34/include/class-polylang.php#L201-L209
- *
- * I hope we can get better solution in future:
- *
- * https://github.com/polylang/polylang/pull/340
- */
-add_action(
-    'plugins_loaded',
-    function () {
-        if ('/graphql' == $_SERVER['REQUEST_URI']) {
-            define('PLL_ADMIN', true);
-        }
-    },
-    -1
-); // Use very high priority to set this before polylang does
