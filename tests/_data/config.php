@@ -5,3 +5,4 @@
  * fatal errors when the autoloader is loaded twice
  */
 define('GRAPHQL_DEBUG', true);
+define('PLL_ADMIN', true);
