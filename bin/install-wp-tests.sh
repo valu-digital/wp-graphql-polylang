@@ -34,14 +34,17 @@ fi
 if [ -z "$WP_VERSION" ]; then
 	WP_VERSION=latest
 fi
-if [ -z "$SKIP_DB_CREATE" ]; then
+if [ "${SKIP_DB_CREATE}" = "" ]; then
 	SKIP_DB_CREATE=false
+else
+	SKIP_DB_CREATE=true
 fi
 
 TMPDIR=${TMPDIR-/tmp}
 TMPDIR=$(echo $TMPDIR | sed -e "s/\/$//")
 WP_TESTS_DIR=${WP_TESTS_DIR-$TMPDIR/wordpress-tests-lib}
 WP_CORE_DIR=${WP_CORE_DIR-$TMPDIR/wordpress/}
+PLUGIN_DIR="$(pwd)"
 
 download() {
     if [ `which curl` ]; then
@@ -149,7 +152,7 @@ install_test_suite() {
 
 install_db() {
 
-	if [ ${SKIP_DB_CREATE} = "true" ]; then
+	if [ "$SKIP_DB_CREATE" = "true" ]; then
 		return 0
 	fi
 
@@ -173,6 +176,70 @@ install_db() {
 	mysqladmin create $DB_NAME --user="$DB_USER" --password="$DB_PASS"$EXTRA
 }
 
+setup_wpgraphql() {
+	if [ ! -d $WP_CORE_DIR/wp-content/plugins/wp-graphql ]; then
+		echo "Cloning WPGraphQL"
+		git clone https://github.com/wp-graphql/wp-graphql.git $WP_CORE_DIR/wp-content/plugins/wp-graphql
+	fi
+
+	cd $WP_CORE_DIR/wp-content/plugins/wp-graphql
+	git checkout develop
+	git pull origin develop
+
+	if [ ! -z "$WP_GRAPHQL_BRANCH" ]; then
+		echo "Checking out WPGraphQL branch - $WP_GRAPHQL_BRANCH"
+		git checkout --track origin/$WP_GRAPHQL_BRANCH
+	fi
+
+
+	cd $WP_CORE_DIR
+	echo "Activating WPGraphQL"
+	wp plugin activate wp-graphql
+}
+
+setup_polylang() {
+	if [ ! -d $WP_CORE_DIR/wp-content/plugins/polylang ]; then
+		echo "Cloning Polylang"
+		git clone https://github.com/polylang/polylang $WP_CORE_DIR/wp-content/plugins/polylang
+	fi
+
+	cd $WP_CORE_DIR/wp-content/plugins/polylang
+
+
+	cd $WP_CORE_DIR
+	echo "Activating Polylang"
+	wp plugin activate polylang
+}
+
+configure_wordpress() {
+    cd $WP_CORE_DIR
+    wp config create --dbname="$DB_NAME" --dbuser="$DB_USER" --dbpass="$DB_PASS" --dbhost="$DB_HOST" --skip-check --force=true
+    wp core install --url=wp.test --title="WPGraphQL Polylang Tests" --admin_user=admin --admin_password=password --admin_email=admin@wp.test
+    wp rewrite structure '/%year%/%monthnum%/%postname%/'
+}
+
+setup_plugin() {
+	# Add this repo as a plugin to the repo
+	if [ ! -d $WP_CORE_DIR/wp-content/plugins/wp-graphql-polylang ]; then
+		ln -s $PLUGIN_DIR $WP_CORE_DIR/wp-content/plugins/wp-graphql-polylang
+	fi
+
+	cd $WP_CORE_DIR
+
+	# activate the plugin
+	wp plugin activate wp-graphql-polylang
+
+	# Flush the permalinks
+	wp rewrite flush
+
+	# Export the db for codeception to use
+	wp db export $PLUGIN_DIR/tests/_data/dump.sql
+}
+
 install_wp
 install_test_suite
 install_db
+configure_wordpress
+setup_wpgraphql
+setup_polylang
+setup_plugin
