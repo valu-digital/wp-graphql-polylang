@@ -23,6 +23,13 @@ matrix:
         - php: 7.0
           env: WP_VERSION=latest
 
+install:
+    - |
+        cd $TRAVIS_BUILD_DIR
+        curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+        chmod +x wp-cli.phar
+        sudo mv wp-cli.phar /usr/local/bin/wp
+
 before_script:
     - |
         if [[ ! -z "$WP_VERSION" ]] ; then
