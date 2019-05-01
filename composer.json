@@ -33,7 +33,7 @@
         "wpunit-test": "vendor/bin/codecept run wpunit"
     },
     "support": {
-        "issues": "https://github.com/kidunot89/wp-graphql-woocommerce/issues",
-        "source": "https://github.com/kidunot89/wp-graphql-woocommerce"
+        "issues": "https://github.com/valu-digital/wp-graphql-polylang/issues",
+        "source": "https://github.com/valu-digital/wp-graphql-polylang"
     }
 }
