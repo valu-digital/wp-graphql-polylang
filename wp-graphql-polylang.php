@@ -25,7 +25,6 @@ add_action('graphql_init', function () {
         return;
     }
 
-
     (new PolylangTypes())->init();
     (new PostObject())->init();
     (new TermObject())->init();
@@ -33,7 +32,6 @@ add_action('graphql_init', function () {
     (new MenuItem())->init();
     (new StringsTranslations())->init();
 });
-
 
 /**
  * Force Polylang Admin mode for GraphQL requests. Polylang defaults to the
@@ -50,8 +48,12 @@ add_action('graphql_init', function () {
  *
  * https://github.com/polylang/polylang/pull/340
  */
-add_action( 'plugins_loaded', function () {
-    if ('/graphql' == $_SERVER['REQUEST_URI']) {
-        define( 'PLL_ADMIN', true );
-    }
-}, -1 ); // Use very high priority to set this before polylang does
+add_action(
+    'plugins_loaded',
+    function () {
+        if ('/graphql' == $_SERVER['REQUEST_URI']) {
+            define('PLL_ADMIN', true);
+        }
+    },
+    -1
+); // Use very high priority to set this before polylang does
