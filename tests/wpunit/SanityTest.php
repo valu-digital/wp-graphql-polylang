@@ -2,6 +2,11 @@
 
 require_once __DIR__ . '/PolylangUnitTestCase.php';
 
+/**
+ * These test do no actually test anything on wp-graphql-polylang. They pure
+ * just test that the test enviroment is setup properly. It very hard to get
+ * right...
+ */
 class SanityTest extends PolylangUnitTestCase
 {
     static function wpSetUpBeforeClass()
@@ -11,6 +16,7 @@ class SanityTest extends PolylangUnitTestCase
         self::set_default_language('en_US');
         self::create_language('en_US');
         self::create_language('fr_FR');
+        self::create_language('fi');
         self::create_language('de_DE_formal');
         self::create_language('es_ES');
     }
@@ -61,11 +67,26 @@ class SanityTest extends PolylangUnitTestCase
         $this->assertTrue(defined('POLYLANG_VERSION'));
 
         $langs = pll_languages_list(['fields' => 'slug']);
-        $this->assertEquals($langs, ['en', 'fr', 'de', 'es']);
+        $this->assertEquals($langs, ['en', 'fr', 'fi', 'de', 'es']);
     }
 
     public function testPluginIsActivated()
     {
         $this->assertTrue(defined('WPGRAPHQL_POLYLANG'));
+    }
+
+    public function testCanSetPostLanguage()
+    {
+        $post_data = array(
+            'post_title' => 'Test regex',
+            'post_content' => 'sadfdsa',
+            'post_type' => 'post',
+        );
+        $post_id = wp_insert_post($post_data);
+        pll_set_post_language($post_id, 'fi');
+
+        $lang = pll_get_post_language($post_id, 'slug');
+
+        $this->assertEquals($lang, 'fi');
     }
 }
