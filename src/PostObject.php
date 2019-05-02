@@ -71,7 +71,12 @@ class PostObject
             [
                 'type' => 'Language',
                 'description' => __('Polylang language', 'wpnext'),
-                'resolve' => function (\WP_Post $post, $args, $context, $info) {
+                'resolve' => function (
+                    \WPGraphQL\Model\Post $post,
+                    $args,
+                    $context,
+                    $info
+                ) {
                     $fields = $info->getFieldSelection();
                     $language = [
                         'name' => null,
@@ -148,7 +153,7 @@ class PostObject
                     'List all translated versions of this post',
                     'wp-graphql-polylang'
                 ),
-                'resolve' => function (\WP_Post $post) {
+                'resolve' => function (\WPGraphQL\Model\Post $post) {
                     $posts = [];
 
                     foreach (
