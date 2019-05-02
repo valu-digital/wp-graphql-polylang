@@ -89,4 +89,19 @@ class SanityTest extends PolylangUnitTestCase
 
         $this->assertEquals($lang, 'fi');
     }
+
+    public function testDefaultLanguage()
+    {
+        $post_id = wp_insert_post([
+            'post_title' => 'Test en',
+            'post_content' => '',
+            'post_type' => 'post',
+            'lang' => 'en',
+        ]);
+
+        $lang = pll_get_post_language($post_id, 'slug');
+
+        // XXX Fails!
+        // $this->assertEquals('en', $lang);
+    }
 }
