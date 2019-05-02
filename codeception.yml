@@ -8,8 +8,6 @@ actor_suffix: Tester
 settings:
     colors: true
     memory_limit: 1024M
-    # Polylang emits some warnings...
-    error_level: E_ERROR
 # coverage:
 #     enabled: true
 #     whitelist:

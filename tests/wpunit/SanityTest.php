@@ -7,10 +7,12 @@ class SanityTest extends PolylangUnitTestCase
     static function wpSetUpBeforeClass()
     {
         parent::wpSetUpBeforeClass();
+
+        self::set_default_language('en_US');
         self::create_language('en_US');
-        // self::create_language('fr_FR');
-        // self::create_language('de_DE_formal');
-        // self::create_language('es_ES');
+        self::create_language('fr_FR');
+        self::create_language('de_DE_formal');
+        self::create_language('es_ES');
     }
 
     public function setUp()
@@ -59,7 +61,7 @@ class SanityTest extends PolylangUnitTestCase
         $this->assertTrue(defined('POLYLANG_VERSION'));
 
         $langs = pll_languages_list(['fields' => 'slug']);
-        $this->assertEquals($langs, ['en']);
+        $this->assertEquals($langs, ['en', 'fr', 'de', 'es']);
     }
 
     public function testPluginIsActivated()

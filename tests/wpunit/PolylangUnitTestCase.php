@@ -6,12 +6,10 @@
     static function wpSetUpBeforeClass()
     {
         self::$polylang = new StdClass();
-        error_log(print_r(PLL_Install::get_default_options(), true));
         self::$polylang->options = PLL_Install::get_default_options();
         self::$polylang->options['hide_default'] = 0; // Force option to pre 2.1.5 value otherwise phpunit tests break on Travis
-        self::$polylang->options['default_lang'] = 'en_US'; // Force option to pre 2.1.5 value otherwise phpunit tests break on Travis
         self::$polylang->model = new PLL_Admin_Model(self::$polylang->options);
-        // self::$polylang->links_model = self::$polylang->model->get_links_model(); // We always need a links model due to PLL_Language::set_home_url()
+        self::$polylang->links_model = self::$polylang->model->get_links_model(); // We always need a links model due to PLL_Language::set_home_url()
         $_SERVER['SCRIPT_FILENAME'] = '/index.php'; // To pass the test in PLL_Choose_Lang::init() by default
     }
     static function wpTearDownAfterClass()
@@ -39,6 +37,11 @@
         $args = array_merge($values, $args);
         self::$polylang->model->add_language($args);
         unset($GLOBALS['wp_settings_errors']); // Clean "errors"
+    }
+    static function set_default_language($lang)
+    {
+        self::$polylang->links_model->options['default_lang'] = $lang;
+        PLL()->links_model->options['default_lang'] = $lang;
     }
     static function delete_all_languages()
     {
