@@ -115,9 +115,8 @@ class TermObjectQueryTest extends PolylangUnitTestCase
         ];
 
 
-        // XXX
-        // $this->assertEquals(1, count($nodes));
-        // $this->assertEquals($expected, $nodes);
+        $this->assertEquals(1, count($nodes));
+        $this->assertEquals($expected, $nodes);
     }
 
     public function testCanFetchTranslatedTermVersions()
