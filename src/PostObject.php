@@ -16,6 +16,23 @@ class PostObject
             10,
             3
         );
+
+        add_filter(
+            'graphql_map_input_fields_to_wp_query',
+            [$this, 'map_language'],
+            10,
+            2
+        );
+    }
+
+    function map_language($query_args, $where_args)
+    {
+        if (isset($where_args['language'])) {
+            $query_args['lang'] = $where_args['language'];
+            unset($where_args['language']);
+        }
+
+        return $query_args;
     }
 
     /**
@@ -129,7 +146,10 @@ class PostObject
                         ],
                     ],
                 ],
-                'resolve' => function (\WP_Post $post, array $args) {
+                'resolve' => function (
+                    \WPGraphQL\Model\Post $post,
+                    array $args
+                ) {
                     $translations = pll_get_post_translations($post->ID);
                     $post_id = $translations[$args['language']] ?? null;
 
