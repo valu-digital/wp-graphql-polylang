@@ -139,10 +139,10 @@ class PostObjectQueryTest extends PolylangUnitTestCase
         ]);
         pll_set_post_language($en_post_id, 'en');
 
-        pll_save_post_translations( [
+        pll_save_post_translations([
             'en' => $en_post_id,
             'fi' => $fi_post_id,
-        ] );
+        ]);
 
         $query = "
         query Post {
@@ -162,9 +162,9 @@ class PostObjectQueryTest extends PolylangUnitTestCase
             'title' => 'Finnish post version',
             'translations' => [
                 [
-                    'title' => 'English post version'
-                ]
-            ]
+                    'title' => 'English post version',
+                ],
+            ],
         ];
 
         $this->assertEquals($expected, $data['data']['postBy']);
@@ -188,10 +188,10 @@ class PostObjectQueryTest extends PolylangUnitTestCase
         ]);
         pll_set_post_language($en_post_id, 'en');
 
-        pll_save_post_translations( [
+        pll_save_post_translations([
             'en' => $en_post_id,
             'fi' => $fi_post_id,
-        ] );
+        ]);
 
         $query = "
         query Post {
@@ -210,8 +210,8 @@ class PostObjectQueryTest extends PolylangUnitTestCase
         $expected = [
             'title' => 'Finnish post version',
             'translation' => [
-                'title' => 'English post version'
-            ]
+                'title' => 'English post version',
+            ],
         ];
 
         $this->assertEquals($expected, $data['data']['postBy']);

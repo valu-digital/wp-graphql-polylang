@@ -147,7 +147,9 @@ class PostObject
                         return null;
                     }
 
-                    return new \WPGraphQL\Model\Post(\WP_Post::get_instance($post_id));
+                    return new \WPGraphQL\Model\Post(
+                        \WP_Post::get_instance($post_id)
+                    );
                 },
             ]
         );

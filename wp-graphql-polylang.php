@@ -22,8 +22,8 @@ require_once __DIR__ . '/src/StringsTranslations.php';
 require_once __DIR__ . '/src/TermObject.php';
 require_once __DIR__ . '/src/MenuItem.php';
 
-function isGraphqlContext() {
-
+function isGraphqlContext()
+{
     if (\class_exists('\Codeception\TestCase\WPTestCase')) {
         return true;
     }
@@ -43,8 +43,10 @@ add_filter(
         }
 
         return $class;
-
-}, 10, 1);
+    },
+    10,
+    1
+);
 
 add_filter(
     'pll_context',

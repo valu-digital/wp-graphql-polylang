@@ -101,7 +101,12 @@ class TermObject
                 'List available translations for this post',
                 'wpnext'
             ),
-            'resolve' => function (\WPGraphQL\Model\Term $term, $args, $context, $info) {
+            'resolve' => function (
+                \WPGraphQL\Model\Term $term,
+                $args,
+                $context,
+                $info
+            ) {
                 $fields = $info->getFieldSelection();
                 $language = [];
 
@@ -171,36 +176,29 @@ class TermObject
             },
         ]);
 
-        register_graphql_field(
-            $type,
-            'translation',
-            [
-                'type' => $type,
-                'description' => __(
-                    'Get specific translation version of this object',
-                    'wp-graphql-polylang'
-                ),
-                'args' => [
-                    'language' => [
-                        'type' => [
-                            'non_null' => 'LanguageCodeEnum',
-                        ],
+        register_graphql_field($type, 'translation', [
+            'type' => $type,
+            'description' => __(
+                'Get specific translation version of this object',
+                'wp-graphql-polylang'
+            ),
+            'args' => [
+                'language' => [
+                    'type' => [
+                        'non_null' => 'LanguageCodeEnum',
                     ],
                 ],
-                'resolve' => function (
-                    \WPGraphQL\Model\Term $term,
-                    array $args
-                ) {
-                    $translations = pll_get_term_translations($term->term_id);
-                    $term_id = $translations[$args['language']] ?? null;
+            ],
+            'resolve' => function (\WPGraphQL\Model\Term $term, array $args) {
+                $translations = pll_get_term_translations($term->term_id);
+                $term_id = $translations[$args['language']] ?? null;
 
-                    if (!$term_id) {
-                        return null;
-                    }
+                if (!$term_id) {
+                    return null;
+                }
 
-                    return new \WPGraphQL\Model\Term(get_term($term_id));
-                },
-            ]
-        );
+                return new \WPGraphQL\Model\Term(get_term($term_id));
+            },
+        ]);
     }
 }

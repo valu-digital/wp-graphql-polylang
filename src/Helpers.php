@@ -18,9 +18,10 @@ class Helpers
      * Polylang handles 'lang' query arg so convert our 'language'
      * query arg if it is set
      */
-    static function map_language_to_query_args(array $query_args, array $where_args)
-    {
-        error_log("MAAAAAAAAAAAAAAP");
+    static function map_language_to_query_args(
+        array $query_args,
+        array $where_args
+    ) {
         if (!isset($where_args['language'])) {
             return $query_args;
         }

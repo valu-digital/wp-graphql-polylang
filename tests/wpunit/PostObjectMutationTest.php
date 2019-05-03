@@ -21,18 +21,19 @@ class PostObjectMutationTest extends PolylangUnitTestCase
         self::create_language('es_ES');
     }
 
-    public function setUp() {
+    public function setUp()
+    {
         parent::setUp();
-
 
         // XXX not enough permissions??
         // $this->admin = $this->factory->user->create( [
-		// 	'role' => 'administrator',
-		// ] );
+        // 	'role' => 'administrator',
+        // ] );
     }
 
-    public function testPostCreate() {
-        wp_set_current_user( $this->admin_id );
+    public function testPostCreate()
+    {
+        wp_set_current_user($this->admin_id);
 
         $query = '
         mutation InsertPost {
@@ -56,8 +57,9 @@ class PostObjectMutationTest extends PolylangUnitTestCase
         $this->assertEquals('fi', $lang);
     }
 
-    public function testCanUpdateLanguage() {
-        wp_set_current_user( $this->admin_id );
+    public function testCanUpdateLanguage()
+    {
+        wp_set_current_user($this->admin_id);
 
         $post_id = wp_insert_post([
             'post_title' => 'Finnish post',
@@ -89,6 +91,5 @@ class PostObjectMutationTest extends PolylangUnitTestCase
         $post_id = $data['data']['updatePost']['post']['postId'];
         $lang = pll_get_post_language($post_id, 'slug');
         $this->assertEquals('fr', $lang);
-
     }
 }

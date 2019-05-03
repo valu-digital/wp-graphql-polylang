@@ -12,7 +12,6 @@ class SanityTest extends PolylangUnitTestCase
     static function wpSetUpBeforeClass()
     {
         parent::wpSetUpBeforeClass();
-
     }
 
     public function setUp()
@@ -114,10 +113,8 @@ class SanityTest extends PolylangUnitTestCase
         $this->assertEquals(1, count($posts));
     }
 
-
     public function testDefaultLanguage()
     {
-
         $default_lang = pll_default_language();
         $this->assertEquals('en', $default_lang);
 

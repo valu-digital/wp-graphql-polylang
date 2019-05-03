@@ -5,7 +5,6 @@ require_once __DIR__ . '/PolylangUnitTestCase.php';
 
 class TermObjectQueryTest extends PolylangUnitTestCase
 {
-
     public $fi_term_id = null;
     public $en_term_id = null;
 
@@ -25,11 +24,11 @@ class TermObjectQueryTest extends PolylangUnitTestCase
     {
         parent::setUp();
 
-        $term = wp_insert_term( 'entesttag', 'post_tag' );
+        $term = wp_insert_term('entesttag', 'post_tag');
         pll_set_term_language($term['term_id'], 'en');
         $this->en_term_id = $term['term_id'];
 
-        $term = wp_insert_term( 'fitesttag', 'post_tag' );
+        $term = wp_insert_term('fitesttag', 'post_tag');
         pll_set_term_language($term['term_id'], 'fi');
         $this->fi_term_id = $term['term_id'];
     }
@@ -81,13 +80,13 @@ class TermObjectQueryTest extends PolylangUnitTestCase
                 'name' => 'entesttag',
                 'language' => [
                     'name' => 'English',
-                ]
+                ],
             ],
             [
                 'name' => 'fitesttag',
                 'language' => [
                     'name' => 'Suomi',
-                ]
+                ],
             ],
         ];
 
@@ -110,10 +109,7 @@ class TermObjectQueryTest extends PolylangUnitTestCase
         $this->assertArrayNotHasKey('errors', $data, print_r($data, true));
         $nodes = $data['data']['tags']['nodes'];
 
-        $expected = [
-            ['name' => 'fitesttag'],
-        ];
-
+        $expected = [['name' => 'fitesttag']];
 
         $this->assertEquals(1, count($nodes));
         $this->assertEquals($expected, $nodes);
@@ -121,10 +117,10 @@ class TermObjectQueryTest extends PolylangUnitTestCase
 
     public function testCanFetchTranslatedTermVersions()
     {
-        pll_save_term_translations( [
+        pll_save_term_translations([
             'en' => $this->en_term_id,
             'fi' => $this->fi_term_id,
-        ] );
+        ]);
 
         $query = "
         query Tags {
@@ -147,18 +143,18 @@ class TermObjectQueryTest extends PolylangUnitTestCase
                 'name' => 'entesttag',
                 'translations' => [
                     [
-                        'name' => 'fitesttag'
-                    ]
-                ]
+                        'name' => 'fitesttag',
                     ],
+                ],
+            ],
             [
                 'name' => 'fitesttag',
                 'translations' => [
                     [
-                        'name' => 'entesttag'
-                    ]
-                ]
-            ]
+                        'name' => 'entesttag',
+                    ],
+                ],
+            ],
         ];
 
         $this->assertEquals($expected, $data['data']['tags']['nodes']);
@@ -166,10 +162,10 @@ class TermObjectQueryTest extends PolylangUnitTestCase
 
     public function testCanFetchSpecificTranslatedVersion()
     {
-        pll_save_term_translations( [
+        pll_save_term_translations([
             'en' => $this->en_term_id,
             'fi' => $this->fi_term_id,
-        ] );
+        ]);
 
         $query = "
         query Tags {
@@ -191,18 +187,17 @@ class TermObjectQueryTest extends PolylangUnitTestCase
             [
                 'name' => 'entesttag',
                 'translation' => [
-                        'name' => 'fitesttag'
-                ]
+                    'name' => 'fitesttag',
+                ],
             ],
             [
                 'name' => 'fitesttag',
                 'translation' => [
-                        'name' => 'fitesttag'
-                ]
-            ]
+                    'name' => 'fitesttag',
+                ],
+            ],
         ];
 
         $this->assertEquals($expected, $data['data']['tags']['nodes']);
     }
-
 }
