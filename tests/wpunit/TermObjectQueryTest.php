@@ -165,4 +165,45 @@ class TermObjectQueryTest extends PolylangUnitTestCase
         $this->assertEquals($expected, $data['data']['tags']['nodes']);
     }
 
+    public function testCanFetchSpecificTranslatedVersion()
+    {
+        pll_save_term_translations( [
+            'en' => $this->en_term_id,
+            'fi' => $this->fi_term_id,
+        ] );
+
+        $query = "
+        query Tags {
+            tags {
+                nodes {
+                    name
+                    translation(language: FI) {
+                        name
+                    }
+                }
+            }
+         }
+        ";
+
+        $data = do_graphql_request($query);
+        $this->assertArrayNotHasKey('errors', $data, print_r($data, true));
+
+        $expected = [
+            [
+                'name' => 'entesttag',
+                'translation' => [
+                        'name' => 'fitesttag'
+                ]
+            ],
+            [
+                'name' => 'fitesttag',
+                'translation' => [
+                        'name' => 'fitesttag'
+                ]
+            ]
+        ];
+
+        $this->assertEquals($expected, $data['data']['tags']['nodes']);
+    }
+
 }
