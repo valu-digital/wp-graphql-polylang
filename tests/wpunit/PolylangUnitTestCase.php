@@ -5,6 +5,12 @@
     static $hooks;
     static function wpSetUpBeforeClass()
     {
+        $polylang = PLL();
+
+        // This is called only when there are configured languages
+        // https://github.com/polylang/polylang/blob/ca1209a0204a34946adf88c9b859ff43e2eb91b9/admin/admin.php#L62
+        // The test setup adds languages too late so we must manually call this.
+        $polylang->add_filters();
     }
 
     static function wpTearDownAfterClass()
