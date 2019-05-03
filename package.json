@@ -4,7 +4,7 @@
     "description": "Extend [WPGraphQL](https://www.wpgraphql.com/) schema with language data from the [Polylang](https://polylang.pro/) plugin.",
     "main": "index.js",
     "scripts": {
-        "prettier": "prettier --write '**/*.php'",
+        "prettier": "prettier --write 'src/**/*.php' 'tests/**/*.php' '*.php'",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "repository": {
