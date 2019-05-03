@@ -14,17 +14,17 @@ class SanityTest extends PolylangUnitTestCase
     {
         parent::wpSetUpBeforeClass();
 
+    }
+
+    public function setUp()
+    {
+        parent::setUp();
         self::set_default_language('en_US');
         self::create_language('en_US');
         self::create_language('fr_FR');
         self::create_language('fi');
         self::create_language('de_DE_formal');
         self::create_language('es_ES');
-    }
-
-    public function setUp()
-    {
-        parent::setUp();
     }
 
     public function tearDown()
@@ -36,6 +36,7 @@ class SanityTest extends PolylangUnitTestCase
     {
         $post_data = array(
             'post_title' => 'Test regex',
+            'post_status' => 'publish',
             'post_content' => 'sadfdsa',
             'post_type' => 'post',
         );
@@ -80,6 +81,7 @@ class SanityTest extends PolylangUnitTestCase
     {
         $post_data = array(
             'post_title' => 'Test regex',
+            'post_status' => 'publish',
             'post_content' => 'sadfdsa',
             'post_type' => 'post',
         );
@@ -91,10 +93,33 @@ class SanityTest extends PolylangUnitTestCase
         $this->assertEquals($lang, 'fi');
     }
 
+    public function testPolylangCanFilterByLang()
+    {
+        $post_id = wp_insert_post([
+            'post_title' => 'Finnish post',
+            'post_status' => 'publish',
+            'post_content' => '',
+            'post_type' => 'post',
+        ]);
+        pll_set_post_language($post_id, 'fi');
+
+        $post_id = wp_insert_post([
+            'post_title' => 'English post',
+            'post_status' => 'publish',
+            'post_content' => '',
+            'post_type' => 'post',
+        ]);
+        pll_set_post_language($post_id, 'en');
+
+        $posts = get_posts(['lang' => 'fi']);
+        $this->assertEquals(1, count($posts));
+    }
+
     public function testDefaultLanguage()
     {
         $post_id = wp_insert_post([
             'post_title' => 'Test en',
+            'post_status' => 'publish',
             'post_content' => '',
             'post_type' => 'post',
             'lang' => 'en',
