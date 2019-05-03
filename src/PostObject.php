@@ -19,20 +19,10 @@ class PostObject
 
         add_filter(
             'graphql_map_input_fields_to_wp_query',
-            [$this, 'map_language'],
+            [__NAMESPACE__ . '\\Helpers', 'map_language_to_query_args'],
             10,
             2
         );
-    }
-
-    function map_language($query_args, $where_args)
-    {
-        if (isset($where_args['language'])) {
-            $query_args['lang'] = $where_args['language'];
-            unset($where_args['language']);
-        }
-
-        return $query_args;
     }
 
     /**

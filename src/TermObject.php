@@ -11,10 +11,10 @@ class TermObject
         add_action('graphql_register_types', [$this, 'register'], 10, 0);
 
         add_filter(
-            'graphql_term_object_connection_query_args',
-            [__NAMESPACE__ . '\\Helpers', 'prepare_lang_field'],
+            'graphql_map_input_fields_to_get_terms',
+            [__NAMESPACE__ . '\\Helpers', 'map_language_to_query_args'],
             10,
-            1
+            2
         );
 
         add_filter(
