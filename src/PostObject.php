@@ -194,7 +194,7 @@ class PostObject
                             continue;
                         }
 
-                        $posts[] = $translation;
+                        $posts[] = new \WPGraphQL\Model\Post($translation);
                     }
 
                     return $posts;

@@ -120,4 +120,53 @@ class PostObjectQueryTest extends PolylangUnitTestCase
 
         $this->assertEquals($expected, $nodes);
     }
+
+    public function testCanFetchTranslatedVersions()
+    {
+        $fi_post_id = wp_insert_post([
+            'post_title' => 'Finnish post version',
+            'post_content' => '',
+            'post_type' => 'post',
+            'post_status' => 'publish',
+        ]);
+        pll_set_post_language($fi_post_id, 'fi');
+
+        $en_post_id = wp_insert_post([
+            'post_title' => 'English post version',
+            'post_content' => '',
+            'post_type' => 'post',
+            'post_status' => 'publish',
+        ]);
+        pll_set_post_language($en_post_id, 'en');
+
+        pll_save_post_translations( [
+            'en' => $en_post_id,
+            'fi' => $fi_post_id,
+        ] );
+
+        $query = "
+        query Post {
+            postBy(postId: $fi_post_id) {
+                title
+                translations {
+                  title
+                }
+            }
+         }
+        ";
+
+        $data = do_graphql_request($query);
+        $this->assertArrayNotHasKey('errors', $data, print_r($data, true));
+
+        $expected = [
+            'title' => 'Finnish post version',
+            'translations' => [
+                [
+                    'title' => 'English post version'
+                ]
+            ]
+        ];
+
+        $this->assertEquals($expected, $data['data']['postBy']);
+    }
 }
