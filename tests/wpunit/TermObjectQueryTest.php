@@ -5,6 +5,10 @@ require_once __DIR__ . '/PolylangUnitTestCase.php';
 
 class TermObjectQueryTest extends PolylangUnitTestCase
 {
+
+    public $fi_term_id = null;
+    public $en_term_id = null;
+
     static function wpSetUpBeforeClass()
     {
         parent::wpSetUpBeforeClass();
@@ -23,9 +27,11 @@ class TermObjectQueryTest extends PolylangUnitTestCase
 
         $term = wp_insert_term( 'entesttag', 'post_tag' );
         pll_set_term_language($term['term_id'], 'en');
+        $this->en_term_id = $term['term_id'];
 
         $term = wp_insert_term( 'fitesttag', 'post_tag' );
         pll_set_term_language($term['term_id'], 'fi');
+        $this->fi_term_id = $term['term_id'];
     }
 
     public function testListsTermsFromAllLanguages()
@@ -114,5 +120,49 @@ class TermObjectQueryTest extends PolylangUnitTestCase
         // $this->assertEquals($expected, $nodes);
     }
 
+    public function testCanFetchTranslatedTermVersions()
+    {
+        pll_save_term_translations( [
+            'en' => $this->en_term_id,
+            'fi' => $this->fi_term_id,
+        ] );
+
+        $query = "
+        query Tags {
+            tags {
+                nodes {
+                    name
+                    translations {
+                        name
+                    }
+                }
+            }
+         }
+        ";
+
+        $data = do_graphql_request($query);
+        $this->assertArrayNotHasKey('errors', $data, print_r($data, true));
+
+        $expected = [
+            [
+                'name' => 'entesttag',
+                'translations' => [
+                    [
+                        'name' => 'fitesttag'
+                    ]
+                ]
+                    ],
+            [
+                'name' => 'fitesttag',
+                'translations' => [
+                    [
+                        'name' => 'entesttag'
+                    ]
+                ]
+            ]
+        ];
+
+        $this->assertEquals($expected, $data['data']['tags']['nodes']);
+    }
 
 }

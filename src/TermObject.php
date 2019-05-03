@@ -143,7 +143,7 @@ class TermObject
                 'List all translated versions of this term',
                 'wp-graphql-polylang'
             ),
-            'resolve' => function (\WP_Term $term) {
+            'resolve' => function (\WPGraphQL\Model\Term $term) {
                 $terms = [];
 
                 foreach (
