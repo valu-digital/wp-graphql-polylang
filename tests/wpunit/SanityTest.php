@@ -4,9 +4,8 @@
 require_once __DIR__ . '/PolylangUnitTestCase.php';
 
 /**
- * These test do no actually test anything on wp-graphql-polylang. They pure
- * just test that the test enviroment is setup properly. It very hard to get
- * right...
+ * These test do no actually test anything on wp-graphql-polylang. They test
+ * that the test enviroment is setup properly. It very hard to get right...
  */
 class SanityTest extends PolylangUnitTestCase
 {
