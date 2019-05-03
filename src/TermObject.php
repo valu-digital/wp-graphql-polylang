@@ -101,7 +101,7 @@ class TermObject
                 'List available translations for this post',
                 'wpnext'
             ),
-            'resolve' => function (\WP_Term $term, $args, $context, $info) {
+            'resolve' => function (\WPGraphQL\Model\Term $term, $args, $context, $info) {
                 $fields = $info->getFieldSelection();
                 $language = [];
 
