@@ -1,5 +1,7 @@
 <?php
 
+use GraphQLRelay\Relay;
+
 // XXX: Can we autoload this somehow?
 require_once __DIR__ . '/PolylangUnitTestCase.php';
 
@@ -52,6 +54,41 @@ class PostObjectMutationTest extends PolylangUnitTestCase
         $post_id = $data['data']['createPost']['post']['postId'];
         $lang = pll_get_post_language($post_id, 'slug');
         $this->assertEquals('fi', $lang);
+    }
+
+    public function testCanUpdateLanguage() {
+        wp_set_current_user( $this->admin_id );
+
+        $post_id = wp_insert_post([
+            'post_title' => 'Finnish post',
+            'post_content' => '',
+            'post_type' => 'post',
+            'post_status' => 'publish',
+        ]);
+        pll_set_post_language($post_id, 'fi');
+
+        $id = Relay::toGlobalId('post', $post_id);
+
+        $query = "
+        mutation UpdatePost {
+            updatePost(input: {id: \"$id\", clientMutationId: \"1\", language: FR}) {
+              clientMutationId
+              post {
+                title
+                postId
+                language {
+                  code
+                }
+              }
+            }
+          }
+        ";
+
+        $data = do_graphql_request($query);
+        $this->assertArrayNotHasKey('errors', $data, print_r($data, true));
+        $post_id = $data['data']['updatePost']['post']['postId'];
+        $lang = pll_get_post_language($post_id, 'slug');
+        $this->assertEquals('fr', $lang);
 
     }
 }
