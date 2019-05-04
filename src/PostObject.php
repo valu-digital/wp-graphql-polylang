@@ -35,6 +35,9 @@ class PostObject
     ) {
         if (isset($input['language'])) {
             pll_set_post_language($post_id, $input['language']);
+        } else {
+            $default_lang = pll_default_language();
+            pll_set_post_language($post_id, $default_lang);
         }
     }
 
