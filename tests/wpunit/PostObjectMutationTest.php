@@ -57,6 +57,33 @@ class PostObjectMutationTest extends PolylangUnitTestCase
         $this->assertEquals('fi', $lang);
     }
 
+    public function testPostCreateUsesDefaultLang()
+    {
+        self::set_default_language('fi');
+        wp_set_current_user($this->admin_id);
+
+        $query = '
+        mutation InsertPost {
+            createPost(input: {clientMutationId: "1", title: "test"}) {
+              clientMutationId
+              post {
+                title
+                postId
+                language {
+                  code
+                }
+              }
+            }
+          }
+        ';
+
+        $data = do_graphql_request($query);
+        $this->assertArrayNotHasKey('errors', $data, print_r($data, true));
+        $post_id = $data['data']['createPost']['post']['postId'];
+        $lang = pll_get_post_language($post_id, 'slug');
+        $this->assertEquals('fi', $lang);
+    }
+
     public function testCanUpdateLanguage()
     {
         wp_set_current_user($this->admin_id);
