@@ -24,10 +24,19 @@ require_once __DIR__ . '/src/MenuItem.php';
 
 function isGraphqlContext()
 {
+    if (!function_exists('pll_get_post_language')) {
+        return false;
+    }
+
     if (defined('GRAPHQL_POLYLANG_TESTS')) {
         return true;
     }
 
+    if (defined('GRAPHQL_HTTP_REQUEST')) {
+        return GRAPHQL_HTTP_REQUEST;
+    }
+
+    // XXX GRAPHQL_HTTP_REQUEST is not defined early enough!
     if ('/graphql' == $_SERVER['REQUEST_URI']) {
         return true;
     }
@@ -62,7 +71,7 @@ add_filter(
 );
 
 add_action('graphql_init', function () {
-    if (!function_exists('pll_get_post_language')) {
+    if (!isGraphqlContext()) {
         return;
     }
 
