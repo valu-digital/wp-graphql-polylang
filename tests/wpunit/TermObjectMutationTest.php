@@ -55,4 +55,30 @@ class TermObjectMutationTest extends PolylangUnitTestCase
         $lang = pll_get_term_language($term_id, 'slug');
         $this->assertEquals('fi', $lang);
     }
+
+    public function testTermCreateWithDefaultLanguage()
+    {
+        self::set_default_language('de');
+        wp_set_current_user($this->admin_id);
+
+        $query = '
+        mutation InsertTerm {
+            createTag(input: {clientMutationId: "1", name:"testtag"}) {
+              tag {
+                name
+                tagId
+                language {
+                  code
+                }
+              }
+            }
+          }
+        ';
+
+        $data = do_graphql_request($query);
+        $this->assertArrayNotHasKey('errors', $data, print_r($data, true));
+        $term_id = $data['data']['createTag']['tag']['tagId'];
+        $lang = pll_get_term_language($term_id, 'slug');
+        $this->assertEquals('de', $lang);
+    }
 }

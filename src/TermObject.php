@@ -75,6 +75,9 @@ class TermObject
             function ($term_id, $args) {
                 if (isset($args['language'])) {
                     pll_set_term_language($term_id, $args['language']);
+                } else {
+                    $default_lang = pll_default_language();
+                    pll_set_term_language($term_id, $default_lang);
                 }
             },
             10,
