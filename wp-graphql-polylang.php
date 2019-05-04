@@ -24,7 +24,7 @@ require_once __DIR__ . '/src/MenuItem.php';
 
 function isGraphqlContext()
 {
-    if (\class_exists('\Codeception\TestCase\WPTestCase')) {
+    if (defined('GRAPHQL_POLYLANG_TESTS')) {
         return true;
     }
 
