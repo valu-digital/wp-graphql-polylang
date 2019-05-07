@@ -31,3 +31,9 @@ For details please refer to the generated docs in GraphiQL.
 [pll_context]: https://github.com/polylang/polylang/commit/2203b9e16532797fa530f9b73024b53885d728ef
 [polylang]: https://github.com/polylang/polylang
 [wpgraphlql]: https://github.com/wp-graphql/wp-graphql/releases
+
+## Slack
+
+You can find us from the [WPGraphQL Slack][slack] on the `#polylang` channel.
+
+[slack]: https://wpgql-slack.herokuapp.com/
