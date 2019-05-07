@@ -18,14 +18,16 @@ class Helpers
      * Polylang handles 'lang' query arg so convert our 'language'
      * query arg if it is set
      */
-    static function prepare_lang_field(array $query_args)
-    {
-        if (!isset($query_args['language'])) {
+    static function map_language_to_query_args(
+        array $query_args,
+        array $where_args
+    ) {
+        if (!isset($where_args['language'])) {
             return $query_args;
         }
 
-        $lang = $query_args['language'];
-        unset($query_args['language']);
+        $lang = $where_args['language'];
+        unset($where_args['language']);
 
         if ('all' === $lang) {
             // No need to do anything. We show all languages by default

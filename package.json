@@ -1,23 +1,24 @@
 {
-  "name": "wp-graphql-polylang",
-  "version": "1.0.0",
-  "description": "Extend [WPGraphQL](https://www.wpgraphql.com/) schema with language data from the [Polylang](https://polylang.pro/) plugin.",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/valu-digital/wp-graphql-polylang.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/valu-digital/wp-graphql-polylang/issues"
-  },
-  "homepage": "https://github.com/valu-digital/wp-graphql-polylang#readme",
-  "dependencies": {
-    "@prettier/plugin-php": "^0.10.2",
-    "prettier": "^1.16.4"
-  }
+    "name": "wp-graphql-polylang",
+    "version": "1.0.0",
+    "description": "Extend [WPGraphQL](https://www.wpgraphql.com/) schema with language data from the [Polylang](https://polylang.pro/) plugin.",
+    "main": "index.js",
+    "scripts": {
+        "prettier": "prettier --write 'src/**/*.php' 'tests/**/*.php' '*.php'",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/valu-digital/wp-graphql-polylang.git"
+    },
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/valu-digital/wp-graphql-polylang/issues"
+    },
+    "homepage": "https://github.com/valu-digital/wp-graphql-polylang#readme",
+    "dependencies": {
+        "@prettier/plugin-php": "^0.10.2",
+        "prettier": "^1.17.0"
+    }
 }

@@ -11,10 +11,10 @@ class TermObject
         add_action('graphql_register_types', [$this, 'register'], 10, 0);
 
         add_filter(
-            'graphql_term_object_connection_query_args',
-            [__NAMESPACE__ . '\\Helpers', 'prepare_lang_field'],
+            'graphql_map_input_fields_to_get_terms',
+            [__NAMESPACE__ . '\\Helpers', 'map_language_to_query_args'],
             10,
-            1
+            2
         );
 
         add_filter(
@@ -75,6 +75,9 @@ class TermObject
             function ($term_id, $args) {
                 if (isset($args['language'])) {
                     pll_set_term_language($term_id, $args['language']);
+                } else {
+                    $default_lang = pll_default_language();
+                    pll_set_term_language($term_id, $default_lang);
                 }
             },
             10,
@@ -101,7 +104,12 @@ class TermObject
                 'List available translations for this post',
                 'wpnext'
             ),
-            'resolve' => function (\WP_Term $term, $args, $context, $info) {
+            'resolve' => function (
+                \WPGraphQL\Model\Term $term,
+                $args,
+                $context,
+                $info
+            ) {
                 $fields = $info->getFieldSelection();
                 $language = [];
 
@@ -143,7 +151,7 @@ class TermObject
                 'List all translated versions of this term',
                 'wp-graphql-polylang'
             ),
-            'resolve' => function (\WP_Term $term) {
+            'resolve' => function (\WPGraphQL\Model\Term $term) {
                 $terms = [];
 
                 foreach (
@@ -168,6 +176,31 @@ class TermObject
                 }
 
                 return $terms;
+            },
+        ]);
+
+        register_graphql_field($type, 'translation', [
+            'type' => $type,
+            'description' => __(
+                'Get specific translation version of this object',
+                'wp-graphql-polylang'
+            ),
+            'args' => [
+                'language' => [
+                    'type' => [
+                        'non_null' => 'LanguageCodeEnum',
+                    ],
+                ],
+            ],
+            'resolve' => function (\WPGraphQL\Model\Term $term, array $args) {
+                $translations = pll_get_term_translations($term->term_id);
+                $term_id = $translations[$args['language']] ?? null;
+
+                if (!$term_id) {
+                    return null;
+                }
+
+                return new \WPGraphQL\Model\Term(get_term($term_id));
             },
         ]);
     }

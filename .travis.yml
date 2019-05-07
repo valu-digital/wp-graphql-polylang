@@ -1,0 +1,43 @@
+sudo: false
+dist: trusty
+
+language: php
+
+notifications:
+    email:
+        on_success: never
+        on_failure: change
+
+branches:
+    only:
+        - master
+
+cache:
+    directories:
+        - $HOME/.composer/cache
+
+matrix:
+    include:
+        - php: 7.2
+          env: WP_VERSION=latest
+
+install:
+    - |
+        cd $TRAVIS_BUILD_DIR
+        curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+        chmod +x wp-cli.phar
+        sudo mv wp-cli.phar /usr/local/bin/wp
+
+before_script:
+    - |
+        if [[ ! -z "$WP_VERSION" ]] ; then
+          cp .env.travis .env
+          composer install
+          composer install-wp-tests
+        fi
+
+script:
+    - |
+        if [[ ! -z "$WP_VERSION" ]] ; then
+          php vendor/bin/codecept run wpunit
+        fi

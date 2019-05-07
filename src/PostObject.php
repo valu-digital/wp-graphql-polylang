@@ -16,6 +16,13 @@ class PostObject
             10,
             3
         );
+
+        add_filter(
+            'graphql_map_input_fields_to_wp_query',
+            [__NAMESPACE__ . '\\Helpers', 'map_language_to_query_args'],
+            10,
+            2
+        );
     }
 
     /**
@@ -28,6 +35,9 @@ class PostObject
     ) {
         if (isset($input['language'])) {
             pll_set_post_language($post_id, $input['language']);
+        } else {
+            $default_lang = pll_default_language();
+            pll_set_post_language($post_id, $default_lang);
         }
     }
 
@@ -71,7 +81,12 @@ class PostObject
             [
                 'type' => 'Language',
                 'description' => __('Polylang language', 'wpnext'),
-                'resolve' => function (\WP_Post $post, $args, $context, $info) {
+                'resolve' => function (
+                    \WPGraphQL\Model\Post $post,
+                    $args,
+                    $context,
+                    $info
+                ) {
                     $fields = $info->getFieldSelection();
                     $language = [
                         'name' => null,
@@ -124,7 +139,10 @@ class PostObject
                         ],
                     ],
                 ],
-                'resolve' => function (\WP_Post $post, array $args) {
+                'resolve' => function (
+                    \WPGraphQL\Model\Post $post,
+                    array $args
+                ) {
                     $translations = pll_get_post_translations($post->ID);
                     $post_id = $translations[$args['language']] ?? null;
 
@@ -132,7 +150,9 @@ class PostObject
                         return null;
                     }
 
-                    return \WP_Post::get_instance($post_id);
+                    return new \WPGraphQL\Model\Post(
+                        \WP_Post::get_instance($post_id)
+                    );
                 },
             ]
         );
@@ -148,7 +168,7 @@ class PostObject
                     'List all translated versions of this post',
                     'wp-graphql-polylang'
                 ),
-                'resolve' => function (\WP_Post $post) {
+                'resolve' => function (\WPGraphQL\Model\Post $post) {
                     $posts = [];
 
                     foreach (
@@ -169,7 +189,7 @@ class PostObject
                             continue;
                         }
 
-                        $posts[] = $translation;
+                        $posts[] = new \WPGraphQL\Model\Post($translation);
                     }
 
                     return $posts;
