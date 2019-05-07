@@ -25,12 +25,12 @@ For details please refer to the generated docs in GraphiQL.
 
 -   PHP 7.2. Where planning to relax this a bit though
 -   [WPGraphlQL][] 0.3.x
--   [Polylang][] from the github master
+-   Polylang from the [github master][polylang-github]
     -   Stable releases will work once [pll_context][] filter ships
     -   The free version is enough
 
 [pll_context]: https://github.com/polylang/polylang/commit/2203b9e16532797fa530f9b73024b53885d728ef
-[polylang]: https://github.com/polylang/polylang
+[polylang-github]: https://github.com/polylang/polylang
 [wpgraphlql]: https://github.com/wp-graphql/wp-graphql/releases
 
 ## Slack
