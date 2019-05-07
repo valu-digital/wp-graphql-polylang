@@ -4,7 +4,7 @@
  * Plugin URI: https://github.com/valu-digital/wp-graphql-polylang
  * Description: Exposes Polylang languages and translations in the GraphQL schema
  * Author: Esa-Matti Suuronen, Valu Digital Oy
- * Version: 0.1.0
+ * Version: 0.2.0
  * Author URI: https://valu.fi/
  *
  * @package wp-graphql-polylang
