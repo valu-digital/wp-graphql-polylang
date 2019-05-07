@@ -39,5 +39,5 @@ before_script:
 script:
     - |
         if [[ ! -z "$WP_VERSION" ]] ; then
-          php vendor/bin/codecept run wpunit
+          composert test
         fi

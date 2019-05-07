@@ -27,7 +27,7 @@
     "require": {},
     "scripts": {
         "install-wp-tests": "bash bin/install-wp-tests.sh",
-        "test": "vendor/bin/codecept run",
+        "test": "php vendor/bin/codecept run wpunit",
         "functional-test": "vendor/bin/codecept run functional",
         "acceptance-test": "vendor/bin/codecept run acceptance",
         "wpunit-test": "vendor/bin/codecept run wpunit"
