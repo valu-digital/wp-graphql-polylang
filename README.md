@@ -3,8 +3,6 @@
 Extend [WPGraphQL](https://www.wpgraphql.com/) schema with language data from
 the [Polylang](https://polylang.pro/) plugin.
 
-This plugin currently require wp-graphq 0.2.x but 0.3.x is in the works [here](https://github.com/valu-digital/wp-graphql-polylang/pull/1)
-
 ## Features
 
 For posts and terms (custom ones too!)
@@ -25,3 +23,14 @@ Root queries
 -   `languages` list all configured languages
 
 For details please refer to the generated docs in GraphiQL.
+
+## Requirements
+
+    - [WPGraphlQL][] 0.3.x
+    - [Polylang][] from the github master
+        - Stable releases will work once [pll_context][] filter ships
+        - The free version is enough
+
+[pll_context]: https://github.com/polylang/polylang/commit/2203b9e16532797fa530f9b73024b53885d728ef
+[polylang]: https://github.com/polylang/polylang
+[wpgraphlql]: https://github.com/wp-graphql/wp-graphql/releases
