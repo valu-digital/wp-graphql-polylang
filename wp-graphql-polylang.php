@@ -96,6 +96,11 @@ class Loader
             return true;
         }
 
+        // Used wp-graphiql
+        if ('/index.php?graphql' == $_SERVER['REQUEST_URI']) {
+            return true;
+        }
+
         return false;
     }
 }
