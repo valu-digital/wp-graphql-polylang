@@ -39,5 +39,5 @@ before_script:
 script:
     - |
         if [[ ! -z "$WP_VERSION" ]] ; then
-          composert test
+          composer test
         fi
