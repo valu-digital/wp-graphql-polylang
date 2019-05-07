@@ -24,7 +24,7 @@ require_once __DIR__ . '/src/MenuItem.php';
 
 function isGraphqlContext()
 {
-    if (!function_exists('pll_get_post_language')) {
+    if (!defined('POLYLANG_VERSION')) {
         return false;
     }
 
