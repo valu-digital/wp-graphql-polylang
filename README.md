@@ -23,10 +23,10 @@ For details please refer to the generated docs in GraphiQL.
 
 ## Requirements
 
-    - [WPGraphlQL][] 0.3.x
-    - [Polylang][] from the github master
-        - Stable releases will work once [pll_context][] filter ships
-        - The free version is enough
+-   [WPGraphlQL][] 0.3.x
+-   [Polylang][] from the github master
+    -   Stable releases will work once [pll_context][] filter ships
+    -   The free version is enough
 
 [pll_context]: https://github.com/polylang/polylang/commit/2203b9e16532797fa530f9b73024b53885d728ef
 [polylang]: https://github.com/polylang/polylang
