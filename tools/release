@@ -53,7 +53,7 @@ git push origin master:master
 git push origin --tags
 
 range="v${new_version}...v${current_version}"
-changelog="$(git log --format='%s %h' $range | sed -E 's/(.*)/  - \1/')"
+changelog="$(git log --format='%s %h' $range | sed -E 's/(.*)/- \1/') | sed 1,1d"
 changelog="${changelog}\n\nAll changes:\nhttps://github.com/${project}/compare/${range}"
 
 set -x
