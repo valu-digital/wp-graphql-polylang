@@ -46,4 +46,6 @@ git push origin master:master
 git push origin --tags
 
 changelog="$(git log --format='%s %h' v${new_version}...v${current_version})"
+
+set -x
 open "https://github.com/valu-digital/wp-graphql-polylang/releases/new?title=v${new_version}&tag=v${new_version}&body=${changelog}"
