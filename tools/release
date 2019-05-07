@@ -1,5 +1,8 @@
 #!/bin/sh
 
+project="valu-digital/wp-graphql-polylang"
+version_file="wp-graphql-polylang.php"
+
 set -eu
 
 help() {
@@ -35,9 +38,7 @@ if [ "$(git rev-parse master)" != "$(git rev-parse origin/master)" ]; then
     exit 3
 fi
 
-project="valu-digital/wp-graphql-polylang"
-version_file="wp-graphql-polylang.php"
-current_version="$(cat wp-graphql-polylang.php | sed -En 's/.*Version: ([^ ]*)/\1/p')"
+current_version="$(cat $version_file | sed -En 's/.*Version: ([^ ]*)/\1/p')"
 
 echo "Current version is: $current_version"
 
