@@ -1,4 +1,4 @@
-# WPGraphQL Polylang Extension (ALPHA)
+# WPGraphQL Polylang Extension
 
 Extend [WPGraphQL](https://www.wpgraphql.com/) schema with language data from
 the [Polylang](https://polylang.pro/) plugin.
