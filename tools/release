@@ -39,6 +39,10 @@ changelog="$(git log --format='%s %h' v${new_version}...v${current_version})"
 
 sed -E -i  "" "s/(.*Version:) .*/\1 ${new_version}/" wp-graphql-polylang.php
 
+git commit -m "Release v${new_version}" wp-graphql-polylang.php
 git tag -a "v${new_version}" -m "Release v${new_version}"
+
+git push origin master:master
+git push origin --tags
 
 open "https://github.com/valu-digital/wp-graphql-polylang/releases/new?title=v${new_version}&tag=v${new_version}&body=${changelog}"
