@@ -13,6 +13,11 @@ if [ "${1:-}" = "-h" -o "${1:-}" = "--help" ]; then
     exit 1
 fi
 
+if [ "$(uname)" != "Darwin" ]; then
+    echo "Sorry, this script only works on macOS for now."
+    exit 1
+fi
+
 if [ "$(git status . --porcelain)" != "" ]; then
     echo "Dirty git. Commit changes"
     exit 1
