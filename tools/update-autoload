@@ -1,0 +1,8 @@
+#!/bin/sh
+
+set -eu
+
+rm -rf vendor
+composer install --no-dev
+git add vendor
+git commit vendor -m "Update composer autoload files"
