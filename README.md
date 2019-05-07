@@ -23,7 +23,7 @@ For details please refer to the generated docs in GraphiQL.
 
 ## Requirements
 
--   PHP 7.2. Where planning to relax this a bit though
+-   PHP 7.2. We're planning to relax this a bit though
 -   [WPGraphlQL][] 0.3.x
 -   Polylang from the [github master][polylang-github]
     -   Stable releases will work once [pll_context][] filter ships
