@@ -27,6 +27,7 @@ git fetch
 
 if [ "$(git rev-parse master)" != "$(git rev-parse origin/master)" ]; then
     echo "You local master is not sync with the remote origin/master"
+    exit 3
 fi
 
 current_version="$(cat wp-graphql-polylang.php | sed -En 's/.*Version: ([^ ]*)/\1/p')"
