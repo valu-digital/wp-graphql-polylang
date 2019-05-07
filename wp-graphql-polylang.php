@@ -16,13 +16,7 @@ use GraphQL\Error\UserError;
 
 define('WPGRAPHQL_POLYLANG', true);
 
-require_once __DIR__ . '/src/Helpers.php';
-require_once __DIR__ . '/src/PolylangTypes.php';
-require_once __DIR__ . '/src/LanguageRootQueries.php';
-require_once __DIR__ . '/src/PostObject.php';
-require_once __DIR__ . '/src/StringsTranslations.php';
-require_once __DIR__ . '/src/TermObject.php';
-require_once __DIR__ . '/src/MenuItem.php';
+require_once __DIR__ . '/vendor/autoload.php';
 
 class Loader
 {
