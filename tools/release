@@ -1,0 +1,44 @@
+#!/bin/sh
+
+set -eu
+
+help() {
+    >&2 echo "
+    Create new release. Creates git tag and github release
+    "
+}
+
+if [ "${1:-}" = "-h" -o "${1:-}" = "--help" ]; then
+    help
+    exit 1
+fi
+
+if [ "$(git status . --porcelain)" != "" ]; then
+    echo "Dirty git. Commit changes"
+    exit 1
+fi
+
+if [ "$(git rev-parse --abbrev-ref HEAD)" != "master" ]; then
+    echo "Not on the master branch"
+    exit 2
+fi
+
+git fetch
+
+if [ "$(git rev-parse master)" != "$(git rev-parse origin/master)" ]; then
+    echo "You local master is not sync with the remote origin/master"
+fi
+
+current_version="$(cat wp-graphql-polylang.php | sed -En 's/.*Version: ([^ ]*)/\1/p')"
+
+echo "Current version is: $current_version"
+
+read -p "New version> " new_version
+
+changelog="$(git log --format='%s %h' v${new_version}...v${current_version})"
+
+sed -E -i  "" "s/(.*Version:) .*/\1 ${new_version}/" wp-graphql-polylang.php
+
+git tag -a "v${new_version}" -m "Release v${new_version}"
+
+open "https://github.com/valu-digital/wp-graphql-polylang/releases/new?title=v${new_version}&tag=v${new_version}&body=${changelog}"
