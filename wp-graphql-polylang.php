@@ -27,6 +27,7 @@ class Loader
         add_filter('pll_model', [$this, 'get_pll_model'], 10, 1);
         add_filter('pll_context', [$this, 'get_pll_context'], 10, 1);
         add_action('graphql_init', [$this, 'graphql_polylang_init']);
+        add_action('admin_notices', [$this, 'admin_notices']);
     }
 
     function graphql_polylang_init()
@@ -69,6 +70,29 @@ class Loader
         }
 
         return $class;
+    }
+
+    function admin_notices()
+    {
+        if (!is_super_admin()) {
+            return;
+        }
+
+        if ($this->pll_context_called) {
+            return;
+        }
+
+        $class = 'notice notice-error';
+        $message = __(
+            'wp-graphql-polylang: You are using too old Polylang version. You must upgrade to one with pll_context filter support. See the requirement from the README.',
+            'wp-graphql-polylang'
+        );
+
+        printf(
+            '<div class="%1$s"><p>%2$s</p></div>',
+            esc_attr($class),
+            esc_html($message)
+        );
     }
 
     function is_graphql_request()
