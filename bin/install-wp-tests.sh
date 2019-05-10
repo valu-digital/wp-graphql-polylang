@@ -164,6 +164,14 @@ install_db() {
 	# fi
 
 	# create database
+
+	ret=0
+	echo "SHOW DATABASES" | mysql  --user="$DB_USER" --password="$DB_PASS"$EXTRA| grep $DB_NAME || ret=$?
+
+	if [ "$ret" = "0" ]; then
+		return
+	fi
+
 	mysqladmin create $DB_NAME --user="$DB_USER" --password="$DB_PASS"$EXTRA
 }
 
