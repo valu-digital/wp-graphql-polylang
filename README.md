@@ -23,6 +23,29 @@ Root queries
 
 For details please refer to the generated docs in GraphiQL.
 
+## Example
+
+```graphql
+query GET_EN_PAGES {
+  pages(where: {language: EN}) {
+    nodes {
+      title
+      language {
+        name
+        slug
+      }
+      translations {
+        title
+        language {
+          name
+        }
+      }
+    }
+  }
+}
+
+```
+
 ## Requirements
 
 -   PHP 7.2. We're planning to relax this a bit though
@@ -33,7 +56,7 @@ For details please refer to the generated docs in GraphiQL.
 
 [pll_context]: https://github.com/polylang/polylang/commit/2203b9e16532797fa530f9b73024b53885d728ef
 [polylang-github]: https://github.com/polylang/polylang
-[wpgraphlql]: https://github.com/wp-graphql/wp-graphql/releases
+[WPGraphQL]: https://github.com/wp-graphql/wp-graphql/releases
 
 ## Slack
 
