@@ -49,7 +49,7 @@ query GET_EN_PAGES {
 ## Requirements
 
 -   PHP 7.2. We're planning to relax this a bit though
--   [WPGraphQL][] 0.3.x
+-   [WPGraphQL][] 0.3.x (0.4.x support coming soon!)
 -   Polylang from the [github master][polylang-github]
     -   Stable releases will work once [pll_context][] filter ships
     -   The free version is enough
