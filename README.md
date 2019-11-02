@@ -50,8 +50,7 @@ query GET_EN_PAGES {
 
 -   PHP 7.2. We're planning to relax this a bit though
 -   [WPGraphQL][] 0.3.x (0.4.x support coming soon!)
--   Polylang from the [github master][polylang-github]
-    -   Stable releases will work once [pll_context][] filter ships
+-   Polylang 2.6.5 or later
     -   The free version is enough
     -   If you get the PRO version the pro features such as translated slugs will work too
 
