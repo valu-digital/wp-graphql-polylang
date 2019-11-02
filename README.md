@@ -74,7 +74,6 @@ AFAIK there's no WPML integration for WPGraphQL yet.
 This plugin is probably a good reference on how to do it if you are interested in creating one.
 Please let me know if you do so I can link to it here 😊
 
-Meanwhile you might want to checkout migration docs and plugin
+Meanwhile you might want to checkout migration docs
 
-- <https://polylang.pro/how-to-switch-from-wpml-to-polylang/>
-- <https://wordpress.org/plugins/wpml-to-polylang/>
+<https://polylang.pro/how-to-switch-from-wpml-to-polylang/>
