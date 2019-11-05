@@ -109,17 +109,19 @@ class Loader
             return GRAPHQL_HTTP_REQUEST;
         }
 
-        // XXX GRAPHQL_HTTP_REQUEST is not defined early enough!
-        if ('/graphql' == $_SERVER['REQUEST_URI']) {
-            return true;
+        // From https://github.com/wp-graphql/wp-graphql/blob/f6d8c59fcf2bffa88fb30e222cbe1802764273a2/src/Router.php#L134
+        if (
+            empty($GLOBALS['wp']->query_vars) ||
+            !is_array($GLOBALS['wp']->query_vars) ||
+            !array_key_exists(
+                \WPGraphQL\Router::$route,
+                $GLOBALS['wp']->query_vars
+            )
+        ) {
+            return false;
         }
 
-        // Used wp-graphiql
-        if ('/index.php?graphql' == $_SERVER['REQUEST_URI']) {
-            return true;
-        }
-
-        return false;
+        return true;
     }
 }
 
