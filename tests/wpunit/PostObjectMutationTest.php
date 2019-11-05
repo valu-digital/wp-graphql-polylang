@@ -119,4 +119,40 @@ class PostObjectMutationTest extends PolylangUnitTestCase
         $lang = pll_get_post_language($post_id, 'slug');
         $this->assertEquals('fr', $lang);
     }
+
+    public function testUnrelatedMuationDoesNotTouchLanguage()
+    {
+        wp_set_current_user($this->admin_id);
+
+        $post_id = wp_insert_post([
+            'post_title' => 'Finnish post',
+            'post_content' => '',
+            'post_type' => 'post',
+            'post_status' => 'publish',
+        ]);
+        pll_set_post_language($post_id, 'fi');
+
+        $id = Relay::toGlobalId('post', $post_id);
+
+        $query = "
+        mutation UpdatePost {
+            updatePost(input: {id: \"$id\", clientMutationId: \"1\", title: \"new title\"}) {
+              clientMutationId
+              post {
+                title
+                postId
+                language {
+                  code
+                }
+              }
+            }
+          }
+        ";
+
+        $data = do_graphql_request($query);
+
+        $this->assertArrayNotHasKey('errors', $data, print_r($data, true));
+        $lang = pll_get_post_language($post_id, 'slug');
+        $this->assertEquals('fi', $lang);
+    }
 }

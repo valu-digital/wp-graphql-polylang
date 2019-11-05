@@ -14,7 +14,7 @@ class PostObject
             'graphql_post_object_mutation_update_additional_data',
             [$this, 'mutate_language'],
             10,
-            3
+            4
         );
 
         add_filter(
@@ -31,11 +31,14 @@ class PostObject
     function mutate_language(
         $post_id,
         array $input,
-        \WP_Post_Type $post_type_object
+        \WP_Post_Type $post_type_object,
+        $mutation_name
     ) {
+        $is_create =  substr( $mutation_name, 0, 6 ) === 'create';
+
         if (isset($input['language'])) {
             pll_set_post_language($post_id, $input['language']);
-        } else {
+        } else if ($is_create) {
             $default_lang = pll_default_language();
             pll_set_post_language($post_id, $default_lang);
         }
