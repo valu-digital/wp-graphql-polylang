@@ -24,6 +24,7 @@
     function tearDown()
     {
         parent::tearDown();
+        \WPGraphQL::__clear_schema();
     }
     static function create_language($locale, $args = array())
     {
