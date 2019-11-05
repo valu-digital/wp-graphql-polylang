@@ -220,7 +220,7 @@ configure_wordpress() {
 setup_plugin() {
 	# Add this repo as a plugin to the repo
 	if [ ! -d $WP_CORE_DIR/wp-content/plugins/wp-graphql-polylang ]; then
-		ln -s $PLUGIN_DIR $WP_CORE_DIR/wp-content/plugins/wp-graphql-polylang
+		ln -sf $PLUGIN_DIR $WP_CORE_DIR/wp-content/plugins/wp-graphql-polylang
 	fi
 
 	cd $WP_CORE_DIR
