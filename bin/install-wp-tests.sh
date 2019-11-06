@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 
+if [ ! -f .env ]; then
+	>&2 echo "Cannot find .env file! Copy .env.local?"
+	exit 1
+fi
+
 export $(egrep -v '^#' .env | xargs)
 
 
