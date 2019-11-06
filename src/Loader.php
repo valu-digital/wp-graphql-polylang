@@ -113,7 +113,7 @@ class Loader
             return true;
         }
 
-        list($path, $query) = explode('?', $_SERVER['REQUEST_URI']);
+        $path = explode('?', $_SERVER['REQUEST_URI'])[0];
 
         if ($this->endsWith($path, '/' . \WPGraphQL\Router::$route)) {
             return true;
