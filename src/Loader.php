@@ -85,6 +85,16 @@ class Loader
         );
     }
 
+    function endsWith($haystack, $needle)
+    {
+        $length = strlen($needle);
+        if ($length === 0) {
+            return true;
+        }
+
+        return (substr($haystack, -$length) === $needle);
+    }
+
     function is_graphql_request()
     {
         if (!defined('POLYLANG_VERSION')) {
@@ -99,18 +109,16 @@ class Loader
             return GRAPHQL_HTTP_REQUEST;
         }
 
-        // From https://github.com/wp-graphql/wp-graphql/blob/f6d8c59fcf2bffa88fb30e222cbe1802764273a2/src/Router.php#L134
-        if (
-            empty($GLOBALS['wp']->query_vars) ||
-            !is_array($GLOBALS['wp']->query_vars) ||
-            !array_key_exists(
-                \WPGraphQL\Router::$route,
-                $GLOBALS['wp']->query_vars
-            )
-        ) {
-            return false;
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET[\WPGraphQL\Router::$route])) {
+            return true;
         }
 
-        return true;
+        list($path, $query) = explode('?', $_SERVER['REQUEST_URI']);
+
+        if ($this->endsWith($path, '/' . \WPGraphQL\Router::$route)) {
+            return true;
+        }
+
+        return false;
     }
 }
