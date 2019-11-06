@@ -27,23 +27,22 @@ For details please refer to the generated docs in GraphiQL.
 
 ```graphql
 query GET_EN_PAGES {
-  pages(where: {language: EN}) {
-    nodes {
-      title
-      language {
-        name
-        slug
-      }
-      translations {
-        title
-        language {
-          name
+    pages(where: { language: EN }) {
+        nodes {
+            title
+            language {
+                name
+                slug
+            }
+            translations {
+                title
+                language {
+                    name
+                }
+            }
         }
-      }
     }
-  }
 }
-
 ```
 
 ## Requirements
@@ -56,14 +55,13 @@ query GET_EN_PAGES {
 
 [pll_context]: https://github.com/polylang/polylang/commit/2203b9e16532797fa530f9b73024b53885d728ef
 [polylang-github]: https://github.com/polylang/polylang
-[WPGraphQL]: https://github.com/wp-graphql/wp-graphql/releases
+[wpgraphql]: https://github.com/wp-graphql/wp-graphql/releases
 
 ## Slack
 
 You can find us from the [WPGraphQL Slack][slack] on the `#polylang` channel.
 
 [slack]: https://wpgql-slack.herokuapp.com/
-
 
 ## WPML
 
