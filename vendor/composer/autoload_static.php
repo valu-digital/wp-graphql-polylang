@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit802095370b1b2f0d9a1f93f0b0d29fa7
+class ComposerStaticInitd103be5d77bb912519b8d7ffb4953caa
 {
     public static $prefixLengthsPsr4 = array (
         'W' => 
@@ -23,6 +23,7 @@ class ComposerStaticInit802095370b1b2f0d9a1f93f0b0d29fa7
     public static $classMap = array (
         'WPGraphQL\\Extensions\\Polylang\\Helpers' => __DIR__ . '/../..' . '/src/Helpers.php',
         'WPGraphQL\\Extensions\\Polylang\\LanguageRootQueries' => __DIR__ . '/../..' . '/src/LanguageRootQueries.php',
+        'WPGraphQL\\Extensions\\Polylang\\Loader' => __DIR__ . '/../..' . '/src/Loader.php',
         'WPGraphQL\\Extensions\\Polylang\\MenuItem' => __DIR__ . '/../..' . '/src/MenuItem.php',
         'WPGraphQL\\Extensions\\Polylang\\PolylangTypes' => __DIR__ . '/../..' . '/src/PolylangTypes.php',
         'WPGraphQL\\Extensions\\Polylang\\PostObject' => __DIR__ . '/../..' . '/src/PostObject.php',
@@ -33,9 +34,9 @@ class ComposerStaticInit802095370b1b2f0d9a1f93f0b0d29fa7
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit802095370b1b2f0d9a1f93f0b0d29fa7::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit802095370b1b2f0d9a1f93f0b0d29fa7::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit802095370b1b2f0d9a1f93f0b0d29fa7::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInitd103be5d77bb912519b8d7ffb4953caa::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitd103be5d77bb912519b8d7ffb4953caa::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInitd103be5d77bb912519b8d7ffb4953caa::$classMap;
 
         }, null, ClassLoader::class);
     }
