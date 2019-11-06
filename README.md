@@ -57,6 +57,17 @@ query GET_EN_PAGES {
 [polylang-github]: https://github.com/polylang/polylang
 [wpgraphql]: https://github.com/wp-graphql/wp-graphql/releases
 
+## Installation
+
+If you use composer you can install it from Packagist
+
+    composer require valu/wp-graphql-polylang
+
+Otherwise you can clone it from Github to your plugins using the stable branch
+
+    cd wp-content/plugins
+    git clone --branch stable https://github.com/valu-digital/wp-graphql-polylang.git
+
 ## Slack
 
 You can find us from the [WPGraphQL Slack][slack] on the `#polylang` channel.
