@@ -52,10 +52,18 @@ git tag -a "v${new_version}" -m "Release v${new_version}"
 
 git push origin master:master
 git push origin --tags
+git push origin master:stable -f
 
 range="v${new_version}...v${current_version}"
-changelog="$(git log --format='%s %h' $range | sed -E 's/(.*)/- \1/') | sed 1,1d"
-changelog="${changelog}\n\nAll changes:\nhttps://github.com/${project}/compare/${range}"
+
+echo
+echo
+git log --format='  - %s %h' $range | sed 1,1d
+echo
+echo
+echo "All changes https://github.com/${project}/compare/${range}"
+echo
+echo
 
 set -x
-open "https://github.com/${project}/releases/new?title=v${new_version}&tag=v${new_version}&body=${changelog}"
+open "https://github.com/${project}/releases/new?title=v${new_version}&tag=v${new_version}"
