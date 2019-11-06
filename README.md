@@ -74,3 +74,7 @@ Please let me know if you do so I can link to it here 😊
 Meanwhile you might want to checkout migration docs
 
 <https://polylang.pro/how-to-switch-from-wpml-to-polylang/>
+
+## Contributing
+
+Checkout [CONTRIBUTING.md](CONTRIBUTING.md)
