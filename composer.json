@@ -1,5 +1,5 @@
 {
-    "name": "valu-digital/wp-graphql-polylang",
+    "name": "valu/wp-graphql-polylang",
     "description": "Polylang bindings for wp-graphql",
     "type": "wordpress-plugin",
     "license": "GPLv3",
