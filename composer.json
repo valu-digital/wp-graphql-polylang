@@ -2,7 +2,7 @@
     "name": "valu/wp-graphql-polylang",
     "description": "Polylang bindings for wp-graphql",
     "type": "wordpress-plugin",
-    "license": "GPLv3",
+    "license": "GPL-2.0-or-later",
     "authors": [
         {
             "name": "epeli",
