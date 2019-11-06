@@ -40,13 +40,19 @@ if [ -z "$WP_VERSION" ]; then
 	WP_VERSION=latest
 fi
 
-TEST_INSTALL_DIR="$(realpath "${TEST_INSTALL_DIR:-/tmp/wp-graphqlql-polylang-tests}")"
-TEST_INSTALL_DIR=$(echo $TEST_INSTALL_DIR | sed -e "s/\/$//")
+_realpath() {
+	(
+		cd "$1"
+		pwd
+	)
+}
+
+TEST_INSTALL_DIR="${TEST_INSTALL_DIR:-/tmp/wp-graphqlql-polylang-tests}"
+mkdir -p "$TEST_INSTALL_DIR"
+TEST_INSTALL_DIR="$(_realpath "$TEST_INSTALL_DIR")"
 WP_TESTS_DIR=${WP_TESTS_DIR-$TEST_INSTALL_DIR/wordpress-tests-lib}
 WP_CORE_DIR=${WP_CORE_DIR-$TEST_INSTALL_DIR/wordpress/}
 PLUGIN_DIR="$(pwd)"
-
-mkdir -p "$TEST_INSTALL_DIR"
 
 download() {
     if [ `which curl` ]; then
@@ -249,3 +255,5 @@ configure_wordpress
 setup_wpgraphql
 setup_polylang
 setup_plugin
+
+find /tmp/wp-graphqlql-polylang-tests/wordpress
