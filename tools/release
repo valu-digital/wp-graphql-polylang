@@ -31,12 +31,7 @@ if [ "$(git rev-parse --abbrev-ref HEAD)" != "master" ]; then
     exit 2
 fi
 
-git fetch
-
-if [ "$(git rev-parse master)" != "$(git rev-parse origin/master)" ]; then
-    echo "You local master is not sync with the remote origin/master"
-    exit 3
-fi
+git push origin master:master
 
 current_version="$(cat $version_file | sed -En 's/.*Version: ([^ ]*)/\1/p')"
 
