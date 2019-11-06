@@ -48,7 +48,7 @@ query GET_EN_PAGES {
 ## Requirements
 
 -   PHP 7.2. We're planning to relax this a bit though
--   [WPGraphQL][] 0.3.x (0.4.x support coming soon!)
+-   [WPGraphQL][] 0.3.x or 0.4.x
 -   Polylang 2.6.5 or later
     -   The free version is enough
     -   If you get the PRO version the pro features such as translated slugs will work too
