@@ -21,26 +21,45 @@ Root queries
 -   `defaultLanguage` get the current default language
 -   `languages` list all configured languages
 
+Menu
+
+-   Filter menu items by language
 
 For details please refer to the generated docs in GraphiQL.
 
 ## Example
 
+Example showing all features
+
 ```graphql
-query GET_EN_PAGES {
+query PolylangExample {
+    # Filter pages by language. If not set it defaults to ALL
     pages(where: { language: EN }) {
         nodes {
             title
+
+            # Get language of each page
             language {
-                name
-                slug
+                code # Language code
+                name # Human readable name of the language
             }
+
+            # Get links to the translates versions of each page
+            # This is an array of post objects
             translations {
                 title
+                link
                 language {
-                    name
+                    codej
                 }
             }
+        }
+    }
+
+    # Get translated version of a given menu
+    menuItems(where: { language: EN, location: FOOTER_MENU }) {
+        nodes {
+            url
         }
     }
 }
