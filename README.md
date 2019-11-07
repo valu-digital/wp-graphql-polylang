@@ -56,6 +56,17 @@ query PolylangExample {
         }
     }
 
+    # Taxonomies such as tags can be filtered like post objects
+    tags(where: { language: EN }) {
+        nodes {
+            name
+            language {
+                code
+                name
+            }
+        }
+    }
+
     # Get translated version of a given menu
     menuItems(where: { language: EN, location: FOOTER_MENU }) {
         nodes {
