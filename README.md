@@ -50,7 +50,7 @@ query PolylangExample {
                 title
                 link
                 language {
-                    codej
+                    code
                 }
             }
         }
