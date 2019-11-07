@@ -2,9 +2,9 @@
 
 Here's how to run the tests on Ubuntu Bionic
 
-Install php and mariadb
+Install php, mariadb and some dev tools
 
-    sudo apt install php-cli php-curl php-gd php-mbstring php-zip php-dom php-mysql subversion zip mariadb-server mariadb-client
+    sudo apt install php-cli php-curl php-gd php-mbstring php-zip php-dom php-mysql subversion git zip mariadb-server mariadb-client
 
 Add testadmin user for mariadb
 
@@ -17,6 +17,11 @@ Get Composer
 
     sudo wget https://getcomposer.org/download/1.9.1/composer.phar -O /usr/local/bin/composer
     sudo chmod a+x /usr/local/bin/composer
+
+Clone the repostory
+
+    git clone https://github.com/valu-digital/wp-graphql-polylang.git
+    cd wp-graphql-polylang
 
 Copy .env file
 
