@@ -62,6 +62,18 @@ query PolylangExample {
             url
         }
     }
+
+    # Get the default language
+    defaultLanguage {
+        name
+        code
+    }
+
+    # Get all configured languages
+    languages {
+        name
+        code
+    }
 }
 ```
 
