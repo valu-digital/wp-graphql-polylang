@@ -2,4 +2,5 @@
 
 set -eu
 
+wp eval "echo 'hello';"
 exec wp eval-file ../../tools/add_languages.php
