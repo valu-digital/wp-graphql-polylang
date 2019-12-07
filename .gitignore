@@ -3,3 +3,4 @@ node_modules
 /.vscode/launch.json
 /vendor
 /.wp-install
+/composer.lock
