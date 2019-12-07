@@ -9,10 +9,16 @@ jobs:
             - uses: actions/checkout@v1
 
             - uses: actions/cache@v1
-              id: cache
+              id: cache-composer
               with:
                   path: ~/.composer/cache
                   key: ${{ runner.os }}-composer
+
+            - uses: actions/cache@v1
+              id: cache-wp-cli
+              with:
+                  path: ~/.wp-cli/cache
+                  key: ${{ runner.os }}-wp-cli
 
             - name: Run tests
               run: .github/run-tests
