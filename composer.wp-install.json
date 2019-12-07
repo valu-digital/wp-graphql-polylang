@@ -1,0 +1,23 @@
+{
+    "name": "wp-testing-tools/wp",
+    "type": "project",
+    "license": "GPL-2.0-or-later",
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://wpackagist.org"
+        }
+    ],
+    "require": {
+        "composer/installers": "^1.0",
+        "wp-graphql/wp-graphql": "^0.4.0",
+        "wpackagist-plugin/polylang": "*"
+    },
+    "extra": {
+        "installer-paths": {
+            "web/wp-content/plugins/{$name}": ["type:wordpress-plugin"],
+            "web/wp-content/mu-plugins/{$name}": ["type:wordpress-muplugin"],
+            "web/wp-content/themes/{$name}": ["type:wordpress-theme"]
+        }
+    }
+}

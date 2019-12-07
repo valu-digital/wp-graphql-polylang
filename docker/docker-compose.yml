@@ -1,0 +1,21 @@
+version: "3.7"
+services:
+  wp:
+    init: true
+    env_file:
+      - ../.env
+    container_name: "${WPTT_CONTAINER_NAME}-wp"
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    volumes:
+      - ..:/app
+  db:
+    container_name: "${WPTT_CONTAINER_NAME}-db"
+    image: mariadb
+    env_file:
+      - ../.env

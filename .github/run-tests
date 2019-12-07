@@ -1,0 +1,17 @@
+#!/bin/sh
+
+set -eu
+
+cp .env.github .env
+
+export PATH="$(pwd)/vendor/bin:$PATH"
+
+
+composer install
+composer wp-install
+
+if [ "$(wp-install --status)" = "full" ]; then
+    wp-install --serve &
+fi
+
+composer test

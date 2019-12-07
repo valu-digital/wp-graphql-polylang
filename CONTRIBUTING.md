@@ -1,40 +1,26 @@
-# Running the tests
+# Contributing
 
-Here's how to run the tests on Ubuntu Bionic
+This project uses [WP Testing Tools][] to run tests with Codeception and
+wp-browser.
 
-Install php, mariadb and some dev tools
+To run the tests all you need is git and Docker. On Windows you should run
+the commands from git-bash.
 
-    sudo apt install php-cli php-curl php-gd php-mbstring php-zip php-dom php-mysql subversion git zip mariadb-server mariadb-client
+In the git repository root run
 
-Add testadmin user for mariadb
+    docker/compose.sh
 
-    sudo mysql
-    CREATE USER 'testadmin'@'localhost' IDENTIFIED BY 'password';
-    GRANT ALL PRIVILEGES ON *.* TO 'testadmin'@'localhost' WITH GRANT OPTION
-    FLUSH PRIVILEGES
+This will build and start up the Docker environment. It will take awhile but
+only on the first time.
 
-Get Composer
+Once it's running on a second terminal run to open the testing shell
 
-    sudo wget https://getcomposer.org/download/1.9.1/composer.phar -O /usr/local/bin/composer
-    sudo chmod a+x /usr/local/bin/composer
+    docker/shell.sh
 
-Clone the repostory
-
-    git clone https://github.com/valu-digital/wp-graphql-polylang.git
-    cd wp-graphql-polylang
-
-Copy .env file
-
-    cp .env.local .env
-
-Install testing deps
-
-    composer install
-
-Install WordPress testing tools
-
-    composer install-wp-tests
-
-And finally run the tests
+and in there run
 
     composer test
+
+For more information checkout the [WP Testing Tools][] README.
+
+[wp testing tools]: https://github.com/valu-digital/wp-testing-tools

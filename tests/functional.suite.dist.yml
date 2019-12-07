@@ -1,36 +1,29 @@
-# Codeception Test Suite Configuration
-#
-# Suite for functional tests
-# Emulate web requests and make WordPress process them
-
 actor: FunctionalTester
 modules:
     enabled:
+        - REST
         - WPDb
         - WPBrowser
-        # - WPFilesystem
         - Asserts
         - \Helper\Functional
+    disabled:
+        - WPLoader
+
     config:
+        REST:
+            depends: WPBrowser
+            url: "http://%WPTT_SITE_HOST%"
+        WPBrowser:
+            url: "http://%WPTT_SITE_HOST%"
+            adminUsername: "%WPTT_SITE_ADMIN_USERNAME%"
+            adminPassword: "%WPTT_SITE_ADMIN_PASSWORD%"
+            adminPath: "/wp-admin"
         WPDb:
-            dsn: 'mysql:host=%TEST_SITE_DB_HOST%;dbname=%TEST_SITE_DB_NAME%'
-            user: '%TEST_SITE_DB_USER%'
-            password: '%TEST_SITE_DB_PASSWORD%'
-            dump: 'tests/_data/dump.sql'
+            dsn: "mysql:host=%WPTT_DB_HOST%;dbname=%WPTT_DB_NAME%"
+            user: %WPTT_DB_USER%
+            password: %WPTT_DB_PASSWORD%
+            dump: %WPTT_INSTALL_DIR%/dump.sql
             populate: true
             cleanup: true
-            waitlock: 0
-            url: '%WP_URL%'
-            urlReplacement: true
-            tablePrefix: '%TABLE_SITE_PREFIX%'
-        WPBrowser:
-            url: '%WP_URL%'
-            adminUsername: '%ADMIN_USERNAME%'
-            adminPassword: '%ADMIN_PASSWORD%'
-            adminPath: '%WP_ADMIN_PATH%'
-        WPFilesystem:
-            wpRootFolder: '%WP_ROOT_FOLDER%'
-            plugins: '/wp-content/plugins'
-            mu-plugins: '/wp-content/mu-plugins'
-            themes: '/wp-content/themes'
-            uploads: '/wp-content/uploads'
+            url: "http://%WPTT_SITE_HOST%"
+            tablePrefix: wp_
