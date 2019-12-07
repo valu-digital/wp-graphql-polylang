@@ -24,7 +24,7 @@
     },
     "require": {},
     "scripts": {
-        "wp-install": "wp-install --full --post-install tools/post-install",
+        "wp-install": "wp-install --full --post-install 'wp eval-file tools/post-install'",
         "test": "codecept run wpunit && codecept run functional",
         "functional": "codecept run functional",
         "wpunit": "codecept run wpunit"
