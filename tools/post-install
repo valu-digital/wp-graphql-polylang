@@ -2,7 +2,7 @@
 
 set -eu
 
-wp package install git@github.com:diggy/polylang-cli.git
+wp package install git@github.com:esamattis/polylang-cli.git
 
 wp pll lang create "English" en en_US
 wp pll lang create "Suomi" fi fi
