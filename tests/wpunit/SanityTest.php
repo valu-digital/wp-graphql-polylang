@@ -14,7 +14,7 @@ class SanityTest extends PolylangUnitTestCase
         parent::wpSetUpBeforeClass();
     }
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         self::set_default_language('en_US');
@@ -25,7 +25,7 @@ class SanityTest extends PolylangUnitTestCase
         self::create_language('es_ES');
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         parent::tearDown();
     }

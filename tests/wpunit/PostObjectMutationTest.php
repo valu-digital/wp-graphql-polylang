@@ -21,16 +21,6 @@ class PostObjectMutationTest extends PolylangUnitTestCase
         self::create_language('es_ES');
     }
 
-    public function setUp()
-    {
-        parent::setUp();
-
-        // XXX not enough permissions??
-        // $this->admin = $this->factory->user->create( [
-        // 	'role' => 'administrator',
-        // ] );
-    }
-
     public function testPostCreate()
     {
         wp_set_current_user($this->admin_id);

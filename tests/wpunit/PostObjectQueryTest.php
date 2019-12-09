@@ -17,7 +17,7 @@ class PostObjectQueryTest extends PolylangUnitTestCase
         self::create_language('es_ES');
     }
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

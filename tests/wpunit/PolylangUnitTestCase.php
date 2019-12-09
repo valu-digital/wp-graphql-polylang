@@ -17,11 +17,11 @@
     {
         self::delete_all_languages();
     }
-    function setUp()
+    function setUp(): void
     {
         parent::setUp();
     }
-    function tearDown()
+    function tearDown(): void
     {
         parent::tearDown();
         \WPGraphQL::__clear_schema();
