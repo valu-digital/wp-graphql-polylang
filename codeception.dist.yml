@@ -36,7 +36,9 @@ modules:
             plugins:
                 - "polylang/polylang.php"
                 - "wp-graphql/wp-graphql.php"
+                - "wp-graphql-polylang/wp-graphql-polylang.php"
             activatePlugins:
                 - "polylang/polylang.php"
                 - "wp-graphql/wp-graphql.php"
+                - "wp-graphql-polylang/wp-graphql-polylang.php"
             configFile: "tests/_data/config.php"
