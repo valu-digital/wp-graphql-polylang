@@ -1,0 +1,109 @@
+#!/bin/sh
+
+set -eu
+
+cmd=docker/run
+help() {
+    echo "
+    Docker shell wrapper for WP Testing Tools
+
+    usage:
+
+    Start the Docker enviroment with docker-compose
+
+        $cmd compose [custom options]
+
+    Enter the testing shell
+
+        $cmd shell
+
+    Update these Docker scripts
+
+        $cmd update
+
+    "
+}
+
+if [ ! -f docker/run ]; then
+    >&2 echo
+    >&2 echo "Oops! The docker script is supposed to be run from the parent directory"
+    >&2 echo "Ex. ./docker/run or more simply just docker/run"
+    >&2 echo
+    exit 1
+fi
+
+echo "# Generated file. Do not edit. Edit .env.docker instead" > .env
+echo "" >> .env
+cat .env.docker >> .env
+eval $(grep -v '^#' .env)
+
+
+shell() {
+    command=$@
+
+    if [ "$command" = "" ]; then
+        command="bash -l"
+        >&2 echo
+        >&2 echo "Welcome to WordPress testing shell!"
+        >&2 echo "Your plugin is mounted to /app and all composer dependencies are put to PATH."
+        >&2 echo
+        >&2 echo "Try: codecept run wpunit"
+        >&2 echo " or: codecept run functional"
+        >&2 echo
+    fi
+
+    exec docker exec -it "${WPTT_CONTAINER_NAME}-wp" $command
+}
+
+compose() {
+    command=$@
+
+    if [ "$command" = "" ]; then
+        command="up --build --abort-on-container-exit"
+    fi
+
+    exec docker-compose -f docker/docker-compose.yml $command
+}
+
+update() {
+    if [ -x ./vendor/bin/wptt-configure ]; then
+        exec ./vendor/bin/wptt-configure --docker
+    fi
+
+    >&2 echo
+    >&2 echo "valu/wp-testing-tools not installed with composer?"
+    >&2 echo
+    exit 5
+}
+
+case "${1:-}" in
+    -h|--help)
+        help
+        exit
+    ;;
+    "")
+        >&2 help
+        exit
+    ;;
+    compose)
+        shift
+        compose $@
+    ;;
+    compose-no-init)
+        shift
+        echo "WPTT_NO_INIT=1" >> .env
+        compose $@
+    ;;
+    shell)
+        shift
+        shell $@
+    ;;
+    update)
+        shift
+        update
+    ;;
+    *)
+        >&2 echo "Bad action $action"
+        exit 1
+    ;;
+esac

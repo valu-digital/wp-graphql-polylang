@@ -1,36 +1,36 @@
 {
-    "name": "valu/wp-graphql-polylang",
-    "description": "Polylang bindings for wp-graphql",
-    "type": "wordpress-plugin",
-    "license": "GPL-2.0-or-later",
-    "authors": [
-        {
-            "name": "Esa-Matti Suuronen",
-            "email": "esa-matti.suuronen@valu.fi",
-            "role": "developer"
-        }
-    ],
-    "require-dev": {
-        "lucatume/wp-browser": "^2.2",
-        "valu/wp-testing-tools": "^0.3.6"
-    },
-    "config": {
-        "optimize-autoloader": true
-    },
-    "autoload": {
-        "psr-4": {
-            "WPGraphQL\\Extensions\\Polylang\\": "src/"
-        }
-    },
-    "require": {},
-    "scripts": {
-        "wp-install": "wp-install --full --post-install tools/post-install",
-        "test": "codecept run wpunit && codecept run functional",
-        "functional": "codecept run functional",
-        "wpunit": "codecept run wpunit"
-    },
-    "support": {
-        "issues": "https://github.com/valu-digital/wp-graphql-polylang/issues",
-        "source": "https://github.com/valu-digital/wp-graphql-polylang"
+  "name": "valu/wp-graphql-polylang",
+  "description": "Polylang bindings for wp-graphql",
+  "type": "wordpress-plugin",
+  "license": "GPL-2.0-or-later",
+  "authors": [
+    {
+      "name": "Esa-Matti Suuronen",
+      "email": "esa-matti.suuronen@valu.fi",
+      "role": "developer"
     }
+  ],
+  "require-dev": {
+    "lucatume/wp-browser": "^2.2",
+    "valu/wp-testing-tools": "^0.4.0"
+  },
+  "config": {
+    "optimize-autoloader": true
+  },
+  "autoload": {
+    "psr-4": {
+      "WPGraphQL\\Extensions\\Polylang\\": "src/"
+    }
+  },
+  "require": {},
+  "scripts": {
+    "wp-install": "wp-install --full --post-install tools/post-install",
+    "test": "codecept run wpunit && codecept run functional",
+    "functional": "codecept run functional",
+    "wpunit": "codecept run wpunit"
+  },
+  "support": {
+    "issues": "https://github.com/valu-digital/wp-graphql-polylang/issues",
+    "source": "https://github.com/valu-digital/wp-graphql-polylang"
+  }
 }
