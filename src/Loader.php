@@ -105,20 +105,6 @@ class Loader
             return true;
         }
 
-        if (defined('GRAPHQL_HTTP_REQUEST')) {
-            return GRAPHQL_HTTP_REQUEST;
-        }
-
-        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET[\WPGraphQL\Router::$route])) {
-            return true;
-        }
-
-        $path = explode('?', $_SERVER['REQUEST_URI'])[0];
-
-        if ($this->endsWith($path, '/' . \WPGraphQL\Router::$route)) {
-            return true;
-        }
-
-        return false;
+        return is_graphql_http_request();
     }
 }
