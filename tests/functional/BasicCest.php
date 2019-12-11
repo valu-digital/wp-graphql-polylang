@@ -62,4 +62,37 @@ class BasicCest {
         ]);
 
     }
+
+    /**
+     * wp-graphql sends graphql requests to index.php?graphql
+     */
+    public function testCanSendPOSTToGraphiql( FunctionalTester $I ) {
+
+        $query = '
+        {
+            languages {
+                code
+            }
+        }';
+
+        $I->haveHttpHeader( 'Content-Type', 'application/json' );
+        $I->sendPOST( '/index.php?graphql', [
+            'query' => $query,
+        ] );
+        $I->seeResponseCodeIs( 200 );
+        $I->seeResponseIsJson();
+        $I->seeResponseContainsJson([
+            'data' => [
+                'languages' => [
+                    [
+                        'code' => 'EN',
+                    ],
+                    [
+                        'code' => 'FI',
+                    ]
+                ],
+            ],
+        ]);
+
+    }
 }
