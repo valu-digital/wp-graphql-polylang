@@ -105,20 +105,26 @@ class Loader
             return true;
         }
 
-        if (defined('GRAPHQL_HTTP_REQUEST')) {
-            return GRAPHQL_HTTP_REQUEST;
-        }
+        // Copied from https://github.com/wp-graphql/wp-graphql/pull/1067
+        // For now as the existing version is buggy.
+        if ( isset( $_GET[ \WPGraphQL\Router::$route ] ) ) {
+			return true;
+		}
 
-        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET[\WPGraphQL\Router::$route])) {
-            return true;
-        }
+		// If before 'init' check $_SERVER.
+		if ( isset( $_SERVER['HTTP_HOST'] ) && isset( $_SERVER['REQUEST_URI'] ) ) {
+			$haystack = wp_unslash( $_SERVER['HTTP_HOST'] )
+				. wp_unslash( $_SERVER['REQUEST_URI'] );
+			$needle   = \home_url( \WPGraphQL\Router::$route );
 
-        $path = explode('?', $_SERVER['REQUEST_URI'])[0];
-
-        if ($this->endsWith($path, '/' . \WPGraphQL\Router::$route)) {
-            return true;
+			// Strip protocol.
+			$haystack = preg_replace( '#^(http(s)?://)#', '', $haystack );
+			$needle   = preg_replace( '#^(http(s)?://)#', '', $needle );
+			$len      = strlen( $needle );
+			return ( substr( $haystack, 0, $len ) === $needle );
         }
 
         return false;
+
     }
 }
