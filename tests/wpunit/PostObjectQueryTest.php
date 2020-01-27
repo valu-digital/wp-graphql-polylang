@@ -216,4 +216,29 @@ class PostObjectQueryTest extends PolylangUnitTestCase
 
         $this->assertEquals($expected, $data['data']['postBy']);
     }
+
+    public function testContentNodesFiltering()
+    {
+        $query = '
+        query Posts {
+            contentNodes(where: {language: FI}) {
+              nodes {
+                ... on Post {
+                  title
+                }
+              }
+            }
+         }
+        ';
+
+        $data = do_graphql_request($query);
+        $nodes = $data['data']['contentNodes']['nodes'] ?? [];
+        $expected = [
+            [
+               'title' => 'Finnish post'
+            ]
+        ];
+
+        $this->assertEquals($nodes, $expected);
+    }
 }
