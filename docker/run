@@ -9,17 +9,19 @@ help() {
 
     usage:
 
-    Start the Docker enviroment with docker-compose
 
-        $cmd compose [custom options]
+    $cmd compose [custom options]
+        Start the Docker enviroment with docker-compose
 
-    Enter the testing shell
+    $cmd shell
+        Enter the testing shell
 
-        $cmd shell
+    $cmd update
+        Update these Docker scripts
 
-    Update these Docker scripts
-
-        $cmd update
+    $cmd compose-no-init
+        Start the container without installing anything. Usefull for
+        debugging or developing install steps
 
     "
 }
@@ -103,7 +105,7 @@ case "${1:-}" in
         update
     ;;
     *)
-        >&2 echo "Bad action $action"
+        >&2 echo "Bad action ${1:-}"
         exit 1
     ;;
 esac

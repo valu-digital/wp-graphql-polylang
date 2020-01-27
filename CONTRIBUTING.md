@@ -8,16 +8,16 @@ the commands from git-bash.
 
 In the git repository root run
 
-    docker/compose.sh
+    ./docker/run compose
 
 This will build and start up the Docker environment. It will take awhile but
 only on the first time.
 
 Once it's running on a second terminal run to open the testing shell
 
-    docker/shell.sh
+    ./docker/run shell
 
-and in there run
+and in the shell run
 
     composer test
 
