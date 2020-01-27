@@ -8,11 +8,6 @@ class Loader
     private $pll_context_called = false;
 
     static function init() {
-        // Bail out early if WPGraphQL is not activated.
-        if (!class_exists('WPGraphQL')) {
-            return;
-        };
-
         define('WPGRAPHQL_POLYLANG', true);
         (new Loader())->bind_hooks();
     }
@@ -102,6 +97,11 @@ class Loader
 
     function is_graphql_request()
     {
+        // Detect WPGraphQL activation by checking if the main class is defined
+        if (!class_exists('WPGraphQL')) {
+            return false;
+        };
+
         if (!defined('POLYLANG_VERSION')) {
             return false;
         }
