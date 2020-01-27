@@ -46,6 +46,13 @@ class PostObject
 
     function register_fields()
     {
+        register_graphql_fields('RootQueryToContentNodeConnectionWhereArgs', [
+            'language' => [
+                'type' => 'LanguageCodeFilterEnum',
+                'description' => "Filter content nodes by language code (Polylang)",
+            ],
+        ]);
+
         foreach (\WPGraphQL::get_allowed_post_types() as $post_type) {
             $this->add_post_type_fields(get_post_type_object($post_type));
         }
