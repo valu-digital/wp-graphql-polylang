@@ -27,7 +27,7 @@ ARG XDEBUG=/etc/php/7.2/cli/conf.d/20-xdebug.ini
 RUN echo "[XDebug]" >> ${XDEBUG} \
     && echo "xdebug.remote_enable = 1" >> ${XDEBUG} \
     && echo "xdebug.remote_autostart = 1" >> ${XDEBUG} \
-    && echo "xdebug.remote_connect_back = 1" >> ${XDEBUG}
+    && echo "xdebug.remote_host = host.docker.internal" >> ${XDEBUG}
 
 # Put composer stuff to path so it is easy to run codecept
 ENV PATH="/app/vendor/bin:${PATH}"
