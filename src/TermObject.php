@@ -172,7 +172,7 @@ class TermObject
                         continue;
                     }
 
-                    $terms[] = $translation;
+                    $terms[] = new \WPGraphQL\Model\Term($translation);
                 }
 
                 return $terms;
