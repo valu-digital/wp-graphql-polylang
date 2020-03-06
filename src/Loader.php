@@ -16,8 +16,30 @@ class Loader
     {
         add_filter('pll_model', [$this, '__filter_pll_model'], 10, 1);
         add_filter('pll_context', [$this, '__filter_pll_context'], 10, 1);
+        add_filter(
+            'get_user_metadata',
+            [$this, '__filter_get_user_metadata'],
+            10,
+            4
+        );
         add_action('graphql_init', [$this, '__action_graphql_init']);
         add_action('admin_notices', [$this, '__action_admin_notices']);
+    }
+
+    /**
+     * Disable wp-admin language switcher on graphql context
+     */
+    function __filter_get_user_metadata($data, $object_id, $meta_key, $single)
+    {
+        if ($meta_key !== 'pll_filter_content') {
+            return $data;
+        }
+
+        if (!$this->is_graphql_request()) {
+            return $data;
+        }
+
+        return 'all';
     }
 
     function __action_graphql_init()

@@ -241,4 +241,34 @@ class PostObjectQueryTest extends PolylangUnitTestCase
 
         $this->assertEquals($nodes, $expected);
     }
+
+    public function testListsPostsFromAllLanguagesWhenLanguageIsSelectedInWPAdmin()
+    {
+        wp_set_current_user(1);
+        update_user_meta(1, 'pll_filter_content', 'en');
+
+        // XXX This is not enough to initialize the admin mode for Polylang
+        // set_current_screen( 'edit-post' );
+        set_current_screen('edit.php');
+
+        $query = '
+        query Posts {
+            posts {
+              nodes {
+                title
+              }
+            }
+         }
+        ';
+
+        $data = do_graphql_request($query);
+        $nodes = $data['data']['posts']['nodes'];
+        $expected = [
+            //
+            ['title' => 'English post'],
+            ['title' => 'Finnish post'],
+        ];
+
+        $this->assertEquals($nodes, $expected);
+    }
 }
