@@ -5,7 +5,8 @@
         {
             "files": "*.php",
             "options": {
-                "singleQuote": true
+                "singleQuote": true,
+                "trailingCommaPHP": "php5"
             }
         }
     ]
