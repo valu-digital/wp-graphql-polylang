@@ -182,7 +182,6 @@ class TermObjectQueryTest extends PolylangUnitTestCase
 
         $data = do_graphql_request($query);
         $this->assertArrayNotHasKey('errors', $data, print_r($data, true));
-
     }
 
     public function testCanFetchSpecificTranslatedVersion()

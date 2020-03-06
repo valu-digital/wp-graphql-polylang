@@ -8,7 +8,12 @@ class TermObject
 {
     function init()
     {
-        add_action('graphql_register_types', [$this, 'register'], 10, 0);
+        add_action(
+            'graphql_register_types',
+            [$this, '__action_graphql_register_types'],
+            10,
+            0
+        );
 
         add_filter(
             'graphql_map_input_fields_to_get_terms',
@@ -19,13 +24,13 @@ class TermObject
 
         add_filter(
             'graphql_term_object_insert_term_args',
-            [$this, 'map_language_input_to_args'],
+            [$this, '__filter_graphql_term_object_insert_term_args'],
             10,
             2
         );
     }
 
-    function map_language_input_to_args($insert_args, $input)
+    function __filter_graphql_term_object_insert_term_args($insert_args, $input)
     {
         if (isset($input['language'])) {
             $insert_args['language'] = $input['language'];
@@ -34,7 +39,7 @@ class TermObject
         return $insert_args;
     }
 
-    function register()
+    function __action_graphql_register_types()
     {
         foreach (\WPGraphQL::get_allowed_taxonomies() as $taxonomy) {
             $this->add_taxonomy_fields(get_taxonomy($taxonomy));

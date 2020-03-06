@@ -2,25 +2,25 @@
 
 namespace WPGraphQL\Extensions\Polylang;
 
-
 class Loader
 {
     private $pll_context_called = false;
 
-    static function init() {
+    static function init()
+    {
         define('WPGRAPHQL_POLYLANG', true);
         (new Loader())->bind_hooks();
     }
 
     function bind_hooks()
     {
-        add_filter('pll_model', [$this, 'get_pll_model'], 10, 1);
-        add_filter('pll_context', [$this, 'get_pll_context'], 10, 1);
-        add_action('graphql_init', [$this, 'graphql_polylang_init']);
-        add_action('admin_notices', [$this, 'admin_notices']);
+        add_filter('pll_model', [$this, '__filter_pll_model'], 10, 1);
+        add_filter('pll_context', [$this, '__filter_pll_context'], 10, 1);
+        add_action('graphql_init', [$this, '__action_graphql_init']);
+        add_action('admin_notices', [$this, '__action_admin_notices']);
     }
 
-    function graphql_polylang_init()
+    function __action_graphql_init()
     {
         if (!$this->is_graphql_request()) {
             return;
@@ -42,7 +42,7 @@ class Loader
         (new StringsTranslations())->init();
     }
 
-    function get_pll_model($class)
+    function __filter_pll_model($class)
     {
         if ($this->is_graphql_request()) {
             return 'PLL_Admin_Model';
@@ -51,7 +51,7 @@ class Loader
         return $class;
     }
 
-    function get_pll_context($class)
+    function __filter_pll_context($class)
     {
         $this->pll_context_called = true;
 
@@ -62,7 +62,7 @@ class Loader
         return $class;
     }
 
-    function admin_notices()
+    function __action_admin_notices()
     {
         if (!is_super_admin()) {
             return;
@@ -92,7 +92,7 @@ class Loader
             return true;
         }
 
-        return (substr($haystack, -$length) === $needle);
+        return substr($haystack, -$length) === $needle;
     }
 
     function is_graphql_request()
@@ -100,7 +100,7 @@ class Loader
         // Detect WPGraphQL activation by checking if the main class is defined
         if (!class_exists('WPGraphQL')) {
             return false;
-        };
+        }
 
         if (!defined('POLYLANG_VERSION')) {
             return false;
@@ -112,23 +112,23 @@ class Loader
 
         // Copied from https://github.com/wp-graphql/wp-graphql/pull/1067
         // For now as the existing version is buggy.
-        if ( isset( $_GET[ \WPGraphQL\Router::$route ] ) ) {
-			return true;
-		}
+        if (isset($_GET[\WPGraphQL\Router::$route])) {
+            return true;
+        }
 
-		// If before 'init' check $_SERVER.
-		if ( isset( $_SERVER['HTTP_HOST'] ) && isset( $_SERVER['REQUEST_URI'] ) ) {
-			$haystack = wp_unslash( $_SERVER['HTTP_HOST'] )
-				. wp_unslash( $_SERVER['REQUEST_URI'] );
-			$needle   = site_url( \WPGraphQL\Router::$route );
-			// Strip protocol.
-			$haystack = preg_replace( '#^(http(s)?://)#', '', $haystack );
-			$needle   = preg_replace( '#^(http(s)?://)#', '', $needle );
-			$len      = strlen( $needle );
-			return ( substr( $haystack, 0, $len ) === $needle );
+        // If before 'init' check $_SERVER.
+        if (isset($_SERVER['HTTP_HOST']) && isset($_SERVER['REQUEST_URI'])) {
+            $haystack =
+                wp_unslash($_SERVER['HTTP_HOST']) .
+                wp_unslash($_SERVER['REQUEST_URI']);
+            $needle = site_url(\WPGraphQL\Router::$route);
+            // Strip protocol.
+            $haystack = preg_replace('#^(http(s)?://)#', '', $haystack);
+            $needle = preg_replace('#^(http(s)?://)#', '', $needle);
+            $len = strlen($needle);
+            return substr($haystack, 0, $len) === $needle;
         }
 
         return false;
-
     }
 }

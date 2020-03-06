@@ -21,18 +21,22 @@ class MenuItem
     {
         $this->create_nav_menu_locations();
 
-        add_action('graphql_register_types', [$this, 'register_fields'], 10, 0);
+        add_action(
+            'graphql_register_types',
+            [$this, '__action_graphql_register_types'],
+            10,
+            0
+        );
 
-        // XXX This is not supported by WPGraphQL yet
         add_filter(
             'graphql_menu_item_connection_args',
-            [$this, 'map_input_language_to_location'],
+            [$this, '__filter_graphql_menu_item_connection_args'],
             10,
             1
         );
     }
 
-    function map_input_language_to_location(array $args)
+    function __filter_graphql_menu_item_connection_args(array $args)
     {
         if (!isset($args['where']['language'])) {
             return $args;
@@ -79,7 +83,7 @@ class MenuItem
         );
     }
 
-    function register_fields()
+    function __action_graphql_register_types()
     {
         register_graphql_fields('RootQueryToMenuItemConnectionWhereArgs', [
             'language' => [

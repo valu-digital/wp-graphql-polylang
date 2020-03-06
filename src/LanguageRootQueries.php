@@ -8,10 +8,15 @@ class LanguageRootQueries
 {
     function init()
     {
-        add_action('graphql_register_types', [$this, 'register'], 10, 0);
+        add_action(
+            'graphql_register_types',
+            [$this, '__action_graphql_register_types'],
+            10,
+            0
+        );
     }
 
-    function register()
+    function __action_graphql_register_types()
     {
         register_graphql_field('RootQuery', 'languages', [
             'type' => ['list_of' => 'Language'],

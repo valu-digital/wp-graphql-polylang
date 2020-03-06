@@ -6,10 +6,15 @@ class PolylangTypes
 {
     function init()
     {
-        add_action('graphql_register_types', [$this, 'register_types'], 9, 0);
+        add_action(
+            'graphql_register_types',
+            [$this, '__action_graphql_register_types'],
+            9,
+            0
+        );
     }
 
-    function register_types()
+    function __action_graphql_register_types()
     {
         $language_codes = [];
 

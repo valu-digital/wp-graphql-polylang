@@ -235,8 +235,8 @@ class PostObjectQueryTest extends PolylangUnitTestCase
         $nodes = $data['data']['contentNodes']['nodes'] ?? [];
         $expected = [
             [
-               'title' => 'Finnish post'
-            ]
+                'title' => 'Finnish post',
+            ],
         ];
 
         $this->assertEquals($nodes, $expected);

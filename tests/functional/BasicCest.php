@@ -1,9 +1,9 @@
 <?php
 
-class BasicCest {
-
-    public function testCanSendGET( FunctionalTester $I ) {
-
+class BasicCest
+{
+    public function testCanSendGET(FunctionalTester $I)
+    {
         $query = '
         {
             languages {
@@ -11,12 +11,12 @@ class BasicCest {
             }
         }';
 
-        $query_vars = http_build_query( [
+        $query_vars = http_build_query([
             'query' => $query,
-        ] );
-        $I->haveHttpHeader( 'Content-Type', 'application/json' );
-        $I->sendGET( "/graphql?{$query_vars}" );
-        $I->seeResponseCodeIs( 200 );
+        ]);
+        $I->haveHttpHeader('Content-Type', 'application/json');
+        $I->sendGET("/graphql?{$query_vars}");
+        $I->seeResponseCodeIs(200);
         $I->seeResponseIsJson();
         $I->seeResponseContainsJson([
             'data' => [
@@ -26,15 +26,14 @@ class BasicCest {
                     ],
                     [
                         'code' => 'FI',
-                    ]
+                    ],
                 ],
             ],
         ]);
-
     }
 
-    public function testCanSendPOST( FunctionalTester $I ) {
-
+    public function testCanSendPOST(FunctionalTester $I)
+    {
         $query = '
         {
             languages {
@@ -42,11 +41,11 @@ class BasicCest {
             }
         }';
 
-        $I->haveHttpHeader( 'Content-Type', 'application/json' );
-        $I->sendPOST( '/graphql', [
+        $I->haveHttpHeader('Content-Type', 'application/json');
+        $I->sendPOST('/graphql', [
             'query' => $query,
-        ] );
-        $I->seeResponseCodeIs( 200 );
+        ]);
+        $I->seeResponseCodeIs(200);
         $I->seeResponseIsJson();
         $I->seeResponseContainsJson([
             'data' => [
@@ -56,18 +55,17 @@ class BasicCest {
                     ],
                     [
                         'code' => 'FI',
-                    ]
+                    ],
                 ],
             ],
         ]);
-
     }
 
     /**
      * wp-graphql sends graphql requests to index.php?graphql
      */
-    public function testCanSendPOSTToGraphiql( FunctionalTester $I ) {
-
+    public function testCanSendPOSTToGraphiql(FunctionalTester $I)
+    {
         $query = '
         {
             languages {
@@ -75,11 +73,11 @@ class BasicCest {
             }
         }';
 
-        $I->haveHttpHeader( 'Content-Type', 'application/json' );
-        $I->sendPOST( '/index.php?graphql', [
+        $I->haveHttpHeader('Content-Type', 'application/json');
+        $I->sendPOST('/index.php?graphql', [
             'query' => $query,
-        ] );
-        $I->seeResponseCodeIs( 200 );
+        ]);
+        $I->seeResponseCodeIs(200);
         $I->seeResponseIsJson();
         $I->seeResponseContainsJson([
             'data' => [
@@ -89,10 +87,9 @@ class BasicCest {
                     ],
                     [
                         'code' => 'FI',
-                    ]
+                    ],
                 ],
             ],
         ]);
-
     }
 }

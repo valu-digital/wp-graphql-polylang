@@ -8,11 +8,19 @@ class PostObject
 {
     function init()
     {
-        add_action('graphql_register_types', [$this, 'register_fields'], 10, 0);
+        add_action(
+            'graphql_register_types',
+            [$this, '__action_graphql_register_types'],
+            10,
+            0
+        );
 
         add_action(
             'graphql_post_object_mutation_update_additional_data',
-            [$this, 'mutate_language'],
+            [
+                $this,
+                '__action_graphql_post_object_mutation_update_additional_data',
+            ],
             10,
             4
         );
@@ -28,28 +36,29 @@ class PostObject
     /**
      * Handle 'language' in post object create&language mutations
      */
-    function mutate_language(
+    function __action_graphql_post_object_mutation_update_additional_data(
         $post_id,
         array $input,
         \WP_Post_Type $post_type_object,
         $mutation_name
     ) {
-        $is_create =  substr( $mutation_name, 0, 6 ) === 'create';
+        $is_create = substr($mutation_name, 0, 6) === 'create';
 
         if (isset($input['language'])) {
             pll_set_post_language($post_id, $input['language']);
-        } else if ($is_create) {
+        } elseif ($is_create) {
             $default_lang = pll_default_language();
             pll_set_post_language($post_id, $default_lang);
         }
     }
 
-    function register_fields()
+    function __action_graphql_register_types()
     {
         register_graphql_fields('RootQueryToContentNodeConnectionWhereArgs', [
             'language' => [
                 'type' => 'LanguageCodeFilterEnum',
-                'description' => "Filter content nodes by language code (Polylang)",
+                'description' =>
+                    'Filter content nodes by language code (Polylang)',
             ],
         ]);
 

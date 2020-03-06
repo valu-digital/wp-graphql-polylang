@@ -10,10 +10,9 @@
  * @package wp-graphql-polylang
  */
 
-
- // Use the local autoload if not using project wide autoload
- if (!\class_exists('\WPGraphQL\Extensions\Polylang\Loader')) {
+// Use the local autoload if not using project wide autoload
+if (!\class_exists('\WPGraphQL\Extensions\Polylang\Loader')) {
     require_once __DIR__ . '/vendor/autoload.php';
- }
+}
 
 \WPGraphQL\Extensions\Polylang\Loader::init();
