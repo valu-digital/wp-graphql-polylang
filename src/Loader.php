@@ -39,7 +39,7 @@ class Loader
             return $data;
         }
 
-        return 'all';
+        return ['all'];
     }
 
     function __action_graphql_init()
