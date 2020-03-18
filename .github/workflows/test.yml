@@ -4,6 +4,14 @@ on: [push, pull_request]
 
 jobs:
     test:
+        services:
+            mariadb:
+                image: mariadb
+                ports:
+                    - 3306:3306
+                env:
+                    MYSQL_ROOT_PASSWORD: root
+                options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v1
