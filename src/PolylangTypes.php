@@ -22,10 +22,13 @@ class PolylangTypes
             $language_codes[strtoupper($lang)] = $lang;
         }
 
-        if ( empty( $langauge_codes ) {
-           $locale = get_locale();
-           $language_codes[ strtoupper( $locale ) ] = $locale;   
-        }
+         if ( empty( $langauge_codes ) ) {
+		    $locale = get_locale();
+		    $language_codes[ strtoupper( $locale ) ] = [
+		    	'value' => $locale,
+			    'description' => __( 'The default locale of the site', 'wp-graphql-polylang' ),
+		    ];
+	    }
         
         register_graphql_enum_type('LanguageCodeEnum', [
             'description' => __(
