@@ -4,6 +4,10 @@ namespace WPGraphQL\Extensions\Polylang;
 
 use GraphQL\Type\Definition\ResolveInfo;
 
+/**
+ * Adds support for the "ACF Options For Polylang" plugin
+ * https://github.com/BeAPI/acf-options-for-polylang
+ */
 class OptionsPages
 {
 

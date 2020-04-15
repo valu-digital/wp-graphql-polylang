@@ -85,6 +85,15 @@ query PolylangExample {
         name
         code
     }
+
+    # Get translations for ACF options pages
+    # Requires additional plugin "ACF Options For Polylang"
+    # https://github.com/BeAPI/acf-options-for-polylang
+    siteSettings(language: EN) {
+        siteSettings {
+            footerTitle
+        }
+    }
 }
 ```
 
