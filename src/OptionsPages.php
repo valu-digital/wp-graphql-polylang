@@ -144,18 +144,12 @@ class OptionsPages
             return $id;
         }
 
-        if (self::is_already_localized($id)) {
+        // We'll add the suffix only once to the "options" wp option
+        if ($id !== 'options') {
             return $id;
         }
 
         return $id . '_' . self::$current_language;
-    }
-
-    static function is_already_localized($post_id)
-    {
-        preg_match('/[a-z]{2}_[A-Z]{2}/', $post_id, $language);
-
-        return !empty($language);
     }
 
     static function is_options_page($source)
