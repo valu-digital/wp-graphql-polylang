@@ -9,6 +9,7 @@ class Loader
     static function init()
     {
         define('WPGRAPHQL_POLYLANG', true);
+        OptionsPages::init();
         (new Loader())->bind_hooks();
     }
 
