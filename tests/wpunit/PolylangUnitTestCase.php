@@ -26,7 +26,7 @@
         parent::tearDown();
         \WPGraphQL::__clear_schema();
     }
-    static function create_language($locale, $args = array())
+    static function create_language($locale, $args = [])
     {
         $languages = include PLL_SETTINGS_INC . '/languages.php';
         $values = $languages[$locale];
