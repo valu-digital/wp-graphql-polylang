@@ -117,6 +117,10 @@ class OptionsPages
 
     static function is_options_page($source)
     {
+        if (!is_array($source)) {
+            return false;
+        }
+
         $type = $source['type'] ?? null;
         return $type === 'options_page';
     }
