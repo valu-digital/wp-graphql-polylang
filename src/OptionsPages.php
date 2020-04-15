@@ -49,7 +49,7 @@ class OptionsPages
         $field_key,
         $field
     ) {
-        if (self::is_root_query($info) && isset($args['language'])) {
+        if (self::is_options_page_root_query($info)) {
             $model = \PLL()->model;
             $lang = $model->get_language($args['language'])->locale ?? null;
 
@@ -125,13 +125,45 @@ class OptionsPages
         return $type === 'options_page';
     }
 
-    static function is_root_query(ResolveInfo $info)
+    static function is_options_page_root_query(ResolveInfo $info)
     {
-        return count($info->path) === 1;
+        if (count($info->path) !== 1) {
+            return false;
+        }
+
+        $root_queries = self::get_options_page_root_queries();
+
+        return in_array($info->fieldName, $root_queries);
     }
 
-    static function get_option_page_root_queries()
+    static function get_options_page_root_queries()
     {
-        return ['siteSettings'];
+        $graphql_options_pages = acf_get_options_pages();
+
+        if (
+            empty($graphql_options_pages) ||
+            !is_array($graphql_options_pages)
+        ) {
+            return [];
+        }
+
+        $queries = [];
+
+        foreach ($graphql_options_pages as $options_page_key => $options_page) {
+            if (empty($options_page['show_in_graphql'])) {
+                continue;
+            }
+
+            if (empty($options_page['graphql_field_name'])) {
+                error_log(
+                    "Warning(wp-graphql-polylang): ACF Options Page '$options_page_key' has no 'graphql_field_name'"
+                );
+                continue;
+            }
+
+            $queries[] = $options_page['graphql_field_name'];
+        }
+
+        return $queries;
     }
 }
