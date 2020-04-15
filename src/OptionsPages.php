@@ -6,7 +6,16 @@ use GraphQL\Type\Definition\ResolveInfo;
 
 class OptionsPages
 {
-    static $language_root_queries = [];
+
+    /**
+     * Mapping of used options page root queries to their selected languages
+     */
+    static $root_query_locale_mapping = [];
+
+
+    /**
+     * Language of the currently resolving options page field
+     */
     static $current_language = null;
 
     static function init()
@@ -46,6 +55,9 @@ class OptionsPages
         );
     }
 
+    /**
+     * Add language arg to all options page root queries
+     */
     static function __action_graphql_RootQuery_fields($fields)
     {
         foreach (self::get_options_page_root_queries() as $root_query) {
@@ -74,22 +86,25 @@ class OptionsPages
         $field_key,
         $field
     ) {
+        /**
+         * Record what languages are used by the options page root queries
+         */
         if (self::is_options_page_root_query($info)) {
             $model = \PLL()->model;
             $lang = $model->get_language($args['language'])->locale ?? null;
 
             if ($lang) {
-                self::$language_root_queries[$info->path[0]] = $lang;
+                self::$root_query_locale_mapping[$info->path[0]] = $lang;
             }
         }
 
+        /**
+         * If resolving field under options page root query set the current language
+         */
         if (self::is_options_page($source)) {
             $root_query = $info->path[0];
-            $lang = self::$language_root_queries[$root_query] ?? null;
+            $lang = self::$root_query_locale_mapping[$root_query] ?? null;
             if ($lang) {
-                error_log(
-                    "Setting lang $field_key ::" . self::$current_language
-                );
                 self::$current_language = $lang;
             }
         }
@@ -105,6 +120,9 @@ class OptionsPages
         $field_key,
         $field
     ) {
+        /**
+         * Clear the current language after the field has been resolved
+         */
         if (self::is_options_page($source)) {
             self::$current_language = null;
         }
@@ -161,6 +179,11 @@ class OptionsPages
         return in_array($info->fieldName, $root_queries);
     }
 
+    /**
+     * Return array of the options page root query names.
+     *
+     * This requires that 'graphql_field_name' is passed to acf_add_options_page()
+     */
     static function get_options_page_root_queries()
     {
         $graphql_options_pages = acf_get_options_pages();
