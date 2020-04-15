@@ -11,6 +11,13 @@ class OptionsPages
 
     static function init()
     {
+        add_filter(
+            'graphql_RootQuery_fields',
+            [self::class, '__action_graphql_RootQuery_fields'],
+            50,
+            1
+        );
+
         add_action(
             'graphql_before_resolve_field',
             [self::class, '__action_graphql_before_resolve_field'],
@@ -37,6 +44,24 @@ class OptionsPages
             99,
             1
         );
+    }
+
+    static function __action_graphql_RootQuery_fields($fields)
+    {
+        foreach (self::get_options_page_root_queries() as $root_query) {
+            if (!isset($fields[$root_query])) {
+                continue;
+            }
+
+            $fields[$root_query]['args'] = [
+                'language' => [
+                    'type' => 'LanguageCodeFilterEnum',
+                    'description' => 'Filter by by language code (Polylang)',
+                ],
+            ];
+        }
+
+        return $fields;
     }
 
     static function __action_graphql_before_resolve_field(
