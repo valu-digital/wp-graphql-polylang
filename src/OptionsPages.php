@@ -54,9 +54,7 @@ class OptionsPages
             $lang = $model->get_language($args['language'])->locale ?? null;
 
             if ($lang) {
-                self::$language_root_queries[$info->path[0]] = strtolower(
-                    $lang
-                );
+                self::$language_root_queries[$info->path[0]] = $lang;
             }
         }
 
