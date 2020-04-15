@@ -2,6 +2,8 @@
 
 namespace WPGraphQL\Extensions\Polylang;
 
+use GraphQL\Type\Definition\ResolveInfo;
+
 class OptionsPages
 {
     static $language_root_queries = [];
