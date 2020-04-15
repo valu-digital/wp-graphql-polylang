@@ -9,7 +9,6 @@ class Loader
     static function init()
     {
         define('WPGRAPHQL_POLYLANG', true);
-        OptionsPages::init();
         (new Loader())->bind_hooks();
     }
 
@@ -55,6 +54,10 @@ class Loader
                 'wp-graphql-polylang: You are using too old Polylang version. You must use one that implements pll_context filter https://github.com/polylang/polylang/commit/2203b9e16532797fa530f9b73024b53885d728ef';
             error_log($msg);
             die($msg);
+        }
+
+        if (defined('BEA_ACF_OPTIONS_FOR_POLYLANG_VERSION')) {
+            OptionsPages::init();
         }
 
         (new PolylangTypes())->init();
