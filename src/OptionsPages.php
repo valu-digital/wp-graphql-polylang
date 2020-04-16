@@ -93,7 +93,7 @@ class OptionsPages
         /**
          * Record what languages are used by the options page root queries
          */
-        if (self::is_options_page_root_query($info)) {
+        if (isset($args['language']) && self::is_options_page_root_query($info)) {
             $model = \PLL()->model;
             $lang = $model->get_language($args['language'])->locale ?? null;
 
