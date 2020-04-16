@@ -56,7 +56,10 @@ class Loader
             die($msg);
         }
 
-        if (defined('BEA_ACF_OPTIONS_FOR_POLYLANG_VERSION')) {
+        // ACF Pro and "ACF Options For Polylang" plugins are required for
+        // options pages
+        // https://wordpress.org/plugins/acf-options-for-polylang/
+        if (defined('BEA_ACF_OPTIONS_FOR_POLYLANG_VERSION') && function_exists('acf_add_options_page')) {
             OptionsPages::init();
         }
 
