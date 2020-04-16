@@ -15,6 +15,7 @@ For posts and terms (custom ones too!)
 -   Show all translations in the api by default
     -   Polylang patches the WP Query to only list items with the current
         default language. This plugin reverts that for the GraphQL api
+-   ACF Options Pages support
 
 Root queries
 
