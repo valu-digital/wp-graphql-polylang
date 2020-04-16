@@ -86,9 +86,8 @@ query PolylangExample {
         code
     }
 
-    # Get translations for ACF options pages
-    # Requires additional plugin "ACF Options For Polylang"
-    # https://github.com/BeAPI/acf-options-for-polylang
+    # Get translations for ACF Options Pages.
+    # See the section in the README.
     siteSettings(language: EN) {
         siteSettings {
             footerTitle
@@ -137,6 +136,36 @@ Please let me know if you do so I can link to it here 😊
 Meanwhile you might want to checkout migration docs
 
 <https://polylang.pro/how-to-switch-from-wpml-to-polylang/>
+
+## ACF Options Pages
+
+The [Options Page][] support is implemented using the [ACF Options For
+Polylang][] plugin. You will also need Advanced Custom Fields Pro.
+
+You can install the plugin from [WordPress Packagist][] with
+
+```
+composer require wpackagist-plugin/acf-options-for-polylang
+```
+
+When registering the Options Page you must pass in `show_in_graphql` and
+`graphql_field_name` arguments.
+
+```php
+acf_add_options_page([
+    'page_title' => __('Site settings', 'theme'),
+    'menu_title' => __('Site settings', 'theme'),
+    'menu_slug' => 'site-settings',
+    'capability' => 'manage_options',
+    'redirect' => false,
+    'show_in_graphql' => true,
+    'graphql_field_name' => 'siteSettings',
+]);
+```
+
+[wordpress packagist]: https://wpackagist.org/
+[options page]: https://www.advancedcustomfields.com/resources/options-page/
+[acf options for polylang]: https://wordpress.org/plugins/acf-options-for-polylang/
 
 ## Contributing
 
