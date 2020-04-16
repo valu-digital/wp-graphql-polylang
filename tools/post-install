@@ -6,10 +6,6 @@ echo "############################"
 echo "wp-install post install hook"
 echo "############################"
 
-set -x
-
-pwd
-ls
-
-cd wp-content/plugins/wp-graphql-polylang/tests
-wp eval-file --require=pre-seed.php  seed.php
+wp eval-file \
+    --require=wp-content/plugins/wp-graphql-polylang/tests/pre-seed.php \
+    wp-content/plugins/wp-graphql-polylang/tests/seed.php
