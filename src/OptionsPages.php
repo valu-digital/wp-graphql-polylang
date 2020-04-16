@@ -10,12 +10,10 @@ use GraphQL\Type\Definition\ResolveInfo;
  */
 class OptionsPages
 {
-
     /**
      * Mapping of used options page root queries to their selected languages
      */
     static $root_query_locale_mapping = [];
-
 
     /**
      * Language of the currently resolving options page field
@@ -93,7 +91,10 @@ class OptionsPages
         /**
          * Record what languages are used by the options page root queries
          */
-        if (isset($args['language']) && self::is_options_page_root_query($info)) {
+        if (
+            isset($args['language']) &&
+            self::is_options_page_root_query($info)
+        ) {
             $model = \PLL()->model;
             $lang = $model->get_language($args['language'])->locale ?? null;
 
