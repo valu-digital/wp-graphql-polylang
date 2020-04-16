@@ -7,6 +7,27 @@ use GraphQL\Type\Definition\ResolveInfo;
 /**
  * Adds support for the "ACF Options For Polylang" plugin
  * https://github.com/BeAPI/acf-options-for-polylang
+ *
+ *
+ * The logic is following
+ *
+ *  Detect Options Pages exposed to graphql schema and their root query names.
+ *
+ *  Using this information extend the root queries via graphql_RootQuery_fields
+ *  filter to have `language` args.
+ *
+ *  When query is send use this same information to detect Options Page queries
+ *  and save the requested languages to a global ($root_query_locale_mapping).
+ *
+ *  In a before resolve field for sub fields detect if the root is in the global
+ *  mapping and move that language to a different global ($current_language).
+ *
+ *  In a ACF filter use the $current_language to get the correct language
+ *  version of the options page.
+ *
+ *  In after resolve field clear the $current_language field so it won't affect
+ *  other Options Pages.
+ *
  */
 class OptionsPages
 {
