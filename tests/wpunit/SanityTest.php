@@ -32,12 +32,12 @@ class SanityTest extends PolylangUnitTestCase
 
     public function testCanInsertPosts()
     {
-        $post_data = array(
+        $post_data = [
             'post_title' => 'Test regex',
             'post_status' => 'publish',
             'post_content' => 'sadfdsa',
             'post_type' => 'post',
-        );
+        ];
         $post_id = wp_insert_post($post_data);
 
         $this->assertTrue(is_numeric($post_id));
@@ -77,12 +77,12 @@ class SanityTest extends PolylangUnitTestCase
 
     public function testCanSetPostLanguage()
     {
-        $post_data = array(
+        $post_data = [
             'post_title' => 'Test regex',
             'post_status' => 'publish',
             'post_content' => 'sadfdsa',
             'post_type' => 'post',
-        );
+        ];
         $post_id = wp_insert_post($post_data);
         pll_set_post_language($post_id, 'fi');
 
