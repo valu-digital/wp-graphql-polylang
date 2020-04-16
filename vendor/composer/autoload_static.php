@@ -25,6 +25,7 @@ class ComposerStaticInit2596a9d1931bd6036fcb5bed81071a7f
         'WPGraphQL\\Extensions\\Polylang\\LanguageRootQueries' => __DIR__ . '/../..' . '/src/LanguageRootQueries.php',
         'WPGraphQL\\Extensions\\Polylang\\Loader' => __DIR__ . '/../..' . '/src/Loader.php',
         'WPGraphQL\\Extensions\\Polylang\\MenuItem' => __DIR__ . '/../..' . '/src/MenuItem.php',
+        'WPGraphQL\\Extensions\\Polylang\\OptionsPages' => __DIR__ . '/../..' . '/src/OptionsPages.php',
         'WPGraphQL\\Extensions\\Polylang\\PolylangTypes' => __DIR__ . '/../..' . '/src/PolylangTypes.php',
         'WPGraphQL\\Extensions\\Polylang\\PostObject' => __DIR__ . '/../..' . '/src/PostObject.php',
         'WPGraphQL\\Extensions\\Polylang\\StringsTranslations' => __DIR__ . '/../..' . '/src/StringsTranslations.php',
