@@ -100,7 +100,7 @@ query PolylangExample {
 ## Requirements
 
 -   PHP 7.2. We're planning to relax this a bit though
--   [WPGraphQL][] 0.3.x or later
+-   [WPGraphQL][] 0.6.x or later
 -   Polylang 2.6.5 or later
     -   The free version is enough
     -   If you get the PRO version the pro features such as translated slugs will work too
@@ -140,13 +140,19 @@ Meanwhile you might want to checkout migration docs
 
 ## ACF Options Pages
 
-The [Options Page][] support is implemented using the [ACF Options For
-Polylang][] plugin. You will also need Advanced Custom Fields Pro.
+In addition to WPGraphQL and Polylang plugins you'll need these plugins too
 
-You can install the plugin from [WordPress Packagist][] with
+-   [Advanced Custom Fields Pro](https://www.advancedcustomfields.com/pro/)
+    -   It's Pro only feature
+-   [ACF Options For Polylang](https://wordpress.org/plugins/acf-options-for-polylang/)
+-   [WPGraphQL for Advanced Custom Fields](https://www.wpgraphql.com/acf/)
+    -   v0.3.2 or later is required
+
+You can install the free plugins using Composer. You'll need to have the
+[WordPress Packagist][] repository enabled.
 
 ```
-composer require wpackagist-plugin/acf-options-for-polylang
+composer require wp-graphql/wp-graphql-acf wpackagist-plugin/acf-options-for-polylang
 ```
 
 When registering the Options Page you must pass in `show_in_graphql` and
@@ -160,7 +166,7 @@ acf_add_options_page([
     'capability' => 'manage_options',
     'redirect' => false,
     'show_in_graphql' => true,
-    'graphql_field_name' => 'siteSettings',
+    'graphql_field_name' => 'siteSettings'
 ]);
 ```
 
