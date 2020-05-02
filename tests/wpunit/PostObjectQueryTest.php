@@ -271,4 +271,175 @@ class PostObjectQueryTest extends PolylangUnitTestCase
 
         $this->assertEquals($nodes, $expected);
     }
+
+    public function testPagination()
+    {
+        foreach (range(1, 15) as $number) {
+            $number = str_pad($number, 2, '0', STR_PAD_LEFT);
+            $lang = $number % 2 === 0 ? 'en' : 'fi';
+
+            $post_id = self::factory()->post->create([
+                'post_title' => "Post $number $lang",
+            ]);
+
+            pll_set_post_language($post_id, $lang);
+        }
+
+        $query = '
+        query Posts {
+            posts(first: 3, where: {language: FI, orderby: {field: TITLE, order: ASC}}) {
+              pageInfo {
+                  hasNextPage
+                  endCursor
+              }
+              nodes {
+                title
+                language {
+                    code
+                }
+              }
+            }
+         }
+        ';
+
+        $data = do_graphql_request($query);
+        $this->assertArrayNotHasKey('errors', $data, print_r($data, true));
+        $nodes = $data['data']['posts']['nodes'];
+
+        $expected = [
+            0 => [
+                // Created in the setup()
+                'title' => 'Finnish post',
+                'language' => [
+                    'code' => 'FI',
+                ],
+            ],
+            1 => [
+                'title' => 'Post 01 fi',
+                'language' => [
+                    'code' => 'FI',
+                ],
+            ],
+            2 => [
+                'title' => 'Post 03 fi',
+                'language' => [
+                    'code' => 'FI',
+                ],
+            ],
+        ];
+
+        $this->assertEquals($nodes, $expected);
+        $this->assertEquals(
+            $data['data']['posts']['pageInfo']['hasNextPage'],
+            true
+        );
+        $cursor = $data['data']['posts']['pageInfo']['endCursor'];
+
+        ////////////////////////////
+        //         PAGE 2         //
+        ////////////////////////////
+
+        $query = "
+        query Posts {
+            posts(first: 3, after: \"$cursor\", where: {language: FI, orderby: {field: TITLE, order: ASC}}) {
+              pageInfo {
+                  hasNextPage
+                  endCursor
+              }
+              nodes {
+                title
+                language {
+                    code
+                }
+              }
+            }
+         }
+        ";
+
+        $data = do_graphql_request($query);
+        $this->assertArrayNotHasKey('errors', $data, print_r($data, true));
+        $nodes = $data['data']['posts']['nodes'];
+
+        $expected = [
+            0 => [
+                'title' => 'Post 05 fi',
+                'language' => [
+                    'code' => 'FI',
+                ],
+            ],
+            1 => [
+                'title' => 'Post 07 fi',
+                'language' => [
+                    'code' => 'FI',
+                ],
+            ],
+            2 => [
+                'title' => 'Post 09 fi',
+                'language' => [
+                    'code' => 'FI',
+                ],
+            ],
+        ];
+
+        $this->assertEquals($nodes, $expected);
+        $this->assertEquals(
+            $data['data']['posts']['pageInfo']['hasNextPage'],
+            true
+        );
+        $cursor = $data['data']['posts']['pageInfo']['endCursor'];
+
+        ////////////////////////////
+        //         PAGE 3         //
+        ////////////////////////////
+
+        $query = "
+        query Posts {
+            posts(first: 3, after: \"$cursor\", where: {language: FI, orderby: {field: TITLE, order: ASC}}) {
+              pageInfo {
+                  hasNextPage
+                  endCursor
+              }
+              nodes {
+                title
+                language {
+                    code
+                }
+              }
+            }
+         }
+        ";
+
+        $data = do_graphql_request($query);
+        $this->assertArrayNotHasKey('errors', $data, print_r($data, true));
+        $nodes = $data['data']['posts']['nodes'];
+
+        $expected = [
+            0 => [
+                'title' => 'Post 11 fi',
+                'language' => [
+                    'code' => 'FI',
+                ],
+            ],
+            1 => [
+                'title' => 'Post 13 fi',
+                'language' => [
+                    'code' => 'FI',
+                ],
+            ],
+            2 => [
+                'title' => 'Post 15 fi',
+                'language' => [
+                    'code' => 'FI',
+                ],
+            ],
+        ];
+
+        // error_log(var_export($nodes, true));
+
+        $this->assertEquals($nodes, $expected);
+        $this->assertEquals(
+            $data['data']['posts']['pageInfo']['hasNextPage'],
+            false
+        );
+    }
 }
