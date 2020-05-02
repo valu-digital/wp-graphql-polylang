@@ -11,7 +11,7 @@
     }
   ],
   "require-dev": {
-    "lucatume/wp-browser": "^2.2",
+    "lucatume/wp-browser": "~2.2",
     "valu/wp-testing-tools": "^0.4.0",
     "codeception/module-asserts": "^1.0",
     "codeception/module-phpbrowser": "^1.0",
