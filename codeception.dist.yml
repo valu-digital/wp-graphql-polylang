@@ -29,7 +29,7 @@ modules:
             dbHost: "%WPTT_DB_HOST%"
             dbUser: "%WPTT_DB_USER%"
             dbPassword: "%WPTT_DB_PASSWORD%"
-            tablePrefix: "_wp"
+            tablePrefix: "wp_"
             domain: "%WPTT_SITE_HOST%"
             adminEmail: "%WPTT_SITE_ADMIN_EMAIL%"
             title: "Test"
