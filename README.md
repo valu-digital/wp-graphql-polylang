@@ -126,18 +126,6 @@ You can find us from the [WPGraphQL Slack][slack] on the `#polylang` channel.
 
 [slack]: https://wpgql-slack.herokuapp.com/
 
-## WPML
-
-But I'm using WPML?!
-
-AFAIK there's no WPML integration for WPGraphQL yet.
-This plugin is probably a good reference on how to do it if you are interested in creating one.
-Please let me know if you do so I can link to it here 😊
-
-Meanwhile you might want to checkout migration docs
-
-<https://polylang.pro/how-to-switch-from-wpml-to-polylang/>
-
 ## ACF Options Pages
 
 In addition to WPGraphQL and Polylang plugins you'll need these plugins too
@@ -173,6 +161,18 @@ acf_add_options_page([
 [wordpress packagist]: https://wpackagist.org/
 [options page]: https://www.advancedcustomfields.com/resources/options-page/
 [acf options for polylang]: https://wordpress.org/plugins/acf-options-for-polylang/
+
+
+## WPML
+
+But I'm using WPML?!
+
+There's [rburgst/wp-graphql-wpml](https://github.com/rburgst/wp-graphql-wpml).
+
+Or you might want to checkout migration docs
+
+<https://polylang.pro/how-to-switch-from-wpml-to-polylang/>
+
 
 ## Contributing
 
