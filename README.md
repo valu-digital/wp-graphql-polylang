@@ -120,12 +120,6 @@ Otherwise you can clone it from Github to your plugins using the stable branch
     cd wp-content/plugins
     git clone --branch stable https://github.com/valu-digital/wp-graphql-polylang.git
 
-## Slack
-
-You can find us from the [WPGraphQL Slack][slack] on the `#polylang` channel.
-
-[slack]: https://wpgql-slack.herokuapp.com/
-
 ## ACF Options Pages
 
 In addition to WPGraphQL and Polylang plugins you'll need these plugins too
@@ -161,6 +155,12 @@ acf_add_options_page([
 [wordpress packagist]: https://wpackagist.org/
 [options page]: https://www.advancedcustomfields.com/resources/options-page/
 [acf options for polylang]: https://wordpress.org/plugins/acf-options-for-polylang/
+
+## Slack
+
+You can find us from the [WPGraphQL Slack][slack] on the `#polylang` channel.
+
+[slack]: https://wpgql-slack.herokuapp.com/
 
 
 ## WPML
