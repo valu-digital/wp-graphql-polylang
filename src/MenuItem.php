@@ -2,6 +2,8 @@
 
 namespace WPGraphQL\Extensions\Polylang;
 
+use WPGraphQL\Data\Connection\MenuItemConnectionResolver;
+
 class MenuItem
 {
     /**
@@ -13,7 +15,6 @@ class MenuItem
         string $location,
         string $language
     ): string {
-        $language = strtolower($language);
         return "${location}___${language}";
     }
 
@@ -29,35 +30,51 @@ class MenuItem
         );
 
         add_filter(
-            'graphql_menu_item_connection_args',
+            'graphql_connection_query_args',
             [$this, '__filter_graphql_menu_item_connection_args'],
             10,
-            1
+            2
         );
     }
 
-    function __filter_graphql_menu_item_connection_args(array $args)
+    function __filter_graphql_menu_item_connection_args(array $queryArgs, MenuItemConnectionResolver $resolver)
     {
+        $args = $resolver->getArgs();
+
         if (!isset($args['where']['language'])) {
-            return $args;
+            return $queryArgs;
         }
 
         if (!isset($args['where']['location'])) {
-            return $args;
+            return $queryArgs;
         }
 
         // Required only when using other than the default language because the
         // menu location for the default language is the original location
         if (pll_default_language('slug') !== $args['where']['language']) {
-            $args['where']['location'] = self::translate_menu_location(
-                $args['where']['location'],
-                $args['where']['language']
-            );
+            $menuLocations = get_theme_mod('nav_menu_locations', []);
+            $locations = array_unique(array_values($menuLocations));
+            $location = self::translate_menu_location($args['where']['location'], $args['where']['language']);
+
+            // If the location argument is set, set the argument to the input argument
+            if (isset($menuLocations[$location])) {
+                $locations = [$menuLocations[$location]];
+            }
+
+            $queryArgs['tax_query'] = [
+                [
+                    [
+                        'taxonomy'         => 'nav_menu',
+                        'field'            => 'term_id',
+                        'terms'            => $locations,
+                        'include_children' => false,
+                        'operator'         => 'IN',
+                    ],
+                ],
+            ];
         }
 
-        unset($args['where']['language']);
-
-        return $args;
+        return $queryArgs;
     }
 
     /**
@@ -87,7 +104,7 @@ class MenuItem
     {
         register_graphql_fields('RootQueryToMenuItemConnectionWhereArgs', [
             'language' => [
-                'type' => 'LanguageCodeFilterEnum',
+                'type'        => 'LanguageCodeFilterEnum',
                 'description' => '',
             ],
         ]);
