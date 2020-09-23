@@ -2,8 +2,6 @@
 
 namespace WPGraphQL\Extensions\Polylang;
 
-use WPGraphQL\Data\Connection\MenuItemConnectionResolver;
-
 class MenuItem
 {
     /**
@@ -37,8 +35,12 @@ class MenuItem
         );
     }
 
-    function __filter_graphql_menu_item_connection_args(array $queryArgs, MenuItemConnectionResolver $resolver)
+    function __filter_graphql_menu_item_connection_args(array $queryArgs, $resolver)
     {
+        if (!is_a($resolver, '\WPGraphQL\Data\Connection\MenuItemConnectionResolver')) {
+            return $queryArgs;
+        }
+
         $args = $resolver->getArgs();
 
         if (!isset($args['where']['language'])) {
