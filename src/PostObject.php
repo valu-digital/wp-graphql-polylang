@@ -113,7 +113,12 @@ class PostObject
                         'code' => null,
                     ];
 
-                    $slug = pll_get_post_language($post->ID, 'slug');
+                    if ($post->isPreview) {
+                        $parent = wp_get_post_parent_id($post->ID);
+                        $slug = pll_get_post_language($parent, 'slug');
+                    } else {
+                        $slug = pll_get_post_language($post->ID, 'slug');
+                    }
 
                     if (!$slug) {
                         return null;
@@ -190,8 +195,15 @@ class PostObject
                 'resolve' => function (\WPGraphQL\Model\Post $post) {
                     $posts = [];
 
+                    if ($post->isPreview) {
+                        $parent = wp_get_post_parent_id($post->ID);
+                        $translations = pll_get_post_translations($parent);
+                    } else {
+                        $translations = pll_get_post_translations($post->ID);
+                    }
+
                     foreach (
-                        pll_get_post_translations($post->ID)
+                        $translations
                         as $lang => $post_id
                     ) {
                         $translation = \WP_Post::get_instance($post_id);
