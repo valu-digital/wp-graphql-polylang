@@ -51,32 +51,22 @@ class MenuItem
             return $queryArgs;
         }
 
-        // Required only when using other than the default language because the
-        // menu location for the default language is the original location
-        if (pll_default_language('slug') !== $args['where']['language']) {
-            $menuLocations = get_theme_mod('nav_menu_locations', []);
-            $locations = array_unique(array_values($menuLocations));
-            $location = self::translate_menu_location($args['where']['location'], $args['where']['language']);
+        $info = $resolver->getInfo();
 
-            // If the location argument is set, set the argument to the input argument
-            if (isset($menuLocations[$location])) {
-                $locations = [$menuLocations[$location]];
-            }
+        // Update the 'location' arg to use translated location
+        $args['where']['location'] = self::translate_menu_location(
+            $args['where']['location'],
+            $args['where']['language']
+        );
 
-            $queryArgs['tax_query'] = [
-                [
-                    [
-                        'taxonomy'         => 'nav_menu',
-                        'field'            => 'term_id',
-                        'terms'            => $locations,
-                        'include_children' => false,
-                        'operator'         => 'IN',
-                    ],
-                ],
-            ];
-        }
+        // XXX. This is a hack. Modify the protected "args" so we can re-execute
+        // the get_query_args method with the new "location" arg
+        $ref = new \ReflectionObject($resolver);
+        $args_prop = $ref->getProperty('args');
+        $args_prop->setAccessible(true);
+        $args_prop->setValue($resolver, $args);
 
-        return $queryArgs;
+        return $resolver->get_query_args();
     }
 
     /**
