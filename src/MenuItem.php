@@ -2,6 +2,9 @@
 
 namespace WPGraphQL\Extensions\Polylang;
 
+use WPGraphQL\Data\Connection\MenuItemConnectionResolver;
+use WPGraphQL\Data\Connection\AbstractConnectionResolver;
+
 class MenuItem
 {
     /**
@@ -29,27 +32,29 @@ class MenuItem
 
         add_filter(
             'graphql_connection_query_args',
-            [$this, '__filter_graphql_menu_item_connection_args'],
+            [$this, '__filter_graphql_connection_query_args'],
             10,
             2
         );
     }
 
-    function __filter_graphql_menu_item_connection_args(array $queryArgs, $resolver)
-    {
-        if (!is_a($resolver, '\WPGraphQL\Data\Connection\MenuItemConnectionResolver')) {
-            return $queryArgs;
+    function __filter_graphql_connection_query_args(
+        array $query_args,
+        AbstractConnectionResolver $resolver
+    ) {
+        if ($resolver instanceof MenuItemConnectionResolver) {
+            return $query_args;
         }
 
-        $args = $resolver->getArgs();
-
         if (!isset($args['where']['language'])) {
-            return $queryArgs;
+            return $query_args;
         }
 
         if (!isset($args['where']['location'])) {
-            return $queryArgs;
+            return $query_args;
         }
+
+        $args = $resolver->getArgs();
 
         // Update the 'location' arg to use translated location
         $args['where']['location'] = self::translate_menu_location(
@@ -94,7 +99,7 @@ class MenuItem
     {
         register_graphql_fields('RootQueryToMenuItemConnectionWhereArgs', [
             'language' => [
-                'type'        => 'LanguageCodeFilterEnum',
+                'type' => 'LanguageCodeFilterEnum',
                 'description' => '',
             ],
         ]);
