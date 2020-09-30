@@ -3,7 +3,7 @@
 // XXX: Can we autoload this somehow?
 require_once __DIR__ . '/PolylangUnitTestCase.php';
 
-class PostObjectQueryTest extends PolylangUnitTestCase
+class PostPreviewQueryTest extends PolylangUnitTestCase
 {
     static function wpSetUpBeforeClass()
     {
