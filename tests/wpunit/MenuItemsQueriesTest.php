@@ -92,10 +92,10 @@ class MenuItemsQueriesTest extends PolylangUnitTestCase
 
         $result = do_graphql_request($query);
 
-        $this->assertEquals(count($result['data']['menuItems']['nodes']), 5);
+        $this->assertEquals(5, count($result['data']['menuItems']['nodes']));
         $this->assertEquals(
-            $result['data']['menuItems']['nodes'][0]['label'],
-            'Menu item 1 in en'
+            'Menu item 1 in en',
+            $result['data']['menuItems']['nodes'][0]['label']
         );
     }
 
@@ -118,8 +118,8 @@ class MenuItemsQueriesTest extends PolylangUnitTestCase
 
         $this->assertEquals(count($result['data']['menuItems']['nodes']), 5);
         $this->assertEquals(
-            $result['data']['menuItems']['nodes'][0]['label'],
-            'Menu item 1 in en'
+            'Menu item 1 in en',
+            $result['data']['menuItems']['nodes'][0]['label']
         );
     }
 
@@ -142,8 +142,8 @@ class MenuItemsQueriesTest extends PolylangUnitTestCase
 
         $this->assertEquals(count($result['data']['menuItems']['nodes']), 5);
         $this->assertEquals(
-            $result['data']['menuItems']['nodes'][0]['label'],
-            'Menu item 1 in fr'
+            'Menu item 1 in fr',
+            $result['data']['menuItems']['nodes'][0]['label']
         );
     }
 }
