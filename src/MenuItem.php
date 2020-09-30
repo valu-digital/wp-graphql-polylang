@@ -51,8 +51,6 @@ class MenuItem
             return $queryArgs;
         }
 
-        $info = $resolver->getInfo();
-
         // Update the 'location' arg to use translated location
         $args['where']['location'] = self::translate_menu_location(
             $args['where']['location'],
