@@ -56,6 +56,12 @@ class MenuItem
             return $query_args;
         }
 
+        // Required only when using other than the default language because the
+        // menu location for the default language is the original location
+        if (pll_default_language('slug') === $args['where']['language']) {
+            return $query_args;
+        }
+
         // Update the 'location' arg to use translated location
         $args['where']['location'] = self::translate_menu_location(
             $args['where']['location'],
