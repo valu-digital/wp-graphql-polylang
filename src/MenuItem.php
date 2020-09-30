@@ -42,9 +42,11 @@ class MenuItem
         array $query_args,
         AbstractConnectionResolver $resolver
     ) {
-        if ($resolver instanceof MenuItemConnectionResolver) {
+        if (!($resolver instanceof MenuItemConnectionResolver)) {
             return $query_args;
         }
+
+        $args = $resolver->getArgs();
 
         if (!isset($args['where']['language'])) {
             return $query_args;
@@ -53,8 +55,6 @@ class MenuItem
         if (!isset($args['where']['location'])) {
             return $query_args;
         }
-
-        $args = $resolver->getArgs();
 
         // Update the 'location' arg to use translated location
         $args['where']['location'] = self::translate_menu_location(
