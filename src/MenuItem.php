@@ -2,6 +2,9 @@
 
 namespace WPGraphQL\Extensions\Polylang;
 
+use WPGraphQL\Data\Connection\MenuItemConnectionResolver;
+use WPGraphQL\Data\Connection\AbstractConnectionResolver;
+
 class MenuItem
 {
     /**
@@ -13,7 +16,6 @@ class MenuItem
         string $location,
         string $language
     ): string {
-        $language = strtolower($language);
         return "${location}___${language}";
     }
 
@@ -29,35 +31,51 @@ class MenuItem
         );
 
         add_filter(
-            'graphql_menu_item_connection_args',
-            [$this, '__filter_graphql_menu_item_connection_args'],
+            'graphql_connection_query_args',
+            [$this, '__filter_graphql_connection_query_args'],
             10,
-            1
+            2
         );
     }
 
-    function __filter_graphql_menu_item_connection_args(array $args)
-    {
+    function __filter_graphql_connection_query_args(
+        array $query_args,
+        AbstractConnectionResolver $resolver
+    ) {
+        if (!($resolver instanceof MenuItemConnectionResolver)) {
+            return $query_args;
+        }
+
+        $args = $resolver->getArgs();
+
         if (!isset($args['where']['language'])) {
-            return $args;
+            return $query_args;
         }
 
         if (!isset($args['where']['location'])) {
-            return $args;
+            return $query_args;
         }
 
         // Required only when using other than the default language because the
         // menu location for the default language is the original location
-        if (pll_default_language('slug') !== $args['where']['language']) {
-            $args['where']['location'] = self::translate_menu_location(
-                $args['where']['location'],
-                $args['where']['language']
-            );
+        if (pll_default_language('slug') === $args['where']['language']) {
+            return $query_args;
         }
 
-        unset($args['where']['language']);
+        // Update the 'location' arg to use translated location
+        $args['where']['location'] = self::translate_menu_location(
+            $args['where']['location'],
+            $args['where']['language']
+        );
 
-        return $args;
+        // XXX. This is a hack. Modify the protected "args" so we can re-execute
+        // the get_query_args method with the new "location" arg
+        $ref = new \ReflectionObject($resolver);
+        $args_prop = $ref->getProperty('args');
+        $args_prop->setAccessible(true);
+        $args_prop->setValue($resolver, $args);
+
+        return $resolver->get_query_args();
     }
 
     /**
