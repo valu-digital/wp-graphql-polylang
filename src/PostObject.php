@@ -220,6 +220,11 @@ class PostObject
                             continue;
                         }
 
+                        // If fetching preview do not add the original as a translation
+                        if ($post->isPreview && $parent === $translation->ID) {
+                            continue;
+                        }
+
                         $posts[] = new \WPGraphQL\Model\Post($translation);
                     }
 
