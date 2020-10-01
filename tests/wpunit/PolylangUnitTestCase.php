@@ -28,7 +28,7 @@
     }
     static function create_language($locale, $args = [])
     {
-        $languages = include PLL_SETTINGS_INC . '/languages.php';
+        $languages = include POLYLANG_DIR . '/settings/languages.php';
         $values = $languages[$locale];
         $values['slug'] = $values['code'];
         $values['rtl'] = (int) ('rtl' === $values['dir']);
