@@ -112,7 +112,6 @@ class PostPreviewQueryTest extends PolylangUnitTestCase
         wp_set_current_user(1);
         $data = do_graphql_request($query);
         $this->assertArrayNotHasKey('errors', $data, print_r($data, true));
-        error_log(print_r($data, true));
 
         $expected = [
             'title' => 'Preview post',
