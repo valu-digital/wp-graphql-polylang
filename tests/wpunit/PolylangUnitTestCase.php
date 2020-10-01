@@ -3,14 +3,10 @@
 {
     static $polylang;
     static $hooks;
+
     static function wpSetUpBeforeClass()
     {
         $polylang = PLL();
-
-        // This is called only when there are configured languages
-        // https://github.com/polylang/polylang/blob/ca1209a0204a34946adf88c9b859ff43e2eb91b9/admin/admin.php#L62
-        // The test setup adds languages too late so we must manually call this.
-        $polylang->add_filters();
     }
 
     static function wpTearDownAfterClass()
@@ -38,6 +34,21 @@
         $polylang->model->add_language($args);
         unset($GLOBALS['wp_settings_errors']); // Clean "errors"
     }
+
+    /**
+     * Must be called after adding the languages because many of the polylang
+     * initializations happen only when at least one language has been added
+     *
+     * https://github.com/polylang/polylang/blob/2.8.2/include/base.php#L71-L82
+     */
+    static function initialize_polylang()
+    {
+        $polylang = PLL();
+        $polylang->init();
+        $polylang->add_filters();
+        $polylang->nav_menu->create_nav_menu_locations();
+    }
+
     static function set_default_language($lang)
     {
         // XXX Not enough
