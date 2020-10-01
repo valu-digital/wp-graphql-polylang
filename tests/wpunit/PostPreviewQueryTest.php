@@ -39,7 +39,9 @@ class PostPreviewQueryTest extends PolylangUnitTestCase
             'post_status' => 'inherit',
             'post_parent' => $post_id,
         ]);
-        pll_set_post_language($preview_id, 'en');
+        // Note: The language of the preview post is not set at all in a real
+        // wp instance so we won't be setting it here neighter. wpgql-polylang
+        // must read the language from the original.
 
         $query = "
         query Preview {
@@ -55,7 +57,7 @@ class PostPreviewQueryTest extends PolylangUnitTestCase
         wp_set_current_user(1);
         $result = do_graphql_request($query);
         $this->assertArrayNotHasKey('errors', $result, print_r($result, true));
-        $this->assertEquals($result['data']['post']['language']['code'], 'EN');
+        $this->assertEquals($result['data']['post']['language']['code'], 'FI');
     }
 
     public function testCanFetchTranslatedVersions()
