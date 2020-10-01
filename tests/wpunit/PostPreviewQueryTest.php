@@ -49,6 +49,8 @@ class PostPreviewQueryTest extends PolylangUnitTestCase
                 title
                 language {
                     code
+                    name
+                    slug
                 }
             }
          }
@@ -58,6 +60,11 @@ class PostPreviewQueryTest extends PolylangUnitTestCase
         $result = do_graphql_request($query);
         $this->assertArrayNotHasKey('errors', $result, print_r($result, true));
         $this->assertEquals($result['data']['post']['language']['code'], 'FI');
+        $this->assertEquals(
+            $result['data']['post']['language']['name'],
+            'Suomi'
+        );
+        $this->assertEquals($result['data']['post']['language']['slug'], 'fi');
     }
 
     public function testCanFetchTranslatedVersions()

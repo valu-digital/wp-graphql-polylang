@@ -113,12 +113,15 @@ class PostObject
                         'code' => null,
                     ];
 
+                    $post_id = $post->ID;
+
+                    // The language of the preview post is not set at all so we
+                    // must get the language using the original post id
                     if ($post->isPreview) {
-                        $parent = wp_get_post_parent_id($post->ID);
-                        $slug = pll_get_post_language($parent, 'slug');
-                    } else {
-                        $slug = pll_get_post_language($post->ID, 'slug');
+                        $post_id = wp_get_post_parent_id($post->ID);
                     }
+
+                    $slug = pll_get_post_language($post_id, 'slug');
 
                     if (!$slug) {
                         return null;
@@ -130,14 +133,14 @@ class PostObject
 
                     if (isset($fields['name'])) {
                         $language['name'] = pll_get_post_language(
-                            $post->ID,
+                            $post_id,
                             'name'
                         );
                     }
 
                     if (isset($fields['locale'])) {
                         $language['locale'] = pll_get_post_language(
-                            $post->ID,
+                            $post_id,
                             'locale'
                         );
                     }
@@ -202,10 +205,7 @@ class PostObject
                         $translations = pll_get_post_translations($post->ID);
                     }
 
-                    foreach (
-                        $translations
-                        as $lang => $post_id
-                    ) {
+                    foreach ($translations as $lang => $post_id) {
                         $translation = \WP_Post::get_instance($post_id);
 
                         if (!$translation) {
