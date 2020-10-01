@@ -17,7 +17,7 @@ class MenuItemsQueriesTest extends PolylangUnitTestCase
         self::set_default_language('en');
         self::create_language('fr_FR');
 
-        PLL()->nav_menu->create_nav_menu_locations();
+        self::initialize_polylang();
     }
 
     private function createMenuItem($menu_id, $options)

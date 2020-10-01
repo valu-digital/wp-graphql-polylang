@@ -8,7 +8,7 @@ function add_language($lang, $extra_args = [])
 
     $model = \PLL()->model;
 
-    $languages = include PLL_SETTINGS_INC . '/languages.php';
+    $languages = include POLYLANG_DIR . '/settings/languages.php';
 
     if (!isset($languages[$lang])) {
         echo "Unknown language $lang. Available languages:\n";

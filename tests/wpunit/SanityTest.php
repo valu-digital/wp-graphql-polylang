@@ -23,6 +23,8 @@ class SanityTest extends PolylangUnitTestCase
         self::create_language('fi');
         self::create_language('de_DE_formal');
         self::create_language('es_ES');
+
+        self::initialize_polylang();
     }
 
     public function tearDown(): void
