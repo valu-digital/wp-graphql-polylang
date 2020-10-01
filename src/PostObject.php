@@ -113,7 +113,15 @@ class PostObject
                         'code' => null,
                     ];
 
-                    $slug = pll_get_post_language($post->ID, 'slug');
+                    $post_id = $post->ID;
+
+                    // The language of the preview post is not set at all so we
+                    // must get the language using the original post id
+                    if ($post->isPreview) {
+                        $post_id = wp_get_post_parent_id($post->ID);
+                    }
+
+                    $slug = pll_get_post_language($post_id, 'slug');
 
                     if (!$slug) {
                         return null;
@@ -125,14 +133,14 @@ class PostObject
 
                     if (isset($fields['name'])) {
                         $language['name'] = pll_get_post_language(
-                            $post->ID,
+                            $post_id,
                             'name'
                         );
                     }
 
                     if (isset($fields['locale'])) {
                         $language['locale'] = pll_get_post_language(
-                            $post->ID,
+                            $post_id,
                             'locale'
                         );
                     }
@@ -190,10 +198,14 @@ class PostObject
                 'resolve' => function (\WPGraphQL\Model\Post $post) {
                     $posts = [];
 
-                    foreach (
-                        pll_get_post_translations($post->ID)
-                        as $lang => $post_id
-                    ) {
+                    if ($post->isPreview) {
+                        $parent = wp_get_post_parent_id($post->ID);
+                        $translations = pll_get_post_translations($parent);
+                    } else {
+                        $translations = pll_get_post_translations($post->ID);
+                    }
+
+                    foreach ($translations as $lang => $post_id) {
                         $translation = \WP_Post::get_instance($post_id);
 
                         if (!$translation) {
@@ -205,6 +217,11 @@ class PostObject
                         }
 
                         if ($post->ID === $translation->ID) {
+                            continue;
+                        }
+
+                        // If fetching preview do not add the original as a translation
+                        if ($post->isPreview && $parent === $translation->ID) {
                             continue;
                         }
 
