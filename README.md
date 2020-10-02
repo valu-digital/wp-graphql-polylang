@@ -1,7 +1,5 @@
 # WPGraphQL Polylang Extension
 
-[![Build Status](https://travis-ci.org/valu-digital/wp-graphql-polylang.svg?branch=master)](https://travis-ci.org/valu-digital/wp-graphql-polylang)
-
 Extend [WPGraphQL](https://www.wpgraphql.com/) schema with language data from
 the [Polylang](https://polylang.pro/) plugin.
 
