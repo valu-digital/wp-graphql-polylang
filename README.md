@@ -97,8 +97,8 @@ query PolylangExample {
 
 ## Requirements
 
--   PHP 7.2. We're planning to relax this a bit though
--   [WPGraphQL][] 0.6.x or later
+-   PHP 7.2 or later
+-   [WPGraphQL][] 0.13.x or later
 -   Polylang 2.6.5 or later
     -   The free version is enough
     -   If you get the PRO version the pro features such as translated slugs will work too
