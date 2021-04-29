@@ -55,6 +55,15 @@ class LanguageRootQueries
                     }
                 }
 
+	            if (isset($fields['active'])) {
+		            foreach (
+			            pll_languages_list(['fields' => 'active'])
+			            as $index => $active
+		            ) {
+			            $languages[$index]['active'] = $active === false ? false : true;
+		            }
+	            }
+
                 return $languages;
             },
         ]);
