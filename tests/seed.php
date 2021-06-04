@@ -27,3 +27,4 @@ function add_language($lang, $extra_args = [])
 
 add_language('en_US', ['term_group' => 10]);
 add_language('fi', ['term_group' => 11]);
+add_language('sv_SE', ['term_group' => 12]);
