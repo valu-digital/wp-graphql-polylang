@@ -54,23 +54,37 @@ class TermObject
 
         $type = ucfirst($taxonomy->graphql_single_name);
 
-        register_graphql_fields("RootQueryTo${type}ConnectionWhereArgs", [
-            'language' => [
-                'type' => 'LanguageCodeFilterEnum',
-                'description' => "Filter by ${type}s by language code (Polylang)",
-            ],
-        ]);
+        register_graphql_fields(
+            "RootQueryTo${type}ConnectionWhereArgs", [
+                'language' => [
+                    'type' => 'LanguageCodeFilterEnum',
+                    'description' => "Filter by ${type}s by language code (Polylang)",
+                ],
+                'languages' => [
+                    'type' => [
+                        'list_of' => [
+                            'non_null' => 'LanguageCodeEnum',
+                        ],
+                    ],
+                    'description' => "Filter ${type}s by one or more languages (Polylang)",
+                ],
+            ]
+        );
 
-        register_graphql_fields("Create${type}Input", [
-            'language' => [
-                'type' => 'LanguageCodeEnum',
-            ],
-        ]);
-        register_graphql_fields("Update${type}Input", [
-            'language' => [
-                'type' => 'LanguageCodeEnum',
-            ],
-        ]);
+        register_graphql_fields(
+            "Create${type}Input", [
+                'language' => [
+                    'type' => 'LanguageCodeEnum',
+                ],
+            ]
+        );
+        register_graphql_fields(
+            "Update${type}Input", [
+                'language' => [
+                    'type' => 'LanguageCodeEnum',
+                ],
+            ]
+        );
 
         /**
          * Handle language arg for term inserts
@@ -103,7 +117,8 @@ class TermObject
             2
         );
 
-        register_graphql_field($type, 'language', [
+        register_graphql_field(
+            $type, 'language', [
             'type' => 'Language',
             'description' => __(
                 'List available translations for this post',
@@ -146,9 +161,11 @@ class TermObject
 
                 return $language;
             },
-        ]);
+            ]
+        );
 
-        register_graphql_field($type, 'translations', [
+        register_graphql_field(
+            $type, 'translations', [
             'type' => [
                 'list_of' => $type,
             ],
@@ -182,9 +199,11 @@ class TermObject
 
                 return $terms;
             },
-        ]);
+            ]
+        );
 
-        register_graphql_field($type, 'translation', [
+        register_graphql_field(
+            $type, 'translation', [
             'type' => $type,
             'description' => __(
                 'Get specific translation version of this object',
@@ -207,6 +226,7 @@ class TermObject
 
                 return new \WPGraphQL\Model\Term(get_term($term_id));
             },
-        ]);
+            ]
+        );
     }
 }
