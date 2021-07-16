@@ -22,7 +22,7 @@ class PolylangTypes
             $language_codes[strtoupper($lang)] = $lang;
         }
 
-         if ( empty( $langauge_codes ) ) {
+         if ( empty( $language_codes ) ) {
 		    $locale = get_locale();
 		    $language_codes[ strtoupper( $locale ) ] = [
 		    	'value' => $locale,
