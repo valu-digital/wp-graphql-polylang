@@ -22,12 +22,6 @@ jobs:
                   php-version: "7.2"
 
             - uses: actions/cache@v1
-              id: cache-composer
-              with:
-                  path: ~/.composer/cache
-                  key: ${{ runner.os }}-composer
-
-            - uses: actions/cache@v1
               id: cache-wp-cli
               with:
                   path: ~/.wp-cli/cache
