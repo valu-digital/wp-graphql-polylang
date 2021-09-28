@@ -170,6 +170,12 @@ class BasicCest
                             ],
                             'title' => 'Svenska',
                         ],
+                        [
+                            'language' => [
+                                'code' => 'FI',
+                            ],
+                            'title' => 'Suomalainen',
+                        ],
                     ],
                 ],
             ],
