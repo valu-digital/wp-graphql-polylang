@@ -31,6 +31,16 @@ class PostObject
             10,
             2
         );
+
+        /**
+         * Check translated front page
+         */
+        add_action(
+            'graphql_resolve_field',
+            [$this, '__action_is_translated_front_page'],
+            10,
+            8
+        );
     }
 
     /**
@@ -261,5 +271,41 @@ class PostObject
                 },
             ]
         );
+    }
+
+    function __action_is_translated_front_page(
+        $result,
+        $source,
+        $args,
+        $context,
+        $info,
+        $type_name,
+        $field_key
+    ) {
+        if ('isFrontPage' !== $field_key) {
+            return $result;
+        }
+
+        if (!($source instanceof \WPGraphQL\Model\Post)) {
+            return $result;
+        }
+
+        if ('page' !== get_option('show_on_front', 'posts')) {
+            return $result;
+        }
+
+        if (empty((int) get_option('page_on_front', 0))) {
+            return $result;
+        }
+
+        $translated_front_page = pll_get_post_translations(
+            get_option('page_on_front', 0)
+        );
+
+        if (empty($translated_front_page)) {
+            return false;
+        }
+
+        return in_array($source->ID, $translated_front_page);
     }
 }
