@@ -530,5 +530,22 @@ class PostObjectQueryTest extends PolylangUnitTestCase
         $expected = ['isFrontPage' => true];
 
         $this->assertEquals($expected, $data['data']['pageBy']);
+
+        // Test normal frontpage as well
+
+        $query = "
+        query Page {
+            pageBy(pageId: $en_post_id) {
+                isFrontPage
+            }
+         }
+        ";
+
+        $data = do_graphql_request($query);
+        $this->assertArrayNotHasKey('errors', $data, print_r($data, true));
+
+        $expected = ['isFrontPage' => true];
+
+        $this->assertEquals($expected, $data['data']['pageBy']);
     }
 }
