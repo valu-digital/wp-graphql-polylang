@@ -89,6 +89,13 @@ class PolylangTypes
                         'wp-graphql-polylang'
                     ),
                 ],
+                'homeUrl' => [
+                    'type' => 'String',
+                    'description' => __(
+                        'Language term front page URL',
+                        'wp-graphql-polylang'
+                    ),
+                ]
             ],
         ]);
     }
