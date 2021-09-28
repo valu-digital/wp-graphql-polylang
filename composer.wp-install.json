@@ -10,8 +10,8 @@
     ],
     "require": {
         "composer/installers": "^1.0",
-        "wp-graphql/wp-graphql": "0.13.1",
-        "wpackagist-plugin/polylang": "2.8.2"
+        "wp-graphql/wp-graphql": "1.6.5",
+        "wpackagist-plugin/polylang": "3.1.1"
     },
     "extra": {
         "installer-paths": {
