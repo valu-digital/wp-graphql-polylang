@@ -60,6 +60,15 @@ class PostObject
                 'description' =>
                     'Filter content nodes by language code (Polylang)',
             ],
+            'languages' => [
+                'type' => [
+                    'list_of' => [
+                        'non_null' => 'LanguageCodeEnum',
+                    ],
+                ],
+                'description' =>
+                    'Filter content nodes by one or more languages (Polylang)',
+            ],
         ]);
 
         foreach (\WPGraphQL::get_allowed_post_types() as $post_type) {
@@ -79,6 +88,14 @@ class PostObject
             'language' => [
                 'type' => 'LanguageCodeFilterEnum',
                 'description' => "Filter by ${type}s by language code (Polylang)",
+            ],
+            'languages' => [
+                'type' => [
+                    'list_of' => [
+                        'non_null' => 'LanguageCodeEnum',
+                    ],
+                ],
+                'description' => "Filter ${type}s by one or more languages (Polylang)",
             ],
         ]);
 

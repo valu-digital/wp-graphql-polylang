@@ -59,6 +59,14 @@ class TermObject
                 'type' => 'LanguageCodeFilterEnum',
                 'description' => "Filter by ${type}s by language code (Polylang)",
             ],
+            'languages' => [
+                'type' => [
+                    'list_of' => [
+                        'non_null' => 'LanguageCodeEnum',
+                    ],
+                ],
+                'description' => "Filter ${type}s by one or more languages (Polylang)",
+            ],
         ]);
 
         register_graphql_fields("Create${type}Input", [
