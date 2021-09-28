@@ -138,4 +138,41 @@ class BasicCest
             ],
         ]);
     }
+
+    public function testCanQueryByMultipleLanguages(FunctionalTester $I)
+    {
+        $query = '
+        {
+            posts(where: {languages: [FI, SV]}) {
+                nodes {
+                    language {
+                      code
+                    }
+                    title
+                }
+              }
+        }';
+
+        $query_vars = http_build_query([
+            'query' => $query,
+        ]);
+        $I->haveHttpHeader('Content-Type', 'application/json');
+        $I->sendGET("/graphql?{$query_vars}");
+        $I->seeResponseCodeIs(200);
+        $I->seeResponseIsJson();
+        $I->seeResponseContainsJson([
+            'data' => [
+                'posts' => [
+                    'nodes' => [
+                        [
+                            'language' => [
+                                'code' => 'SV',
+                            ],
+                            'title' => 'Svenska',
+                        ],
+                    ],
+                ],
+            ],
+        ]);
+    }
 }
