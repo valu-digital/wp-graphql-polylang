@@ -56,9 +56,7 @@ class LanguageRootQueries
                 }
 
                 if (isset($fields['homeUrl'])) {
-                    foreach (
-                        $languages as &$language
-                    ) {
+                    foreach ($languages as &$language) {
                         $language['homeUrl'] = pll_home_url($language['slug']);
                     }
                 }
