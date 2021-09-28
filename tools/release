@@ -42,9 +42,6 @@ read -p "New version> " new_version
 
 sed -E -i  "" "s/(.*Version:) .*/\1 ${new_version}/" $version_file
 
-rm -rf composer.lock vendor/
-composer install --no-dev
-
 git add "$version_file"  vendor
 git commit -m "Release v${new_version}"
 git tag -a "v${new_version}" -m "Release v${new_version}"
