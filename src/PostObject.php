@@ -242,7 +242,19 @@ class PostObject
                             continue;
                         }
 
-                        $posts[] = new \WPGraphQL\Model\Post($translation);
+                        $model = new \WPGraphQL\Model\Post($translation);
+
+                        // If we do not filter out privates here wp-graphql will
+                        // crash with 'Cannot return null for non-nullable field
+                        // Post.id.'. This might be a wp-graphql bug.
+                        // Interestingly only fetching the id of the translated
+                        // post caused the crash. For example title is ok even
+                        // without this check
+                        if ($model->is_private()) {
+                            continue;
+                        }
+
+                        $posts[] = $model;
                     }
 
                     return $posts;

@@ -22,7 +22,7 @@ class PolylangTypes
             $language_codes[strtoupper($lang)] = $lang;
         }
 
-        if (empty($langauge_codes)) {
+        if (empty($language_codes)) {
             $locale = get_locale();
             $language_codes[strtoupper($locale)] = [
                 'value' => $locale,
@@ -89,6 +89,13 @@ class PolylangTypes
                     'type' => 'String',
                     'description' => __(
                         'Language term slug. Prefer the "code" field if possible (Polylang)',
+                        'wp-graphql-polylang'
+                    ),
+                ],
+                'homeUrl' => [
+                    'type' => 'String',
+                    'description' => __(
+                        'Language term front page URL',
                         'wp-graphql-polylang'
                     ),
                 ],
