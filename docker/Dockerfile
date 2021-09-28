@@ -21,7 +21,7 @@ RUN apt-get update \
     ca-certificates \
     mariadb-client
 
-RUN curl -L https://github.com/composer/composer/releases/download/1.9.1/composer.phar -o /usr/local/bin/composer && chmod +x /usr/local/bin/composer
+RUN curl -L https://github.com/composer/composer/releases/download/2.1.8/composer.phar -o /usr/local/bin/composer && chmod +x /usr/local/bin/composer
 
 ARG XDEBUG=/etc/php/7.2/cli/conf.d/20-xdebug.ini
 RUN echo "[XDebug]" >> ${XDEBUG} \
