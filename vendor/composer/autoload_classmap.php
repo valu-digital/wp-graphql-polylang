@@ -6,6 +6,7 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'Composer\\InstalledVersions' => $vendorDir . '/composer/InstalledVersions.php',
     'WPGraphQL\\Extensions\\Polylang\\Helpers' => $baseDir . '/src/Helpers.php',
     'WPGraphQL\\Extensions\\Polylang\\LanguageRootQueries' => $baseDir . '/src/LanguageRootQueries.php',
     'WPGraphQL\\Extensions\\Polylang\\Loader' => $baseDir . '/src/Loader.php',

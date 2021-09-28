@@ -21,6 +21,7 @@ class ComposerStaticInit43da53adb50141669ba75c3d91fe6230
     );
 
     public static $classMap = array (
+        'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
         'WPGraphQL\\Extensions\\Polylang\\Helpers' => __DIR__ . '/../..' . '/src/Helpers.php',
         'WPGraphQL\\Extensions\\Polylang\\LanguageRootQueries' => __DIR__ . '/../..' . '/src/LanguageRootQueries.php',
         'WPGraphQL\\Extensions\\Polylang\\Loader' => __DIR__ . '/../..' . '/src/Loader.php',
