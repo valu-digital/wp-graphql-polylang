@@ -16,6 +16,11 @@ jobs:
         steps:
             - uses: actions/checkout@v1
 
+            - name: Use php 7.2
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: "7.2"
+
             - uses: actions/cache@v1
               id: cache-composer
               with:
