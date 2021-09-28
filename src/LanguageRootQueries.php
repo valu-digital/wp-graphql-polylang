@@ -65,6 +65,12 @@ class LanguageRootQueries
                     }
                 }
 
+                if (isset($fields['homeUrl'])) {
+                    foreach ($languages as &$language) {
+                        $language['homeUrl'] = pll_home_url($language['slug']);
+                    }
+                }
+
                 return $languages;
             },
         ]);
@@ -92,6 +98,9 @@ class LanguageRootQueries
 
                 if (isset($fields['locale'])) {
                     $language['locale'] = pll_default_language('locale');
+                }
+                if (isset($fields['homeUrl'])) {
+                    $language['homeUrl'] = pll_home_url($language['slug']);
                 }
 
                 return $language;

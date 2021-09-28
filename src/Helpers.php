@@ -16,26 +16,35 @@ class Helpers
 
     /**
      * Polylang handles 'lang' query arg so convert our 'language'
-     * query arg if it is set
+     * or 'languages' query arg if it is set
      */
     static function map_language_to_query_args(
         array $query_args,
         array $where_args
     ) {
-        if (!isset($where_args['language'])) {
+        $lang = '';
+        if (
+            isset($where_args['languages']) &&
+            is_array($where_args['languages']) &&
+            !empty($where_args['languages'])
+        ) {
+            $langs = $where_args['languages'];
+            unset($where_args['languages']);
+            $lang = implode(',', $langs);
+        } elseif (isset($where_args['language'])) {
+            $lang = $where_args['language'];
+            unset($where_args['language']);
+
+            if ('all' === $lang) {
+                // No need to do anything. We show all languages by default
+                return $query_args;
+            }
+
+            if ('default' === $lang) {
+                $lang = pll_default_language('slug');
+            }
+        } else {
             return $query_args;
-        }
-
-        $lang = $where_args['language'];
-        unset($where_args['language']);
-
-        if ('all' === $lang) {
-            // No need to do anything. We show all languages by default
-            return $query_args;
-        }
-
-        if ('default' === $lang) {
-            $lang = pll_default_language('slug');
         }
 
         $query_args['lang'] = $lang;
