@@ -90,12 +90,12 @@ class PolylangTypes
                     ),
                 ],
                 'active' => [
-	                'type' => 'Boolean',
-	                'description' => __(
-		                'Is language active.',
-		                'wp-graphql-polylang'
-	                ),
-                ]
+                    'type' => 'Boolean',
+                    'description' => __(
+                        'Is language active.',
+                        'wp-graphql-polylang'
+                    ),
+                ],
             ],
         ]);
     }
