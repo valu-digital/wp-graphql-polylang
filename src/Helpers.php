@@ -23,21 +23,23 @@ class Helpers
         array $where_args
     ) {
         $lang = '';
-        if (isset($where_args['languages']) && is_array($where_args['languages']) && !empty($where_args['languages'])) {
+        if (
+            isset($where_args['languages']) &&
+            is_array($where_args['languages']) &&
+            !empty($where_args['languages'])
+        ) {
             $langs = $where_args['languages'];
             unset($where_args['languages']);
             $lang = implode(',', $langs);
-            
-        } else if (isset($where_args['language'])) {
-
+        } elseif (isset($where_args['language'])) {
             $lang = $where_args['language'];
             unset($where_args['language']);
-            
+
             if ('all' === $lang) {
                 // No need to do anything. We show all languages by default
                 return $query_args;
             }
-            
+
             if ('default' === $lang) {
                 $lang = pll_default_language('slug');
             }

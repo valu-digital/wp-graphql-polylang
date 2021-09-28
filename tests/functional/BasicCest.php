@@ -11,33 +11,29 @@ class BasicCest
             }
         }';
 
-        $query_vars = http_build_query(
-            [
+        $query_vars = http_build_query([
             'query' => $query,
-            ]
-        );
+        ]);
         $I->haveHttpHeader('Content-Type', 'application/json');
         $I->sendGET("/graphql?{$query_vars}");
         $I->seeResponseCodeIs(200);
         $I->seeResponseIsJson();
         $I->seeResponseEquals(
-            json_encode(
-                [
-                    'data' => [
-                        'languages' => [
-                            [
-                                'code' => 'EN',
-                            ],
-                            [
-                                'code' => 'FI',
-                            ],
-                            [
-                                'code' => 'SV',
-                            ],
+            json_encode([
+                'data' => [
+                    'languages' => [
+                        [
+                            'code' => 'EN',
+                        ],
+                        [
+                            'code' => 'FI',
+                        ],
+                        [
+                            'code' => 'SV',
                         ],
                     ],
-                ]
-            )
+                ],
+            ])
         );
     }
 
@@ -51,31 +47,27 @@ class BasicCest
         }';
 
         $I->haveHttpHeader('Content-Type', 'application/json');
-        $I->sendPOST(
-            '/graphql', [
+        $I->sendPOST('/graphql', [
             'query' => $query,
-            ]
-        );
+        ]);
         $I->seeResponseCodeIs(200);
         $I->seeResponseIsJson();
         $I->seeResponseEquals(
-            json_encode(
-                [
-                    'data' => [
-                        'languages' => [
-                            [
-                                'code' => 'EN',
-                            ],
-                            [
-                                'code' => 'FI',
-                            ],
-                            [
-                                'code' => 'SV',
-                            ],
+            json_encode([
+                'data' => [
+                    'languages' => [
+                        [
+                            'code' => 'EN',
+                        ],
+                        [
+                            'code' => 'FI',
+                        ],
+                        [
+                            'code' => 'SV',
                         ],
                     ],
-                ]
-            )
+                ],
+            ])
         );
     }
 
@@ -92,31 +84,27 @@ class BasicCest
         }';
 
         $I->haveHttpHeader('Content-Type', 'application/json');
-        $I->sendPOST(
-            '/index.php?graphql', [
+        $I->sendPOST('/index.php?graphql', [
             'query' => $query,
-            ]
-        );
+        ]);
         $I->seeResponseCodeIs(200);
         $I->seeResponseIsJson();
         $I->seeResponseEquals(
-            json_encode(
-                [
-                    'data' => [
-                        'languages' => [
-                            [
-                                'code' => 'EN',
-                            ],
-                            [
-                                'code' => 'FI',
-                            ],
-                            [
-                                'code' => 'SV',
-                            ],
+            json_encode([
+                'data' => [
+                    'languages' => [
+                        [
+                            'code' => 'EN',
+                        ],
+                        [
+                            'code' => 'FI',
+                        ],
+                        [
+                            'code' => 'SV',
                         ],
                     ],
-                ]
-            )
+                ],
+            ])
         );
     }
 
@@ -134,32 +122,28 @@ class BasicCest
               }
         }';
 
-        $query_vars = http_build_query(
-            [
+        $query_vars = http_build_query([
             'query' => $query,
-            ]
-        );
+        ]);
         $I->haveHttpHeader('Content-Type', 'application/json');
         $I->sendGET("/graphql?{$query_vars}");
         $I->seeResponseCodeIs(200);
         $I->seeResponseIsJson();
         $I->seeResponseEquals(
-            json_encode(
-                [
-                    'data' => [
-                        'posts' => [
-                            'nodes' => [
-                                [
-                                    'language' => [
-                                        'code' => 'SV',
-                                    ],
-                                    'title'    => 'Svenska',
+            json_encode([
+                'data' => [
+                    'posts' => [
+                        'nodes' => [
+                            [
+                                'language' => [
+                                    'code' => 'SV',
                                 ],
+                                'title' => 'Svenska',
                             ],
                         ],
                     ],
-                ]
-            )
+                ],
+            ])
         );
     }
 }

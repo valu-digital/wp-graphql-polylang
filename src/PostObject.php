@@ -54,23 +54,22 @@ class PostObject
 
     function __action_graphql_register_types()
     {
-        register_graphql_fields(
-            'RootQueryToContentNodeConnectionWhereArgs', [
-                'language' => [
-                    'type' => 'LanguageCodeFilterEnum',
-                    'description' =>
-                        'Filter content nodes by language code (Polylang)',
-                ],
-                'languages' => [
-                    'type' => [
-                        'list_of' => [
-                            'non_null' => 'LanguageCodeEnum',
-                        ],
+        register_graphql_fields('RootQueryToContentNodeConnectionWhereArgs', [
+            'language' => [
+                'type' => 'LanguageCodeFilterEnum',
+                'description' =>
+                    'Filter content nodes by language code (Polylang)',
+            ],
+            'languages' => [
+                'type' => [
+                    'list_of' => [
+                        'non_null' => 'LanguageCodeEnum',
                     ],
-                    'description' => "Filter content nodes by one or more languages (Polylang)",
                 ],
-            ]
-        );
+                'description' =>
+                    'Filter content nodes by one or more languages (Polylang)',
+            ],
+        ]);
 
         foreach (\WPGraphQL::get_allowed_post_types() as $post_type) {
             $this->add_post_type_fields(get_post_type_object($post_type));
@@ -85,38 +84,32 @@ class PostObject
 
         $type = ucfirst($post_type_object->graphql_single_name);
 
-        register_graphql_fields(
-            "RootQueryTo${type}ConnectionWhereArgs", [
-                'language' => [
-                    'type' => 'LanguageCodeFilterEnum',
-                    'description' => "Filter by ${type}s by language code (Polylang)",
-                ],
-                'languages' => [
-                    'type' => [
-                        'list_of' => [
-                            'non_null' => 'LanguageCodeEnum',
-                        ],
+        register_graphql_fields("RootQueryTo${type}ConnectionWhereArgs", [
+            'language' => [
+                'type' => 'LanguageCodeFilterEnum',
+                'description' => "Filter by ${type}s by language code (Polylang)",
+            ],
+            'languages' => [
+                'type' => [
+                    'list_of' => [
+                        'non_null' => 'LanguageCodeEnum',
                     ],
-                    'description' => "Filter ${type}s by one or more languages (Polylang)",
                 ],
-            ]
-        );
+                'description' => "Filter ${type}s by one or more languages (Polylang)",
+            ],
+        ]);
 
-        register_graphql_fields(
-            "Create${type}Input", [
+        register_graphql_fields("Create${type}Input", [
             'language' => [
                 'type' => 'LanguageCodeEnum',
             ],
-            ]
-        );
+        ]);
 
-        register_graphql_fields(
-            "Update${type}Input", [
+        register_graphql_fields("Update${type}Input", [
             'language' => [
                 'type' => 'LanguageCodeEnum',
             ],
-            ]
-        );
+        ]);
 
         register_graphql_field(
             $post_type_object->graphql_single_name,
