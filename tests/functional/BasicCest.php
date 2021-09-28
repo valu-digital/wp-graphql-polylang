@@ -18,23 +18,21 @@ class BasicCest
         $I->sendGET("/graphql?{$query_vars}");
         $I->seeResponseCodeIs(200);
         $I->seeResponseIsJson();
-        $I->seeResponseEquals(
-            json_encode([
-                'data' => [
-                    'languages' => [
-                        [
-                            'code' => 'EN',
-                        ],
-                        [
-                            'code' => 'FI',
-                        ],
-                        [
-                            'code' => 'SV',
-                        ],
+        $I->seeResponseContainsJson([
+            'data' => [
+                'languages' => [
+                    [
+                        'code' => 'EN',
+                    ],
+                    [
+                        'code' => 'FI',
+                    ],
+                    [
+                        'code' => 'SV',
                     ],
                 ],
-            ])
-        );
+            ],
+        ]);
     }
 
     public function testCanSendPOST(FunctionalTester $I)
@@ -52,23 +50,21 @@ class BasicCest
         ]);
         $I->seeResponseCodeIs(200);
         $I->seeResponseIsJson();
-        $I->seeResponseEquals(
-            json_encode([
-                'data' => [
-                    'languages' => [
-                        [
-                            'code' => 'EN',
-                        ],
-                        [
-                            'code' => 'FI',
-                        ],
-                        [
-                            'code' => 'SV',
-                        ],
+        $I->seeResponseContainsJson([
+            'data' => [
+                'languages' => [
+                    [
+                        'code' => 'EN',
+                    ],
+                    [
+                        'code' => 'FI',
+                    ],
+                    [
+                        'code' => 'SV',
                     ],
                 ],
-            ])
-        );
+            ],
+        ]);
     }
 
     /**
@@ -89,23 +85,21 @@ class BasicCest
         ]);
         $I->seeResponseCodeIs(200);
         $I->seeResponseIsJson();
-        $I->seeResponseEquals(
-            json_encode([
-                'data' => [
-                    'languages' => [
-                        [
-                            'code' => 'EN',
-                        ],
-                        [
-                            'code' => 'FI',
-                        ],
-                        [
-                            'code' => 'SV',
-                        ],
+        $I->seeResponseContainsJson([
+            'data' => [
+                'languages' => [
+                    [
+                        'code' => 'EN',
+                    ],
+                    [
+                        'code' => 'FI',
+                    ],
+                    [
+                        'code' => 'SV',
                     ],
                 ],
-            ])
-        );
+            ],
+        ]);
     }
 
     public function testCanQuerySingleLanguageSwedish(FunctionalTester $I)
@@ -129,21 +123,19 @@ class BasicCest
         $I->sendGET("/graphql?{$query_vars}");
         $I->seeResponseCodeIs(200);
         $I->seeResponseIsJson();
-        $I->seeResponseEquals(
-            json_encode([
-                'data' => [
-                    'posts' => [
-                        'nodes' => [
-                            [
-                                'language' => [
-                                    'code' => 'SV',
-                                ],
-                                'title' => 'Svenska',
+        $I->seeResponseContainsJson([
+            'data' => [
+                'posts' => [
+                    'nodes' => [
+                        [
+                            'language' => [
+                                'code' => 'SV',
                             ],
+                            'title' => 'Svenska',
                         ],
                     ],
                 ],
-            ])
-        );
+            ],
+        ]);
     }
 }
