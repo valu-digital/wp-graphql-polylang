@@ -270,13 +270,9 @@ class PostObject
                 return false;
             }
 
-            if (in_array($source->ID, $translated_front_page)) {
-                $result = true;
-            } else {
-                $result = false;
-            }
+            return in_array($source->ID, $translated_front_page);
         }
 
-        return $result;
+        return false;
     }
 }
