@@ -488,4 +488,47 @@ class PostObjectQueryTest extends PolylangUnitTestCase
             false
         );
     }
+
+    public function testCanDetectTranslatedFrontPage()
+    {
+        update_option('show_on_front', 'page');
+
+        $fi_post_id = wp_insert_post([
+            'post_title' => 'Finnish post version',
+            'post_content' => '',
+            'post_type' => 'page',
+            'post_status' => 'publish',
+        ]);
+        pll_set_post_language($fi_post_id, 'fi');
+
+        $en_post_id = wp_insert_post([
+            'post_title' => 'English post version',
+            'post_content' => '',
+            'post_type' => 'page',
+            'post_status' => 'publish',
+        ]);
+        pll_set_post_language($en_post_id, 'en');
+
+        pll_save_post_translations([
+            'en' => $en_post_id,
+            'fi' => $fi_post_id,
+        ]);
+
+        update_option('page_on_front', $en_post_id);
+
+        $query = "
+        query Page {
+            pageBy(pageId: $fi_post_id) {
+                isFrontPage
+            }
+         }
+        ";
+
+        $data = do_graphql_request($query);
+        $this->assertArrayNotHasKey('errors', $data, print_r($data, true));
+
+        $expected = ['isFrontPage' => true];
+
+        $this->assertEquals($expected, $data['data']['pageBy']);
+    }
 }
