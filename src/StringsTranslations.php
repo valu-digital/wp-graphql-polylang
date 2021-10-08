@@ -25,11 +25,8 @@ class StringsTranslations
 
     function get_all_entries()
     {
-        if (function_exists('pll_languages_list')  
-            && function_exists('get_transient') 
-            && class_exists('PLL_MO')
-        ) {
-            $languages = \get_transient('pll_languages_list');
+        if (function_exists('pll_languages_list') && class_exists('PLL_MO')) {
+            $languages = \pll_languages_list(['fields' => null]);
 
             if (!empty($languages)) {
                 $mo = [];
@@ -42,7 +39,8 @@ class StringsTranslations
                 $groups       = [];
                 $translations = [];
                 foreach ( $languages as $language ) {
-                    $slug = $language['slug'];
+                    /** @var \PLL_Language $language */
+                    $slug = $language->slug;
                     foreach ( $this->strings as $id => $obj ) {
                         $string = $mo[ $slug ]->translate($obj['string']);
 
@@ -52,7 +50,7 @@ class StringsTranslations
                 }
 
                 $this->groups       = $groups;
-                $this->translations = $translations;   
+                $this->translations = $translations;
             }
         }
     }
@@ -74,7 +72,7 @@ class StringsTranslations
                 }
             }
         }
-        
+
         if (isset($args['includes']) && !empty($args['includes'])) {
             foreach ($translations as $lang => $langTranslations) {
                 foreach ($langTranslations as $key => $s) {
@@ -97,7 +95,7 @@ class StringsTranslations
 
     function __action_graphql_register_types()
     {
-        
+
         $groupNames = [];
         foreach ($this->groupNames as $groupName) {
             $key = strtoupper($groupName);
