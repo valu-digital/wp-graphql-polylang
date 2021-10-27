@@ -55,6 +55,16 @@ class LanguageRootQueries
                     }
                 }
 
+                if (isset($fields['active'])) {
+                    foreach (
+                        pll_languages_list(['fields' => 'active'])
+                        as $index => $active
+                    ) {
+                        $languages[$index]['active'] =
+                            $active === false ? false : true;
+                    }
+                }
+
                 if (isset($fields['homeUrl'])) {
                     foreach ($languages as &$language) {
                         $language['homeUrl'] = pll_home_url($language['slug']);
