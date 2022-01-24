@@ -81,6 +81,24 @@ class PostObject
             ],
         ]);
 
+		
+        register_graphql_fields('PostFormatToPostConnectionWhereArgs', [
+            'language' => [
+                'type' => 'LanguageCodeFilterEnum',
+                'description' =>
+                    'Filter content nodes by language code (Polylang)',
+            ],
+            'languages' => [
+                'type' => [
+                    'list_of' => [
+                        'non_null' => 'LanguageCodeEnum',
+                    ],
+                ],
+                'description' =>
+                    'Filter content nodes by one or more languages (Polylang)',
+            ],
+        ]);
+        
         foreach (\WPGraphQL::get_allowed_post_types() as $post_type) {
             $this->add_post_type_fields(get_post_type_object($post_type));
         }
