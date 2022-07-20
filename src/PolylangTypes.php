@@ -19,7 +19,7 @@ class PolylangTypes
         $language_codes = [];
 
         foreach (pll_languages_list() as $lang) {
-            $language_codes[strtoupper($lang)] = $lang;
+            $language_codes[str_replace('-', '_', strtoupper($lang))] = $lang;
         }
 
         if (empty($language_codes)) {
