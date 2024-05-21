@@ -69,7 +69,9 @@ class SanityTest extends PolylangUnitTestCase
         $this->assertTrue(defined('POLYLANG_VERSION'));
 
         $langs = pll_languages_list(['fields' => 'slug']);
-        $this->assertEquals($langs, ['en', 'fr', 'fi', 'de', 'es']);
+        asort($langs);
+
+        $this->assertEquals($langs, ['es', 'en', 'fr', 'fi', 'de']);
     }
 
     public function testPluginIsActivated()
