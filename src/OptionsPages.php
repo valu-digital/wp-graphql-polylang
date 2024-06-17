@@ -127,12 +127,10 @@ class OptionsPages
         /**
          * If resolving field under options page root query set the current language
          */
-        if (self::is_options_page($source)) {
-            $root_query = $info->path[0];
-            $lang = self::$root_query_locale_mapping[$root_query] ?? null;
-            if ($lang) {
-                self::$current_language = $lang;
-            }
+        $root_query = $info->path[0];
+        $lang = self::$root_query_locale_mapping[$root_query] ?? null;
+        if ($lang) {
+            self::$current_language = $lang;
         }
     }
 
@@ -176,16 +174,6 @@ class OptionsPages
         }
 
         return $id . '_' . self::$current_language;
-    }
-
-    static function is_options_page($source)
-    {
-        if (!is_array($source)) {
-            return false;
-        }
-
-        $type = $source['type'] ?? null;
-        return $type === 'options_page';
     }
 
     static function is_options_page_root_query(ResolveInfo $info)
