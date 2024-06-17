@@ -16,7 +16,7 @@ class PostObject
         );
 
         add_action(
-            'graphql_post_object_mutation_update_additional_data',
+            'graphql_post_object_mutation_set_object_terms',
             [
                 $this,
                 '__action_graphql_post_object_mutation_update_additional_data',
@@ -45,6 +45,8 @@ class PostObject
 
     /**
      * Handle 'language' in post object create&language mutations
+     * Fires before setting object terms during a GraphQL Post Object Mutation.
+     * This way the language of the post is set before trying to update the taxonomies.
      */
     function __action_graphql_post_object_mutation_update_additional_data(
         $post_id,
