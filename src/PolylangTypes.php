@@ -19,7 +19,10 @@ class PolylangTypes
         $language_codes = [];
 
         foreach (pll_languages_list() as $lang) {
-            $language_codes[strtoupper($lang)] = $lang;
+            // Fix: Always use the same format for values
+            $language_codes[strtoupper($lang)] = [
+                'value' => $lang,
+            ];
         }
 
         if (empty($language_codes)) {
@@ -47,11 +50,16 @@ class PolylangTypes
                 'wp-graphql-polylang'
             ),
             'values' => array_merge($language_codes, [
-                'DEFAULT' => 'default',
-                'ALL' => 'all',
+                'DEFAULT' => [
+                    'value' => 'default'
+                ],
+                'ALL' => [
+                    'value' => 'all'
+                ],
             ]),
         ]);
 
+        // Rest of the code remains the same
         register_graphql_object_type('Language', [
             'description' => __('Language (Polylang)', 'wp-graphql-polylang'),
             'fields' => [
