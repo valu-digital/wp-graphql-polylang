@@ -100,6 +100,10 @@ class PolylangTypes
                         'wp-graphql-polylang'
                     ),
                 ],
+                'active' => [
+                    'type' => 'Boolean',
+                    'description' => __('Is language active.'),
+                ],
                 'homeUrl' => [
                     'type' => 'String',
                     'description' => __(
