@@ -16,12 +16,12 @@ jobs:
         steps:
             - uses: actions/checkout@v1
 
-            - name: Use php 7.2
+            - name: Use php 7.4
               uses: shivammathur/setup-php@v2
               with:
-                  php-version: "7.2"
+                  php-version: "7.4"
 
-            - uses: actions/cache@v1
+            - uses: actions/cache@v3
               id: cache-wp-cli
               with:
                   path: ~/.wp-cli/cache
