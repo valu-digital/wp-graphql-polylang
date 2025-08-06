@@ -145,7 +145,8 @@ class PostObject
                     // The language of the preview post is not set at all so we
                     // must get the language using the original post id
                     if ($post->isPreview) {
-                        $post_id = wp_get_post_parent_id($post->ID);
+                        $post_parent_id = wp_get_post_parent_id($post->ID);
+                        $post_id = $post_parent_id ?: $post->ID; // Seems to not be needed anymore with the new versions of WP / Polylang
                     }
 
                     $slug = pll_get_post_language($post_id, 'slug');
