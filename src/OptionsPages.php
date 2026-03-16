@@ -185,7 +185,8 @@ class OptionsPages
         }
 
         $type = $source['type'] ?? null;
-        return $type === 'options_page';
+        $class_name = isset($source['node']) ? get_class($source['node']) : null;
+        return $type === 'options_page' || $class_name == \WPGraphQL\Acf\Model\AcfOptionsPage::class;
     }
 
     static function is_options_page_root_query(ResolveInfo $info)
