@@ -90,7 +90,7 @@ class OptionsPages
 
             $fields[$root_query]['args'] = [
                 'language' => [
-                    'type' => 'LanguageCodeFilterEnum',
+                    'type' => 'LanguageCodeEnum',
                     'description' => 'Filter by language code (Polylang)',
                 ],
             ];
