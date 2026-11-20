@@ -54,10 +54,10 @@ class TermObject
 
         $type = ucfirst($taxonomy->graphql_single_name);
 
-        register_graphql_fields("RootQueryTo${type}ConnectionWhereArgs", [
+        register_graphql_fields("RootQueryTo{$type}ConnectionWhereArgs", [
             'language' => [
                 'type' => 'LanguageCodeFilterEnum',
-                'description' => "Filter by ${type}s by language code (Polylang)",
+                'description' => "Filter by {$type}s by language code (Polylang)",
             ],
             'languages' => [
                 'type' => [
@@ -65,16 +65,16 @@ class TermObject
                         'non_null' => 'LanguageCodeEnum',
                     ],
                 ],
-                'description' => "Filter ${type}s by one or more languages (Polylang)",
+                'description' => "Filter {$type}s by one or more languages (Polylang)",
             ],
         ]);
 
-        register_graphql_fields("Create${type}Input", [
+        register_graphql_fields("Create{$type}Input", [
             'language' => [
                 'type' => 'LanguageCodeEnum',
             ],
         ]);
-        register_graphql_fields("Update${type}Input", [
+        register_graphql_fields("Update{$type}Input", [
             'language' => [
                 'type' => 'LanguageCodeEnum',
             ],
