@@ -15,4 +15,4 @@ if (!\class_exists('\WPGraphQL\Extensions\Polylang\Loader')) {
     require_once __DIR__ . '/vendor/autoload.php';
 }
 
-\WPGraphQL\Extensions\Polylang\Loader::init();
+add_action( 'plugins_loaded', [ '\WPGraphQL\Extensions\Polylang\Loader', 'init' ] );
